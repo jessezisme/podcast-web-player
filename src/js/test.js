@@ -1,4 +1,4 @@
-var test = function() {
+const test = function() {
     console.log('test')
 }
 
