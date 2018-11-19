@@ -1,7 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer'); 
+const autoprefixer = require('autoprefixer');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
@@ -12,13 +12,12 @@ module.exports = {
     },
     watch: true,
     watchOptions: {
-        ignore: /node_modules/,
+        ignored: /node_modules/,
         poll: 1000
     },
     module: {
-        rules: [
-            { 
-                test: /\.js$/, 
+        rules: [{
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -26,7 +25,7 @@ module.exports = {
                         babelrc: false,
                         presets: ['env']
                     }
-                }             
+                }
             },
             {
                 test: /\.scss$/,
@@ -35,8 +34,7 @@ module.exports = {
                 ],
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: [
-                        {
+                    use: [{
                             loader: 'css-loader',
                             options: {
                                 minimize: true
@@ -58,7 +56,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('../style/style.css'), 
+        new ExtractTextPlugin('../style/style.css'),
         new MinifyPlugin()
     ]
 
