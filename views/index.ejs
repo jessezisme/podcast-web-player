@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>
-        <%= title %>
+      <%= title %>
     </title>
-    <link rel='stylesheet' href='/style/style.css' />
-</head>
+    <link rel="stylesheet" href="/style/style.css" />
+  </head>
 
-<body>
-    <h1>
-        <%= title %>
-    </h1>
-    <p>Welcome to
-        <%= title %>
-    </p>
-</body>
+  <body>
+    <div id="app" v-cloak>
+      <!-- <hello-world v-bind:msg="test"></hello-world> -->
 
+      <router-view></router-view>
+    </div>
+  </body>
+
+  <script src="js/bundle.js"></script>
 </html>
