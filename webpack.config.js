@@ -1,9 +1,10 @@
 const path = require("path");
 const glob = require("glob");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 
 module.exports = {
@@ -30,7 +31,7 @@ module.exports = {
           loader: "babel-loader",
           options: {
             babelrc: false,
-            presets: ["env"]
+            presets: ["@babel/preset-env"]
           }
         }
       },
@@ -52,7 +53,6 @@ module.exports = {
       }
     ]
   },
-  // plugins: [new VueLoaderPlugin(), new ExtractTextPlugin("../style/style.css"), new MinifyPlugin()]
   plugins: [new VueLoaderPlugin(), new MinifyPlugin()]
 
 };

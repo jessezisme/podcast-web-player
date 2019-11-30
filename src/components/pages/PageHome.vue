@@ -1,36 +1,40 @@
 <template>
-  <div class="hello">
-    <BaseHeader></BaseHeader>
-    <h1>Homepage</h1>
+  <div>
+    <header>
+
+    </header>
+    <main class="p-container">
+      <div class="intro"> 
+        <BaseSearch></BaseSearch>
+      </div>
+    </main>
+    <footer>
+    </footer>
   </div>
 </template>
 
 <script>
-import BaseHeader from "../base/BaseHeader.vue";
+// import BaseHeader from '../base/BaseHeader.vue';
 
 export default {
-  name: "VuePageHome",
-  props: ["msg"],
+  name: 'PageHome',
+  props: ['msg'],
   components: {
-    BaseHeader: BaseHeader
+    // BaseHeader: BaseHeader
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style lang="scss">
+  .intro {
+    padding-top: 150px; 
+  }
+  input {
+    display: block; 
+    width: 100%; 
+    max-width: 800px; 
+    font-size: 2rem; 
+    margin: auto; 
+  }
 </style>
