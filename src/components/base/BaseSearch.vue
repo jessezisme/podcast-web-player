@@ -8,8 +8,8 @@
       </div>
       <div class="res" v-show="isFocused">
         <span class="pod-sr-only"> Results </span>
-        <ul class="res-list" role="listbox" v-for="podcast in podcastData.podcasts">
-          <li class="res-item" role="option" tabindex="0" v-on:focus="onFocus" v-on:blur="onBlur"></li>
+        <ul class="res-list" role="listbox" v-if="storePodcastData && storePodcastData.podcasts && podcasts && storePodcastData.podcasts.length">
+          <li class="res-item" role="option" tabindex="0" v-for="podcast in storePodcastData.podcasts" v-on:focus="onFocus" v-on:blur="onBlur"></li>
         </ul>
       </div>
     </form>
@@ -90,13 +90,22 @@ export default {
       query: '',
       queryDebounced: '',
       queryDebouncedURI: '',
-      podcastData: mock,
       isFocused: false,
-      focusClass: 'is-focus'
+      focusClass: 'is-focus',
     };
   },
-  components: {
+  computed: {
+    storePodcastData() {
+      console.log(this.$store);
+      console.log(this.$store.state.podAPI);
+      var getData = this.$store.state.podAPI.typeahead; ,
+      if (getData && getData.length) {
+        return getData; 
+      }
+      return null;
+    }
   },
+  components: {},
   created: function() {
     function getQuery() {
       this.queryDebounced = this.query;
@@ -111,6 +120,7 @@ export default {
       this.getPodcasts();
     }
   },
+
   methods: {
     onFocus: function(event) {
       this.isFocused = true;
@@ -132,6 +142,10 @@ export default {
       this.query = event.target.value;
     },
     getPodcasts: function() {
+      var getQuery = this.queryDebounced;
+      this.$store.dispatch('podAPI/typeaheadAction', {
+        searchTerm: getQuery
+      });
       // console.log("typing")
       // var queryEncoded = encodeURI(this.queryDebounced);
       // var requestParams = "?q=" + this.queryDebounced + "&show_podcasts=1&show_genres=1&safe_mode=1";

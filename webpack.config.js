@@ -1,7 +1,7 @@
 const path = require("path");
 const glob = require("glob");
 const autoprefixer = require("autoprefixer");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
+// const MinifyPlugin = require("babel-minify-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -16,7 +16,7 @@ module.exports = {
   watch: true,
   watchOptions: {
     ignored: /node_modules/,
-    poll: 1000
+    poll: 200
   },
   module: {
     rules: [
@@ -53,6 +53,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [new VueLoaderPlugin(), new MinifyPlugin()]
+  // plugins: [new VueLoaderPlugin(), new MinifyPlugin()]
+  plugins: [new VueLoaderPlugin()]
 
 };

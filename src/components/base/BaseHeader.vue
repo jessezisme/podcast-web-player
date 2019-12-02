@@ -7,7 +7,7 @@
 
 <script>
 // import BaseSearch from './BaseSearch.vue';
-
+      
 export default {
   name: 'BaseHeader',
   props: ['msg'],
