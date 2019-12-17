@@ -1,27 +1,25 @@
-@import '~bulma/bulma.sass'; 
-@import './base/_variables.scss';
-@import './base/global.scss';
-
+@import "./theme.scss";
+@import "./_variables.scss";
 
 /*=============================================
 =            Typography            =
 =============================================*/
 /*----------  fonts  ----------*/
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap");
 html,
 body {
-  font-family: $pod-fontfam-1;
+  font-family: $family-sans-serif;
 }
 body {
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 /*=====  End of Typography  ======*/
 
 .p-container {
   margin: auto;
-  max-width: 1800px;
-  padding-left: 15px; 
-  padding-right: 15px; 
+  max-width: 1400px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .p-sr-only {
   position: absolute;
@@ -30,11 +28,40 @@ body {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 
 body {
   background: linear-gradient(to right, #0a090e, #140d28);
   color: #fff;
+}
+
+/**
+ *
+ * Helper Classes
+ *
+ */
+.pod-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+/* end helper classes */
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+}
+
+*[v-cloak] {
+  display: none !important;
 }

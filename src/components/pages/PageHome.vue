@@ -7,6 +7,11 @@
       <div class="intro"> 
         <BaseSearch></BaseSearch>
       </div>
+
+      <div class="recs"> 
+        <PodCarousel> </PodCarousel>
+      </div> 
+      
     </main>
     <footer>
     </footer>
@@ -14,13 +19,13 @@
 </template>
 
 <script>
-// import BaseHeader from '../base/BaseHeader.vue';
+import PodCarousel from '../PodCarousel.vue';
 
 export default {
   name: 'PageHome',
   props: ['msg'],
   components: {
-    // BaseHeader: BaseHeader
+    PodCarousel: PodCarousel
   }
 };
 </script>
