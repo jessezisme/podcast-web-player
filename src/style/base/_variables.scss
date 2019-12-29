@@ -1,1 +1,40 @@
+/*=============================================
+=            Variables & Mixins            =
+=============================================*/
+/*----------  Colors  ----------*/
+$color-blue: #0a67c2;
+$color-white: #fff;
 
+$color-accent-1: #3e00c6;
+$color-accent-2: #301669;
+
+$color-gradient1: $color-accent-1;
+$color-gradient2: $color-accent-2;
+
+$color-gradient: linear-gradient(to left, $color-gradient1, $color-gradient2);
+
+/*----------  Grid & Spacing  ----------*/
+$grid-columns: 12;
+$grid-padding: 15px;
+$max-width: 1600px;
+
+@mixin initGrid($counter, $breakpoint) {
+  .col-#{$breakpoint}-#{$counter} {
+    width: ($counter / $grid-columns) * 100%;
+    float: left;
+  }
+}
+
+/*----------  Typography  ----------*/
+$font-size-md: 1rem;
+$font-size-sm: 0.9rem;
+$font-size-xs: 0.8rem;
+$font-size-lg: 1.5rem;
+$font-size-xl: 2rem;
+
+$font_serif: "Work Sans", sans-serif;
+$font_sans: "Work Sans", sans-serif;
+
+$text_light: #fff;
+$text_dark: #222;
+/*=====  End of Variables & Mixins  ======*/

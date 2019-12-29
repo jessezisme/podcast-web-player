@@ -3,11 +3,10 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import "../style/style.scss";
 
-import axios from "axios";
+import Axios from "axios";
 import "lazysizes";
 
 import PageHome from "../components/pages/PageHome.vue";
-import { homedir } from "os";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -76,6 +75,90 @@ const router = new VueRouter({
 });
 /* end routing */
 
+/**
+ *
+ * Vuex
+ *
+ */
+
+/*
+  Podcast API Modules:
+  for handling API calls to listenotes
+ */
+const modulePodAPI = {
+  namespaced: true,
+  state: {
+    typeahead: {},
+    bestPodcasts: {}
+    /*
+      genre_22: []
+    */
+  },
+  getters: {},
+  mutations: {
+    typeaheadUpdate(state, apiData) {
+      // state.typeahead = apiData;
+      Vue.set(state, "typeahead", apiData);
+    },
+    bestPodcastsUpdate(state, apiData) {
+      // Vue.set(state.bestPodcasts, "genre_" + apiData.id, apiData);
+      Vue.set(state.bestPodcasts, "genre_85", apiData);
+      console.log("SETTING VUEX");
+    }
+  },
+  actions: {
+    /*
+      Typeahead: 
+      for search field
+    */
+    typeaheadAction(context, queryObj) {
+      let requestParams = {
+        q: queryObj.searchTerm || "",
+        show_podcasts: queryObj.show_podcasts || 1,
+        show_genres: queryObj.show_genres || 1,
+        safe_mode: queryObj.safe_mode || 1
+      };
+
+      Axios.get("/api/typeahead", {
+        params: requestParams,
+        responseType: "json",
+        validateStatus: function(status) {
+          return status == 200;
+        }
+      })
+        .then(function(response) {
+          context.commit("typeaheadUpdate", response.data.success);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    /*
+      Best podcasts by genre      
+    */
+    bestPodcastsAction(context, queryObj) {
+      let requestParams = {
+        genre_id: queryObj.genre_id,
+        page: queryObj.page || 1,
+        safe_mode: queryObj.safe_mode || 1,
+        region: queryObj.region || "us"
+      };
+
+      let isDataExisting = context.state.bestPodcasts["genre_" + requestParams.genre_id];
+      function successUpdate(response) {
+        console.log(response);
+        context.commit("bestPodcastsUpdate", response.data.success);
+      }
+      function runAPI() {
+        Axios.get("/api/best-podcasts", {
+          params: requestParams
+        }).then(successUpdate);
+      }
+      !isDataExisting && runAPI();
+    }
+  }
+};
+
 const store = new Vuex.Store({
   state: {
     count: 0
@@ -86,45 +169,7 @@ const store = new Vuex.Store({
     }
   },
   modules: {
-    podAPI: {
-      namespaced: true,
-      state: {
-        typeahead: null
-      },
-      getters: {},
-      mutations: {
-        typeaheadUpdate(state, apiData) {
-          console.log(apiData);
-          state.typeahead = apiData;
-        }
-      },
-      actions: {
-        typeaheadAction(context, queryObj) {
-          var getSearch = queryObj.searchTerm;
-          var requestParams =
-            "?q=" + getSearch + "&show_podcasts=1&show_genres=1&safe_mode=1";
-          var requestParamsEncoded = encodeURI(requestParams);
-          var requestOptions = {
-            responseType: "json",
-            validateStatus: function(status) {
-              return status == 200;
-            }
-          };
-          // TODO: clean up this response handler due to nested axios response data
-          axios
-            .get("/api/typeahead/" + requestParamsEncoded, requestOptions)
-            .then(function(response) {
-              if (response && response.data && response.data.data) {
-                console.log(response);
-                context.commit("typeaheadUpdate", response.data.data);
-              }
-            })
-            .catch(function(err) {
-              console.log(err);
-            });
-        }
-      }
-    }
+    podAPI: modulePodAPI
   }
 });
 
