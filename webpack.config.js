@@ -9,6 +9,11 @@ module.exports = {
     path: path.resolve(__dirname, "dist/js"),
     filename: "bundle.js"
   },
+  // plugins: [
+  //       new webpack.ProvidePlugin({
+  //         lazysizes: 'lazysizes',
+  //       }),
+  // ],
   watch: true,
   watchOptions: {
     ignored: /node_modules/

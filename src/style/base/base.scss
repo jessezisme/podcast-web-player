@@ -181,27 +181,22 @@ img {
 @import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap");
 html,
 body {
-  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 body {
   font-size: 1rem;
 }
 /*=====  End of Typography  ======*/
 
-
 /*=============================================
 =            Forms            =
 =============================================*/
 input {
-  border: none; 
-  outline: none; 
+  border: none;
+  outline: none;
 }
 
-
 /*=====  End of Forms  ======*/
-
-
 
 .p-container {
   margin: auto;
@@ -222,13 +217,7 @@ input {
 
 body {
   margin: 0;
-  background: linear-gradient(
-    to right,
-    #14151c,
-    darken(#14151c, 1.5%),
-    #14151c,
-    darken(#14151c, 1.5%)
-  );
+  background: linear-gradient(to right, #01040e, lighten(#01040e, 2.5%));
   color: #fff;
 }
 

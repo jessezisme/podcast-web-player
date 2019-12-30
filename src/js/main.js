@@ -4,7 +4,8 @@ import VueRouter from "vue-router";
 import "../style/style.scss";
 
 import Axios from "axios";
-import "lazysizes";
+
+import lazySizes from "lazysizes";
 
 import PageHome from "../components/pages/PageHome.vue";
 
