@@ -69,6 +69,7 @@ app.use(function(req, res, next) {
  * routing
  */
 app.use("/", appRoutes.index);
+app.use("/podcast/*/*", appRoutes.index);
 app.all("/api/*", appRoutes.api);
 app.use("/search", appRoutes.search);
 /** /end routing  */

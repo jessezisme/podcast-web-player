@@ -70,7 +70,7 @@
   min-height: 1px;
   margin-left: -#{$grid-padding};
   margin-right: -#{$grid-padding};
-  overflow: hidden;
+  // overflow: hidden;
 }
 @media all and (min-width: 1px) {
   @for $i from 1 to $grid-columns {
@@ -217,7 +217,7 @@ input {
 
 body {
   margin: 0;
-  background: linear-gradient(to right, #01040e, lighten(#01040e, 2.5%));
+  background: linear-gradient(to bottom, lighten(#111523, 2%), #111523);
   color: #fff;
 }
 

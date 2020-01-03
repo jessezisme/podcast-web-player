@@ -8,6 +8,7 @@ import Axios from "axios";
 import lazySizes from "lazysizes";
 
 import PageHome from "../components/pages/PageHome.vue";
+import PagePodcast from "../components/pages/PagePodcast.vue";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -61,8 +62,13 @@ const routes = [
   },
   {
     name: "podcast",
-    path: "/podcast/:name/:id",
-    component: PageHome
+    path: "/podcast/:routeName/:routeID",
+    component: PagePodcast,
+    // when props is set to true, the route.params will be set as the component props.
+    props: true,
+    meta: {
+      title: "Podcast"
+    }
   },
   {
     name: "search",

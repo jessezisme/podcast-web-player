@@ -8,4 +8,11 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/podcast/:podTitle/:podID', function (req, res, next) {
+    res.render('index', {
+        title: 'Express'
+    });
+});
+
+
 module.exports = router;

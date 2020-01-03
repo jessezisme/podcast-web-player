@@ -1,10 +1,12 @@
 <template>
   <div>
-    <header></header>
+    <header>
+      <BaseSearch></BaseSearch>
+    </header>
     <main class="p-container">
-      <div class="intro">
-        <BaseSearch></BaseSearch>
-      </div>
+      <div class="feature"></div>
+
+      <div class="eps"></div>
 
       <div class="recs">
         <PodCarousel v-bind:prop_genre_id="68">
@@ -21,7 +23,7 @@ import PodCarousel from "../PodCarousel.vue";
 
 export default {
   name: "PageHome",
-  props: ["genre_id"],
+  // props: ["genre_id"],
   components: {
     PodCarousel: PodCarousel
   }
