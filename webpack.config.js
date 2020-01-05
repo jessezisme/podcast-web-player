@@ -37,7 +37,7 @@ module.exports = {
         }
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /(\.s[ac])|(\.css)$/i,
         include: [path.resolve(__dirname, "src")],
         use: [
           "vue-style-loader",

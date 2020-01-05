@@ -1,3 +1,4 @@
+@import "~normalize.css";
 @import "./_variables.scss";
 
 /*=============================================
@@ -215,10 +216,24 @@ input {
   border: 0;
 }
 
+html,
 body {
   margin: 0;
-  background: linear-gradient(to bottom, lighten(#111523, 2%), #111523);
+  padding: 0;
+  min-height: 100%;
+  overflow: auto; 
+}
+
+html {
+  // background: linear-gradient(to bottom, lighten(#111523, 2%), #111523);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: linear-gradient(to bottom, #140D28, #040404);
   color: #fff;
+  overflow: auto; 
 }
 
 /**
@@ -237,11 +252,6 @@ body {
   border: 0;
 }
 /* end helper classes */
-
-html,
-body {
-  min-height: 100vh;
-}
 
 *[v-cloak] {
   display: none !important;

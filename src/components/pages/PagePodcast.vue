@@ -46,15 +46,18 @@
                   <span v-html="methLimitStringLength(metHtmlCleanToText(ep.description), 200)"> </span>
                 </p>
               </div>
-              <div class="ep_date"> 
-                <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"> 
-                </span> 
-              </div> 
+              <div class="ep_date">
+                <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"> </span>
+              </div>
               <div class="ep_play">
                 <button class="ep_play-btn" v-bind:style="{ 'background-image': ep.thumbnail ? 'url(' + ep.thumbnail + ')' : '' }">
-                  <span class="ep_play-btn-in"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm83.8 211.9l-137.2 83c-2.9 1.8-6.7-.4-6.7-3.9V173c0-3.5 3.7-5.7 6.7-3.9l137.2 83c2.9 1.7 2.9 6.1 0 7.8z"/></svg>
-                  </span> 
+                  <span class="ep_play-btn-in">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path
+                        d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm83.8 211.9l-137.2 83c-2.9 1.8-6.7-.4-6.7-3.9V173c0-3.5 3.7-5.7 6.7-3.9l137.2 83c2.9 1.7 2.9 6.1 0 7.8z"
+                      />
+                    </svg>
+                  </span>
                 </button>
               </div>
             </div>
@@ -69,12 +72,17 @@
         </PodCarousel> -->
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <audio id="test" width="320" height="240" class="mejs__player" controls>
+        <source type="audio/mp3" src="https://www.listennotes.com/e/p/894576e2f8d54ddbadd831fb3eff8ff3/" />
+      </audio>
+    </footer>
   </div>
 </template>
 
 <script>
 import PodCarousel from "../PodCarousel.vue";
+import BaseAudio from "../base/BaseAudio.vue";
 import Axios from "axios";
 
 var mockData = {
@@ -383,17 +391,15 @@ export default {
       return getString.slice(0, _length + 1) + "...";
     },
     methDatePrettyPrint: function(_getTime) {
-      const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
-      const dateObj = new Date(_getTime); 
-      let dateText = ""; 
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const dateObj = new Date(_getTime);
+      let dateText = "";
       if (_getTime) {
-        dateText += monthNames[dateObj.getMonth()]
-        dateText += " " + dateObj.getDate() + "," + " "; 
-        dateText += dateObj.getFullYear(); 
+        dateText += monthNames[dateObj.getMonth()];
+        dateText += " " + dateObj.getDate() + "," + " ";
+        dateText += dateObj.getFullYear();
       }
-      return dateText; 
+      return dateText;
     },
     metPodGetData: function() {
       var self = this;
@@ -426,7 +432,6 @@ export default {
 
         var x = Object.assign(mockData, customProps);
         self.dataPodResults.push(mockData);
-
       }
       runRequest();
     }
@@ -476,11 +481,13 @@ export default {
   //   // filterData = filterData.sort((val, index, arr) => {});
   // }
 
-  created: function() {}
+  created: function() {},
+  mounted: function() {}
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped lang="scss">
 svg {
   fill: #fff;
@@ -567,8 +574,8 @@ svg {
  *
  */
 .ep {
-  display: flex; 
-  flex-wrap: wrap; 
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin: 30px 0;
   padding: 30px;
@@ -593,28 +600,28 @@ svg {
   font-size: 0.85rem;
 }
 .ep_play {
-  display: inline-flex; 
+  display: inline-flex;
 }
 .ep_play-btn {
   position: relative;
   width: 60px;
   height: 60px;
-  padding: 0; 
+  padding: 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   /* reset button styles */
-  appearance: none; 
-  border: none; 
+  appearance: none;
+  border: none;
 
-svg {
-    fill: #fff; 
+  svg {
+    fill: #fff;
     width: 45px;
-    height: auto; 
+    height: auto;
   }
 }
 .ep_date {
-  font-size: .85rem; 
+  font-size: 0.85rem;
 }
 .ep_play-btn-in {
   display: flex;
@@ -629,11 +636,7 @@ svg {
 
 @media all and (min-width: 650px) {
   .ep_sum {
-    width: 60%; 
+    width: 60%;
   }
-
 }
-
-
-
 </style>

@@ -5,10 +5,11 @@ import "../style/style.scss";
 
 import Axios from "axios";
 
-import lazySizes from "lazysizes";
+import LazySizes from "lazysizes";
 
 import PageHome from "../components/pages/PageHome.vue";
 import PagePodcast from "../components/pages/PagePodcast.vue";
+import BaseAudio from "../components/base/BaseAudio.vue";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -63,9 +64,14 @@ const routes = [
   {
     name: "podcast",
     path: "/podcast/:routeName/:routeID",
-    component: PagePodcast,
+    components: {
+      default: PagePodcast,
+      BaseAudio: BaseAudio
+    },
     // when props is set to true, the route.params will be set as the component props.
-    props: true,
+    props: {
+      default: true
+    },
     meta: {
       title: "Podcast"
     }
@@ -95,6 +101,7 @@ const router = new VueRouter({
 const modulePodAPI = {
   namespaced: true,
   state: {
+    audioPlay: {},
     typeahead: {},
     bestPodcasts: {}
     /*
@@ -182,7 +189,7 @@ const store = new Vuex.Store({
 
 const app = new Vue({
   el: "#app",
-  store,
+  store: store, 
   router: router,
   data: {
     test: "testing"

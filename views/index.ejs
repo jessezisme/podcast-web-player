@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex" />
     <meta name="description" content="A demo of a podcast web player" />
 
-    <meta name="theme-color" content="#0a090e">
+    <meta name="theme-color" content="#0a090e" />
 
     <title>
       <%= title %>
@@ -17,7 +17,12 @@
 
   <body>
     <div id="app" v-cloak>
+      <!-- header -->
+      <!-- page -->
       <router-view></router-view>
+      <!-- audio player -->
+      <router-view name="BaseAudio"></router-view>
+      <!-- footer -->
     </div>
   </body>
 
