@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
-const pod_api = require("../controllers/podcast");
+const PodApi = require("../controllers/podcast");
 
 /**
  *
@@ -10,7 +9,7 @@ const pod_api = require("../controllers/podcast");
  *
  */
 router.get("/api/typeahead", function(req, res, next) {
-  pod_api.typeahead(req, res);
+  PodApi.typeahead(req, res);
 });
 
 /**
@@ -20,7 +19,7 @@ router.get("/api/typeahead", function(req, res, next) {
  *
  */
 router.get("/api/podcast/:id", function(req, res, next) {
-  pod_api.getPodcastID(req, res);
+  PodApi.getPodcastID(req, res);
 });
 
 /**
@@ -30,7 +29,7 @@ router.get("/api/podcast/:id", function(req, res, next) {
  *
  */
 router.get("/api/best-podcasts", function(req, res, next) {
-  pod_api.bestPodcasts(req, res);
+  PodApi.bestPodcasts(req, res);
 });
 
 /**
@@ -40,7 +39,7 @@ router.get("/api/best-podcasts", function(req, res, next) {
  *
  */
 router.get("/api/genres", function(req, res, next) {
-  pod_api.genres(req, res);
+  PodApi.genres(req, res);
 });
 
 module.exports = router;

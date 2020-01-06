@@ -1,6 +1,9 @@
-// load config env file
+/**
+ * Load .env file:
+ * note: this should be placed at top of fle
+ * exposes data as process.env props;
+ */
 require("dotenv").config();
-
 const express = require("express");
 const compression = require("compression");
 const path = require("path");
@@ -8,8 +11,12 @@ const favicon = require("serve-favicon");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+// Axios: for requests
 const axios = require("axios");
-// routes
+/**
+ * Routes:
+ * routing setup
+ */
 const appRoutes = {
   index: require("./routes/index"),
   search: require("./routes/search"),
@@ -22,8 +29,16 @@ const app = express();
 app.locals.pod = {};
 
 /**
- * redis
+ * Favicon:
+ *
  */
+// TODO: uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+/**
+ * Redis:
+ */
+// TODO: need to decide whether redis will be used; if not, remove
 const Redis = require("ioredis");
 const redis = new Redis(process.env.REDIS_URL || 6379);
 app.locals.pod.redis = {
@@ -32,21 +47,17 @@ app.locals.pod.redis = {
 };
 
 /**
- * view engine
+ * View engine:
+ * set vew engine
  */
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 /**
- * favicon
+ * Middleware:
+ * setup middleware
  */
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-/** /end favicon  */
-
-/**
- * set middleware
- */
+// compression: allows for gzip
 app.use(compression());
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -66,13 +77,13 @@ app.use(function(req, res, next) {
 });
 
 /**
- * routing
+ * Routing:
+ * handle routing here
  */
 app.use("/", appRoutes.index);
 app.use("/podcast/*/*", appRoutes.index);
 app.all("/api/*", appRoutes.api);
 app.use("/search", appRoutes.search);
-/** /end routing  */
 
 /**
  * error handlers

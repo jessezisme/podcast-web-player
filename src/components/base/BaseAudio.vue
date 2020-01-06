@@ -1,7 +1,7 @@
 <template>
-  <!-- <div class="p-container">
-  </div> -->
-  <div></div>
+  <div> 
+
+  </div>
 </template>
 
 <script>
@@ -9,7 +9,7 @@ import Amplitude from "amplitudejs";
 
 export default {
   name: "BaseAudio",
-  props: [""],
+  // props: [""],
   components: {},
   data: function() {
     return {};
@@ -18,4 +18,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>

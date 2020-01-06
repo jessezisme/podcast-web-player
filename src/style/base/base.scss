@@ -2,57 +2,6 @@
 @import "./_variables.scss";
 
 /*=============================================
-=            Helpers            =
-=============================================*/
-.b_clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-.b_sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-.b_wrapper {
-  width: 100%;
-  max-width: 1600px;
-}
-.b_float-right {
-  float: right !important;
-}
-.b_float-left {
-  float: left !important;
-}
-.b_inline-block {
-  display: inline-block;
-}
-.b_no-padding {
-  padding: 0;
-}
-.b_no-margin {
-  margin: 0;
-}
-.b_w100 {
-  width: 100%;
-}
-.b_font-small {
-  font-size: $font-size-sm;
-}
-.b_text-center {
-  text-align: center;
-}
-.b_box-shadow {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-/*=====  End of Helpers  ======*/
-
-/*=============================================
 =            Grid            =
 =============================================*/
 .container {
@@ -71,7 +20,8 @@
   min-height: 1px;
   margin-left: -#{$grid-padding};
   margin-right: -#{$grid-padding};
-  // overflow: hidden;
+  // ? not sure if necessary
+  overflow: hidden;
 }
 @media all and (min-width: 1px) {
   @for $i from 1 to $grid-columns {
@@ -84,18 +34,12 @@
     @include initGrid($i, "sm");
   }
   @include initGrid($grid-columns, "sm");
-  // .container {
-  //     width: 95%;
-  // }
 }
 @media all and (min-width: 992px) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, "md");
   }
   @include initGrid($grid-columns, "md");
-  // .container {
-  //     width: 90%;
-  // }
 }
 @media all and (min-width: 1200px) {
   @for $i from 1 to $grid-columns {
@@ -119,7 +63,7 @@ html {
 }
 html,
 body {
-  font-family: $font_serif;
+  font-family: $font-serif;
   line-height: 1.5em;
   min-height: 100%;
   min-height: 100vh;
@@ -145,7 +89,7 @@ h4,
 h5,
 h6,
 p {
-  font-family: $font_sans;
+  font-family: $font-sans;
   margin: 0;
   padding-top: 1em;
   padding-bottom: 1em;
@@ -221,7 +165,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  overflow: auto; 
+  overflow: auto;
 }
 
 html {
@@ -231,9 +175,9 @@ html {
 body {
   min-height: 100%;
   margin: 0;
-  background: linear-gradient(to bottom, #140D28, #040404);
+  background: linear-gradient(to bottom, #140d28, #040404);
   color: #fff;
-  overflow: auto; 
+  overflow: auto;
 }
 
 /**

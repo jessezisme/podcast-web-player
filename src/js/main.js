@@ -1,22 +1,26 @@
+/*
+  Polyfill: ES6 Promises
+  for Vuex, babel will not recognize the need for Promises and automatically include based on usage; 
+ */
+import "es6-promise/auto";
+// Vue
 import Vue from "vue/dist/vue.esm.js";
-import Vuex from "vuex";
-import VueRouter from "vue-router";
-import "../style/style.scss";
-
+// Vue app component
+import App from "../App.vue";
+// Vue Router
+import Router from "../router/router";
+// Vuex Store
+import Store from "../store/store";
+// Axios: ajax calls
 import Axios from "axios";
-
+// lazysizes: lazyloads images
 import LazySizes from "lazysizes";
-
-import PageHome from "../components/pages/PageHome.vue";
-import PagePodcast from "../components/pages/PagePodcast.vue";
-import BaseAudio from "../components/base/BaseAudio.vue";
-
-Vue.use(VueRouter);
-Vue.use(Vuex);
+// main styles
+import "../style/style.scss";
 
 /**
  *
- * Register GLobal Components
+ * Register Global Components:
  *
  */
 function vueRegisterGlobals() {
@@ -49,149 +53,15 @@ vueRegisterGlobals();
 
 /**
  *
- * Routing
+ * Vue initialize:
  *
  */
-const routes = [
-  {
-    name: "home",
-    path: "/",
-    component: PageHome,
-    meta: {
-      title: "Home Page - Example App"
-    }
-  },
-  {
-    name: "podcast",
-    path: "/podcast/:routeName/:routeID",
-    components: {
-      default: PagePodcast,
-      BaseAudio: BaseAudio
-    },
-    // when props is set to true, the route.params will be set as the component props.
-    props: {
-      default: true
-    },
-    meta: {
-      title: "Podcast"
-    }
-  },
-  {
-    name: "search",
-    path: "/search",
-    component: PageHome
-  }
-];
-const router = new VueRouter({
-  routes: routes,
-  mode: "history"
-});
-/* end routing */
-
-/**
- *
- * Vuex
- *
- */
-
-/*
-  Podcast API Modules:
-  for handling API calls to listenotes
- */
-const modulePodAPI = {
-  namespaced: true,
-  state: {
-    audioPlay: {},
-    typeahead: {},
-    bestPodcasts: {}
-    /*
-      genre_22: []
-    */
-  },
-  getters: {},
-  mutations: {
-    typeaheadUpdate(state, apiData) {
-      // state.typeahead = apiData;
-      Vue.set(state, "typeahead", apiData);
-    },
-    bestPodcastsUpdate(state, apiData) {
-      // Vue.set(state.bestPodcasts, "genre_" + apiData.id, apiData);
-      Vue.set(state.bestPodcasts, "genre_85", apiData);
-      console.log("SETTING VUEX");
-    }
-  },
-  actions: {
-    /*
-      Typeahead: 
-      for search field
-    */
-    typeaheadAction(context, queryObj) {
-      let requestParams = {
-        q: queryObj.searchTerm || "",
-        show_podcasts: queryObj.show_podcasts || 1,
-        show_genres: queryObj.show_genres || 1,
-        safe_mode: queryObj.safe_mode || 1
-      };
-
-      Axios.get("/api/typeahead", {
-        params: requestParams,
-        responseType: "json",
-        validateStatus: function(status) {
-          return status == 200;
-        }
-      })
-        .then(function(response) {
-          context.commit("typeaheadUpdate", response.data.success);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    },
-    /*
-      Best podcasts by genre      
-    */
-    bestPodcastsAction(context, queryObj) {
-      let requestParams = {
-        genre_id: queryObj.genre_id,
-        page: queryObj.page || 1,
-        safe_mode: queryObj.safe_mode || 1,
-        region: queryObj.region || "us"
-      };
-
-      let isDataExisting = context.state.bestPodcasts["genre_" + requestParams.genre_id];
-      function successUpdate(response) {
-        console.log(response);
-        context.commit("bestPodcastsUpdate", response.data.success);
-      }
-      function runAPI() {
-        Axios.get("/api/best-podcasts", {
-          params: requestParams
-        }).then(successUpdate);
-      }
-      !isDataExisting && runAPI();
-    }
-  }
-};
-
-const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment(state) {
-      state.count++;
-    }
-  },
-  modules: {
-    podAPI: modulePodAPI
-  }
-});
-
 const app = new Vue({
-  el: "#app",
-  store: store, 
-  router: router,
+  // el: "#app",
+  render: h => h(App),
+  store: Store,
+  router: Router,
   data: {
     test: "testing"
   }
-});
+}).$mount("#app");

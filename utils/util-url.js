@@ -2,7 +2,7 @@ const Util_url = {};
 
 /**
  *
- * Encodes URL: *
+ * Encodes URL:
  * returns encoded URL; checks if already encoded before encoding
  *
  * @param {string} getURL - url
@@ -10,7 +10,6 @@ const Util_url = {};
 Util_url.encodeURL = function(getURL) {
   var getEncodedURL = encodeURI(getURL);
   var getDecodedURL = decodeURI(getURL);
-
   // compare encoded against decoded to check if already encoded
   if (getEncodedURL === getDecodedURL) {
     return getEncodedURL;
@@ -21,8 +20,8 @@ Util_url.encodeURL = function(getURL) {
 
 /**
  *
- * Convert string to seo-friendly string;
- * necessary for handling podcast titles, etc...
+ * Convert string to seo-friendly string:
+ * used for handling podcast titles, etc...
  *
  * @param {string} uglyString - raw url string to be formatted
  */
@@ -66,4 +65,4 @@ Util_url.podcastURL = function(urlObj) {
   return "/podcast/" + getTitle + "/" + getID;
 };
 
-module.exports = Util_url;
+export default Util_url;

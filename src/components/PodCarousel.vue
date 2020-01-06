@@ -39,7 +39,7 @@
 
 <script>
 //
-import Util_url from "../../utils/util_url.js";
+import Util_url from "../../utils/util-url.js";
 
 // Axios
 import Axios from "axios";
