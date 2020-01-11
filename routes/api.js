@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const PodApi = require("../controllers/podcast");
+const PodApi = require('../controllers/podcast');
 
 /**
  *
@@ -8,7 +8,7 @@ const PodApi = require("../controllers/podcast");
  * fetch podcasts, genres, and terms for query
  *
  */
-router.get("/api/typeahead", function(req, res, next) {
+router.get('/api/typeahead', function(req, res, next) {
   PodApi.typeahead(req, res);
 });
 
@@ -18,7 +18,7 @@ router.get("/api/typeahead", function(req, res, next) {
  * fetch detailed meta and episodes for a podcast by ID
  *
  */
-router.get("/api/podcast/:id", function(req, res, next) {
+router.get('/api/podcast/:id', function(req, res, next) {
   PodApi.getPodcastID(req, res);
 });
 
@@ -28,7 +28,7 @@ router.get("/api/podcast/:id", function(req, res, next) {
  * fetch podcast recommendations for a single genre
  *
  */
-router.get("/api/best-podcasts", function(req, res, next) {
+router.get('/api/best-podcasts', function(req, res, next) {
   PodApi.bestPodcasts(req, res);
 });
 
@@ -38,7 +38,7 @@ router.get("/api/best-podcasts", function(req, res, next) {
  * fetch full list of categories and assigned ID's by API
  *
  */
-router.get("/api/genres", function(req, res, next) {
+router.get('/api/genres', function(req, res, next) {
   PodApi.genres(req, res);
 });
 

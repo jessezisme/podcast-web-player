@@ -1,13 +1,13 @@
-const path = require("path");
-const glob = require("glob");
-const autoprefixer = require("autoprefixer");
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const path = require('path');
+const glob = require('glob');
+const autoprefixer = require('autoprefixer');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-  entry: "./src/js/main.js",
+  entry: './src/js/main.js',
   output: {
-    path: path.resolve(__dirname, "dist/js"),
-    filename: "bundle.js"
+    path: path.resolve(__dirname, 'dist/js'),
+    filename: 'bundle.js'
   },
   // plugins: [
   //       new webpack.ProvidePlugin({
@@ -23,13 +23,13 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: "vue-loader"
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
           // options: {
           // babelrc: false,
           // presets: ["@babel/preset-env"]
@@ -38,18 +38,18 @@ module.exports = {
       },
       {
         test: /(\.s[ac])|(\.css)$/i,
-        include: [path.resolve(__dirname, "src")],
+        include: [path.resolve(__dirname, 'src')],
         use: [
-          "vue-style-loader",
-          "css-loader",
+          'vue-style-loader',
+          'css-loader',
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
-              ident: "postcss",
-              plugins: loader => [require("autoprefixer")]
+              ident: 'postcss',
+              plugins: (loader) => [require('autoprefixer')]
             }
           },
-          "sass-loader"
+          'sass-loader'
         ]
       }
     ]

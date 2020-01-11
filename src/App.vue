@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import BaseAudio from "./components/base/BaseAudio.vue";
+import BaseAudio from './components/base/BaseAudio.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   // props: [""],
   components: {
     BaseAudio: BaseAudio

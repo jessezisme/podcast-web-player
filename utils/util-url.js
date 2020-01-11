@@ -33,13 +33,13 @@ Util_url.prettyString = function(uglyString) {
     // trim leading/trailing spaces
     .trim()
     // replace all non-numbers and characters
-    .replace(/[^a-zA-Z0-9]/g, " ")
+    .replace(/[^a-zA-Z0-9]/g, ' ')
     // replace duplicate spaces with single space
-    .replace(/\s\s+/g, " ")
+    .replace(/\s\s+/g, ' ')
     // re-trim leading/trailing spaces to avoid trailing hypens
     .trim()
     // replace space with hypen
-    .replace(/\s/g, "-");
+    .replace(/\s/g, '-');
 
   return formatString;
 };
@@ -56,13 +56,13 @@ Util_url.prettyString = function(uglyString) {
  */
 Util_url.podcastURL = function(urlObj) {
   // podcast unique ID
-  let getID = urlObj.id + "" || "";
+  let getID = urlObj.id + '' || '';
   getID = getID.trim();
   // podcast raw name to be formatted
-  let getTitle = urlObj.title + "" || "";
+  let getTitle = urlObj.title + '' || '';
   getTitle = Util_url.prettyString(getTitle);
   // final URL
-  return "/podcast/" + getTitle + "/" + getID;
+  return '/podcast/' + getTitle + '/' + getID;
 };
 
 export default Util_url;

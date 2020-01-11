@@ -6,25 +6,42 @@
       </h3>
       <div class="car-wrap">
         <div class="car" v-on:scroll="scrollArrow">
-          <div class="car-it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
+          <div
+            class="car-it"
+            v-for="podcast in limitPodcasts(dataPod.podcasts, 20)"
+            v-bind:key="podcast.id"
+          >
             <div class="car-it-in">
               <router-link :to="returnURL(podcast)">
                 <div class="car-it-img">
-                  <img class="lazyload" v-bind:data-src="podcast.image" v-bind:alt="podcast.title" aria-hidden="true" />
+                  <img
+                    class="lazyload"
+                    v-bind:data-src="podcast.image"
+                    v-bind:alt="podcast.title"
+                    aria-hidden="true"
+                  />
                 </div>
               </router-link>
             </div>
           </div>
         </div>
         <div class="car-ctr-btn-wrap">
-          <button class="car-ctr-btn is-left" v-on:click="slide($event, 'left')" v-bind:class="{ hidden: !showLeftArrow }">
+          <button
+            class="car-ctr-btn is-left"
+            v-on:click="slide($event, 'left')"
+            v-bind:class="{ hidden: !showLeftArrow }"
+          >
             <svg class="car-ctr-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
               <path
                 d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm43.4 289.1c7.5 7.5 7.5 19.8 0 27.3-3.8 3.8-8.7 5.6-13.6 5.6s-9.9-1.9-13.7-5.7l-94-94.3c-6.9-7.6-6.7-19.3.6-26.6l95.4-95.7c7.5-7.5 19.7-7.6 27.3 0 7.5 7.5 7.6 19.7 0 27.3l-81.9 81 79.9 81.1z"
               />
             </svg>
           </button>
-          <button class="car-ctr-btn is-right" v-on:click="slide($event, 'right')" v-bind:class="{ hidden: !showRightArrow }">
+          <button
+            class="car-ctr-btn is-right"
+            v-on:click="slide($event, 'right')"
+            v-bind:class="{ hidden: !showRightArrow }"
+          >
             <svg class="car-ctr-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
               <path
                 d="M48 256c0 114.9 93.1 208 208 208s208-93.1 208-208S370.9 48 256 48 48 141.1 48 256zm244.5 0l-81.9-81.1c-7.5-7.5-7.5-19.8 0-27.3s19.8-7.5 27.3 0l95.4 95.7c7.3 7.3 7.5 19.1.6 26.6l-94 94.3c-3.8 3.8-8.7 5.7-13.7 5.7-4.9 0-9.9-1.9-13.6-5.6-7.5-7.5-7.6-19.7 0-27.3l79.9-81z"
@@ -39,18 +56,18 @@
 
 <script>
 //
-import Util_url from "../../utils/util-url.js";
+import Util_url from '../../utils/util-url.js';
 
 // Axios
-import Axios from "axios";
+import Axios from 'axios';
 // css scroll-behavior polyfill; needed to implement scroll-behavior smooth for unsupporting browsers
 // https://github.com/wessberg/scroll-behavior-polyfill
-import "scroll-behavior-polyfill";
+import 'scroll-behavior-polyfill';
 
 export default {
-  name: "PodCarousel",
+  name: 'PodCarousel',
   components: {},
-  props: ["prop_genre_id"],
+  props: ['prop_genre_id'],
   data: function() {
     return {
       dataPod: null,
@@ -90,13 +107,13 @@ export default {
         genre_id: self.genre_id,
         page: 1,
         safe_mode: 1,
-        region: "us"
+        region: 'us'
       };
       function setData(response) {
         self.dataPod = response.data.success;
       }
       function runAPI() {
-        Axios.get("/api/best-podcasts", {
+        Axios.get('/api/best-podcasts', {
           params: requestParams
         }).then(setData);
       }
@@ -111,7 +128,7 @@ export default {
         id: podcast.id,
         title: podcast.title
       });
-      return "/podcast";
+      return '/podcast';
     },
 
     /**
@@ -122,9 +139,9 @@ export default {
      */
     scrollArrow: function(event) {
       var self = this;
-      var $getCar = this.$el.querySelector(".car");
-      var $getFirstCarItem = $getCar.querySelector(".car > div:first-of-type");
-      var $getLastCarItem = $getCar.querySelector(".car > div:last-of-type");
+      var $getCar = this.$el.querySelector('.car');
+      var $getFirstCarItem = $getCar.querySelector('.car > div:first-of-type');
+      var $getLastCarItem = $getCar.querySelector('.car > div:last-of-type');
       /*
         left arrow:
         compare first item's left position against carousel's left position 
@@ -143,9 +160,9 @@ export default {
      *
      */
     slide: function(event, direction) {
-      var $getCar = this.$el.querySelector(".car");
+      var $getCar = this.$el.querySelector('.car');
       var getCarBounding = $getCar ? $getCar.getBoundingClientRect() : null;
-      var $getCarItems = $getCar.querySelectorAll(".car-it");
+      var $getCarItems = $getCar.querySelectorAll('.car-it');
 
       /*
         slide right:
@@ -182,8 +199,8 @@ export default {
         check if carousel is defined before
       */
       if ($getCar) {
-        direction && direction.toLowerCase() === "right" && slideRight();
-        direction && direction.toLowerCase() === "left" && slideLeft();
+        direction && direction.toLowerCase() === 'right' && slideRight();
+        direction && direction.toLowerCase() === 'left' && slideLeft();
       }
     }
   }

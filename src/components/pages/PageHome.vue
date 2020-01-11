@@ -9,9 +9,7 @@
       <div class="eps"></div>
 
       <div class="recs">
-        <PodCarousel v-bind:prop_genre_id="68">
-          Video Games
-        </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="68">Video Games</PodCarousel>
       </div>
     </main>
     <footer></footer>
@@ -19,10 +17,10 @@
 </template>
 
 <script>
-import PodCarousel from "../PodCarousel.vue";
+import PodCarousel from '../PodCarousel.vue';
 
 export default {
-  name: "PageHome",
+  name: 'PageHome',
   // props: ["genre_id"],
   components: {
     PodCarousel: PodCarousel

@@ -1,4 +1,4 @@
-@import "./_variables.scss";
+@import './_variables.scss';
 
 /**
  *
@@ -7,7 +7,7 @@
  *
  */
 .b_clearfix::after {
-  content: "";
+  content: '';
   clear: both;
   display: table;
 }

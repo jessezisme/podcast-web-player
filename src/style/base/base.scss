@@ -1,5 +1,5 @@
-@import "~normalize.css";
-@import "./_variables.scss";
+@import '~normalize.css';
+@import './_variables.scss';
 
 /*=============================================
 =            Grid            =
@@ -12,7 +12,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-[class*="col-"] {
+[class*='col-'] {
   padding-left: $grid-padding;
   padding-right: $grid-padding;
 }
@@ -25,27 +25,27 @@
 }
 @media all and (min-width: 1px) {
   @for $i from 1 to $grid-columns {
-    @include initGrid($i, "xs");
+    @include initGrid($i, 'xs');
   }
-  @include initGrid($grid-columns, "xs");
+  @include initGrid($grid-columns, 'xs');
 }
 @media all and (min-width: 576px) {
   @for $i from 1 to $grid-columns {
-    @include initGrid($i, "sm");
+    @include initGrid($i, 'sm');
   }
-  @include initGrid($grid-columns, "sm");
+  @include initGrid($grid-columns, 'sm');
 }
 @media all and (min-width: 992px) {
   @for $i from 1 to $grid-columns {
-    @include initGrid($i, "md");
+    @include initGrid($i, 'md');
   }
-  @include initGrid($grid-columns, "md");
+  @include initGrid($grid-columns, 'md');
 }
 @media all and (min-width: 1200px) {
   @for $i from 1 to $grid-columns {
-    @include initGrid($i, "lg");
+    @include initGrid($i, 'lg');
   }
-  @include initGrid($grid-columns, "lg");
+  @include initGrid($grid-columns, 'lg');
 }
 /*=====  End of Grid  ======*/
 
@@ -123,10 +123,10 @@ img {
 =            Typography            =
 =============================================*/
 /*----------  fonts  ----------*/
-@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap');
 html,
 body {
-  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 }
 body {
   font-size: 1rem;

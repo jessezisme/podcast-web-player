@@ -1,18 +1,17 @@
 <template>
   <div class="p-container">
     <h1>Header</h1>
-    <BaseSearch> </BaseSearch>
+    <BaseSearch></BaseSearch>
   </div>
 </template>
 
 <script>
 // import BaseSearch from './BaseSearch.vue';
-      
+
 export default {
   name: 'BaseHeader',
   props: ['msg'],
-  components: {
-  },
+  components: {},
   data: function() {
     return {};
   }

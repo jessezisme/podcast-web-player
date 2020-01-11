@@ -19,12 +19,12 @@ const moduleAudio = {
   mutations: {
     typeaheadUpdate(state, apiData) {
       // state.typeahead = apiData;
-      Vue.set(state, "typeahead", apiData);
+      Vue.set(state, 'typeahead', apiData);
     },
     bestPodcastsUpdate(state, apiData) {
       // Vue.set(state.bestPodcasts, "genre_" + apiData.id, apiData);
-      Vue.set(state.bestPodcasts, "genre_85", apiData);
-      console.log("SETTING VUEX");
+      Vue.set(state.bestPodcasts, 'genre_85', apiData);
+      console.log('SETTING VUEX');
     }
   },
   actions: {
@@ -34,21 +34,21 @@ const moduleAudio = {
     */
     typeaheadAction(context, queryObj) {
       let requestParams = {
-        q: queryObj.searchTerm || "",
+        q: queryObj.searchTerm || '',
         show_podcasts: queryObj.show_podcasts || 1,
         show_genres: queryObj.show_genres || 1,
         safe_mode: queryObj.safe_mode || 1
       };
 
-      Axios.get("/api/typeahead", {
+      Axios.get('/api/typeahead', {
         params: requestParams,
-        responseType: "json",
+        responseType: 'json',
         validateStatus: function(status) {
           return status == 200;
         }
       })
         .then(function(response) {
-          context.commit("typeaheadUpdate", response.data.success);
+          context.commit('typeaheadUpdate', response.data.success);
         })
         .catch(function(err) {
           console.log(err);
@@ -62,16 +62,16 @@ const moduleAudio = {
         genre_id: queryObj.genre_id,
         page: queryObj.page || 1,
         safe_mode: queryObj.safe_mode || 1,
-        region: queryObj.region || "us"
+        region: queryObj.region || 'us'
       };
 
-      let isDataExisting = context.state.bestPodcasts["genre_" + requestParams.genre_id];
+      let isDataExisting = context.state.bestPodcasts['genre_' + requestParams.genre_id];
       function successUpdate(response) {
         console.log(response);
-        context.commit("bestPodcastsUpdate", response.data.success);
+        context.commit('bestPodcastsUpdate', response.data.success);
       }
       function runAPI() {
-        Axios.get("/api/best-podcasts", {
+        Axios.get('/api/best-podcasts', {
           params: requestParams
         }).then(successUpdate);
       }

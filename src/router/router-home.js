@@ -5,11 +5,11 @@
  *
  */
 
-import PageHome from "../components/pages/PageHome.vue";
+import PageHome from '../components/pages/PageHome.vue';
 
 const RouteHome = {
-  name: "home",
-  path: "/",
+  name: 'home',
+  path: '/',
   component: PageHome
 };
 
