@@ -4,13 +4,16 @@
     <!-- page -->
     <router-view></router-view>
     <!-- audio player -->
-    <router-view name="BaseAudio"></router-view>
+    <BaseAudio></BaseAudio>
     <!-- footer -->
   </div>
 </template>
 
 <script>
+// Vue
+import Vue from 'vue/dist/vue.esm.js';
 import BaseAudio from './components/base/BaseAudio.vue';
+
 
 export default {
   name: 'App',

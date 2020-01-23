@@ -59,6 +59,7 @@
               <div class="ep_play">
                 <button
                   class="ep_play-btn"
+                  v-on:click="metToggleAudio($event, ep, true)"
                   v-bind:style="{ 'background-image': ep.thumbnail ? 'url(' + ep.thumbnail + ')' : '' }"
                 >
                   <span class="ep_play-btn-in">
@@ -413,6 +414,18 @@ export default {
         dateText += dateObj.getFullYear();
       }
       return dateText;
+    },
+    /**
+     *
+     * Click play/pause button:
+     * dispatches to $store:
+     * - toggles play state
+     * - if newly-played, adds podcast data to current podcast playing
+     *
+     */
+    metToggleAudio: function(event, _ep, _setPlayState) {
+      this.$store.dispatch('podAudio/actPlayToggle', _setPlayState);
+      this.$store.dispatch('podAudio/actPlayPodcast', _ep);
     },
     metPodGetData: function() {
       var self = this;
