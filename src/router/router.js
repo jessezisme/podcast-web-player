@@ -5,18 +5,18 @@
  * set on vue instance with Vue.use()
  *
  */
-import Vue from "vue/dist/vue.esm.js";
-import VueRouter from "vue-router";
+import Vue from 'vue/dist/vue.esm.js';
+import VueRouter from 'vue-router';
 // set vue to use router
 Vue.use(VueRouter);
 // import routes
-import RouteHome from "./router-home";
-import RoutePodcast from "./router-podcast";
+import RouteHome from './router-home';
+import RoutePodcast from './router-podcast';
 // create router and apply routes
 const routes = [RouteHome, RoutePodcast];
 const router = new VueRouter({
   routes: routes,
-  mode: "history"
+  mode: 'history'
 });
 
 export default router;

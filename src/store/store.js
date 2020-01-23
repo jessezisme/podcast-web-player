@@ -4,13 +4,13 @@
  * for global state
  *
  */
-import Vue from "vue/dist/vue.esm.js";
-import Vuex from "vuex";
+import Vue from 'vue/dist/vue.esm.js';
+import Vuex from 'vuex';
 /*
   import store modules 
 */
-import ModPodApi from "./store-pod-api";
-import ModPodAudio from "./store-audio";
+import ModPodApi from './store-pod-api';
+import ModPodAudio from './store-audio';
 
 Vue.use(Vuex);
 

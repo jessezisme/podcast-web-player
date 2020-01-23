@@ -2,21 +2,21 @@
   Polyfill: ES6 Promises
   for Vuex, babel will not recognize the need for Promises and automatically include based on usage; 
  */
-import "es6-promise/auto";
+import 'es6-promise/auto';
 // Vue
-import Vue from "vue/dist/vue.esm.js";
+import Vue from 'vue/dist/vue.esm.js';
 // Vue app component
-import App from "../App.vue";
+import App from '../App.vue';
 // Vue Router
-import Router from "../router/router";
+import Router from '../router/router';
 // Vuex Store
-import Store from "../store/store";
+import Store from '../store/store';
 // Axios: ajax calls
-import Axios from "axios";
+import Axios from 'axios';
 // lazysizes: lazyloads images
-import LazySizes from "lazysizes";
+import LazySizes from 'lazysizes';
 // main styles
-import "../style/style.scss";
+import '../style/style.scss';
 
 /**
  *
@@ -26,14 +26,14 @@ import "../style/style.scss";
 function vueRegisterGlobals() {
   const requireComponent = require.context(
     // The relative path of the components folder
-    "../components",
+    '../components',
     // Whether or not to look in subfolders
     true,
     // The regular expression used to match base component filenames
     /(base|pages).*\.(vue|js)$/
   );
 
-  requireComponent.keys().forEach(fileName => {
+  requireComponent.keys().forEach((fileName) => {
     // Get component config
     const componentConfig = requireComponent(fileName);
     // Register component globally
@@ -58,10 +58,10 @@ vueRegisterGlobals();
  */
 const app = new Vue({
   // el: "#app",
-  render: h => h(App),
+  render: (h) => h(App),
   store: Store,
   router: Router,
   data: {
-    test: "testing"
+    test: 'testing'
   }
-}).$mount("#app");
+}).$mount('#app');

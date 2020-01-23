@@ -64,23 +64,23 @@
 </template>
 
 <script>
-import Axios from "axios";
-import Debounce from "debounce";
+import Axios from 'axios';
+import Debounce from 'debounce';
 
 export default {
-  name: "BaseSearch",
+  name: 'BaseSearch',
   data: function() {
     return {
       // api typeahead response, unformatted; used by computed
       dataPod: null,
       // query term, raw and undebounced;
-      query: "",
+      query: '',
       // query term, debounced to reduced excessive api requests
-      queryDebounced: "",
+      queryDebounced: '',
       // used to display dropdown
       isFocused: false,
       // class set on elements to check if any element in dropdown is focused
-      focusClass: "is-focus"
+      focusClass: 'is-focus'
     };
   },
   computed: {
@@ -144,7 +144,7 @@ export default {
     onBlur: function(event) {
       var $getEl = this.$el;
       var self = this;
-      var formatClassQuery = "." + self.focusClass;
+      var formatClassQuery = '.' + self.focusClass;
       // run on timeout to handle focus shifting between elements
       window.setTimeout(function() {
         event.target && event.target.classList.remove(self.focusClass);
@@ -180,9 +180,9 @@ export default {
         safe_mode: 1
       };
       // run axios request
-      Axios.get("/api/typeahead", {
+      Axios.get('/api/typeahead', {
         params: requestParams,
-        responseType: "json",
+        responseType: 'json',
         validateStatus: function(status) {
           return status == 200;
         }

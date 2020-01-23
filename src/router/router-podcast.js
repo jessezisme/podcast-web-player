@@ -1,15 +1,15 @@
 /**
- * 
+ *
  * Podcast Landing Page:
  * the page for dedicated for individual podcast display
- * 
+ *
  */
 
-import PagePodcast from "../components/pages/PagePodcast.vue";
+import PagePodcast from '../components/pages/PagePodcast.vue';
 
 const RoutePodcast = {
-  name: "podcast",
-  path: "/podcast/:routeName/:routeID",
+  name: 'podcast',
+  path: '/podcast/:routeName/:routeID',
   components: {
     default: PagePodcast
   },
@@ -18,7 +18,7 @@ const RoutePodcast = {
     default: true
   },
   meta: {
-    title: "Podcast"
+    title: 'Podcast'
   }
 };
 
