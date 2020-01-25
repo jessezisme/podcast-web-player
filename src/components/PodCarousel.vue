@@ -146,12 +146,12 @@ export default {
         left arrow:
         compare first item's left position against carousel's left position 
       */
-      this.showLeftArrow = $getCar && $getFirstCarItem && $getFirstCarItem.getBoundingClientRect().left < $getCar.getBoundingClientRect().left ? true : false;
+      this.showLeftArrow = $getCar && $getFirstCarItem && parseInt($getFirstCarItem.getBoundingClientRect().left) < parseInt($getCar.getBoundingClientRect().left) ? true : false;
       /*
         right arrow:
         compare last item's right position against carousel's right position
       */
-      this.showRightArrow = $getCar && $getLastCarItem && $getLastCarItem.getBoundingClientRect().right > $getCar.getBoundingClientRect().right ? true : false;
+      this.showRightArrow = $getCar && $getLastCarItem && parseInt($getLastCarItem.getBoundingClientRect().right) > parseInt($getCar.getBoundingClientRect().right) ? true : false;
     },
     /**
      *
@@ -256,8 +256,8 @@ export default {
     width: 33.3333333%;
   }
   @media all and (min-width: 768px) {
-    width: 20%;
-    min-width: 20%;
+    width: 16.666%;
+    min-width: 16.666%;
   }
 }
 .car-it-in {
