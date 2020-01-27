@@ -15,8 +15,6 @@ import Store from '../store/store';
 import Axios from 'axios';
 // lazysizes: lazyloads images
 import LazySizes from 'lazysizes';
-// main styles
-import '../style/style.scss';
 
 /**
  *

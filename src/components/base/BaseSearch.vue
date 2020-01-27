@@ -1,46 +1,62 @@
 <template>
-  <div class="wrap" v-bind:class="{ active: isFocused }">
+  <div class="search" v-bind:class="{ active: isFocused }">
     <form class="form">
-      <div class="search">
+      <!-- search input -->
+      <div class="search-cont">
         <label for="search-l" class="p-sr-only">Search Podcasts</label>
         <i class="icon icon-search" aria-hidden="true"></i>
-        <input
-          id="app-search-input"
-          class="search-input"
-          placeholder="Search Podcasts"
-          type="search"
-          autocomplete="off"
-          v-model="query"
-          v-on:input="queryUpdate"
-          v-on:focus="onFocus"
-          v-on:blur="onBlur"
-        />
+        <div class="search-input-cont">
+          <input
+            id="app-search-input"
+            class="search-input"
+            placeholder="Search Podcasts"
+            type="search"
+            autocomplete="off"
+            v-model="query"
+            v-on:input="queryUpdate"
+            v-on:focus="onFocus"
+            v-on:blur="onBlur"
+          />
+          <span class="search-clear" aria-hidden="true" v-show="query && query.length" v-on:click: metSearchClear>
+            <span>
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </span>
+          </span>
+          <button
+            class="search-submit"
+            type="submit"
+            aria-label="submit"
+            v-bind:disabled="!queryDebounced || !queryDebounced.length"
+          >
+            <i class="fas fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-      <div class="drop" v-show="isFocused">
+      <!-- results dropdown -->
+      <div class="search-drop" v-show="isFocused">
         <span class="pod-sr-only">Results</span>
-        <div class="drop-in" role="listbox" v-if="compDataPod">
+        <div class="search-drop-in" role="listbox" v-if="compDataPod">
           <!-- podcasts -->
-          <div class="drop-group" v-if="compDataPod.podcasts && compDataPod.podcasts.length">
-            <div class="drop-label dropdown-item">Podcasts</div>
-            <router-link
-              class="drop-item"
-              role="option"
-              tabindex="0"
-              v-for="podcast in compDataPod.podcasts"
-              v-bind:key="podcast.id"
-              v-on:focus.native="onFocus"
-              v-on:blur.native="onBlur"
-              :to="{
-                name: 'podcast',
-                params: { name: podcast.publisher_original, id: podcast.id }
-              }"
-            >
-              <span>{{ podcast.publisher_original }}</span>
-            </router-link>
+          <div class="search-drop-group" v-if="compDataPod.podcasts && compDataPod.podcasts.length">
+            <div class="search-drop-label search-drop-item">Podcasts</div>
+            <div class="search-drop-item" v-for="podcast in compDataPod.podcasts" v-bind:key="podcast.id">
+              <router-link
+                role="option"
+                tabindex="0"
+                v-on:focus.native="onFocus"
+                v-on:blur.native="onBlur"
+                :to="{
+                  name: 'podcast',
+                  params: { routeName: metUtilUrl().prettyString(podcast.publisher_original), routeID: podcast.id }
+                }"
+              >
+                <span>{{ podcast.publisher_original }}</span>
+              </router-link>
+            </div>
           </div>
           <!-- genres -->
-          <div class="drop-group" v-if="dataPod.genres && dataPod.genres.length">
-            <div class="drop-label drop-item">Genres</div>
+          <div class="search-drop-group" v-if="dataPod.genres && dataPod.genres.length">
+            <div class="search-drop-label search-drop-item">Genres</div>
             <router-link
               class="drop-item"
               role="option"
@@ -66,6 +82,7 @@
 <script>
 import Axios from 'axios';
 import Debounce from 'debounce';
+import Util_url from '../../../utils/util-url.js';
 
 export default {
   name: 'BaseSearch',
@@ -193,6 +210,13 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
+    },
+    metSearchClear: function() {
+      this.query = '';
+      this.queryDebounced = '';
+    },
+    metUtilUrl: function() {
+      return Util_url;
     }
   }
 };
@@ -200,43 +224,81 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.form {
+@import '../../style/base/_variables.scss';
+
+.search {
+  display: block;
+  width: 100%;
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: auto;
+
+  &-input-cont {
+    position: relative;
+  }
+  &-input {
+    display: inline-block;
+    width: 100%;
+    height: 2rem;
+    padding-left: 10px;
+    border-radius: 15px;
+    padding-right: 80px;
+  }
+  &-submit,
+  &-clear {
+    position: absolute;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    bottom: 0;
+    top: 0;
+    display: inline-block;
+    height: 100%;
+    border-radius: 0 10px 10px 0;
+    box-shadow: none;
+    border-color: transparent;
+    font-size: 1rem;
+    text-align: center;
+    color: $color-black;
+  }
+  &-clear {
+    right: 40px;
+    background: none;
+    opacity: 0.4;
+
+    > span {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
-.search-input {
+.search-drop {
   width: 100%;
-  border-radius: 1em;
-  padding: 0.75rem 15px;
-  font-size: 1.25rem;
-}
-.drop {
-  width: 100%;
+  max-width: 650px;
+  max-height: 75vh;
+  overflow-y: auto;
   position: absolute;
+  left: 0;
+  right: 0;
   top: 100%;
-  top: calc(100% + 10px);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-.drop-in {
-  padding: 0.5rem 15px;
-  background: #fff;
-  color: #000;
-}
-.drop-item,
-.drop-label {
-  display: block;
-  padding: 0.5rem 0;
-}
-.drop-label {
-  padding-top: 0.75rem;
-}
-.drop-label {
-  font-size: 1.25em;
-  font-weight: bold;
-}
-.drop-item {
-  display: block;
+  background: $color-white;
+  color: $color-black;
+  margin-top: 5px;
+  border-radius: 10px;
+
+  &-in {
+    padding: 15px;
+    border-radius: 5px;
+  }
+  &-label {
+    font-weight: bold;
+    padding-top: 0.25em;
+  }
+  &-item {
+    display: block;
+    padding: 0.25em 0;
+    font-size: $font-size-sm;
+  }
 }
 </style>

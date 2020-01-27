@@ -6,13 +6,13 @@
  */
 import Vue from 'vue/dist/vue.esm.js';
 import Vuex from 'vuex';
-/*
-  import store modules 
-*/
+// store modules
 import ModPodApi from './store-pod-api';
 import ModPodAudio from './store-audio';
 
 Vue.use(Vuex);
+
+console.log(window);
 
 const store = new Vuex.Store({
   state: {

@@ -29,23 +29,29 @@
   }
   @include initGrid($grid-columns, 'xs');
 }
-@media all and (min-width: 576px) {
+@media all and (min-width: $break-sm) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'sm');
   }
   @include initGrid($grid-columns, 'sm');
 }
-@media all and (min-width: 992px) {
+@media all and (min-width: $break-md) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'md');
   }
   @include initGrid($grid-columns, 'md');
 }
-@media all and (min-width: 1200px) {
+@media all and (min-width: $break-lg) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'lg');
   }
   @include initGrid($grid-columns, 'lg');
+}
+@media all and (min-width: $break-xl) {
+  @for $i from 1 to $grid-columns {
+    @include initGrid($i, 'xl');
+  }
+  @include initGrid($grid-columns, 'xl');
 }
 /*=====  End of Grid  ======*/
 
@@ -112,10 +118,29 @@ img {
 
 /*----------  header  ----------*/
 .b_header {
-  background: $color-gradient;
+  // background: $color-gradient;
   color: $color-white;
 }
 /*----------  /end header  ----------*/
+
+/*----------  Forms  ----------*/
+
+input[type='search']::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type='search']::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  display: none;
+}
 
 /*=====  End of Global styling  ======*/
 
@@ -126,7 +151,8 @@ img {
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap');
 html,
 body {
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
 }
 body {
   font-size: 1rem;
@@ -145,6 +171,7 @@ input {
 
 .p-container {
   margin: auto;
+  width: 100%;
   max-width: 1400px;
   padding-left: 15px;
   padding-right: 15px;
@@ -164,7 +191,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  min-height: 100vh;
   overflow: auto;
 }
 
@@ -173,9 +200,9 @@ html {
 }
 
 body {
-  min-height: 100%;
+  min-height: 100vh;
   margin: 0;
-  background: linear-gradient(to bottom, #140d28, #040404);
+  background: $color-accent-1;
   color: #fff;
   overflow: auto;
 }

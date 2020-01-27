@@ -1,19 +1,41 @@
+/**
+ *
+ * Variables & Mixins
+ *
+ */
+
 /*=============================================
-=            Variables & Mixins            =
+=            Colors            =
 =============================================*/
-/*----------  Colors  ----------*/
-$color-blue: #0a67c2;
+/* base colors */
+$color-black: #000;
 $color-white: #fff;
+$color-grey-10: darken($color-white, 10%);
+$color-grey-20: darken($color-white, 20%);
+$color-grey-30: darken($color-white, 30%);
+$color-grey-40: darken($color-white, 40%);
+$color-grey-50: darken($color-white, 50%);
+$color-grey-60: darken($color-white, 60%);
+$color-grey-70: darken($color-white, 70%);
+$color-grey-80: darken($color-white, 80%);
+$color-grey-90: darken($color-white, 90%);
+$color-blue: #0a67c2;
+$color-red: #7b1427;
+$color-green: #092b22;
+/* accent colors */
+$color-accent-1: #05050f;
+$color-accent-2: #05050f;
+$color-accent-3: #23134a;
+/*=====  End of Colors  ======*/
 
-$color-accent-1: #3e00c6;
-$color-accent-2: #301669;
+/*=============================================
+=            Media Breakpoints, Grid & Spacing           =
+=============================================*/
+$break-sm: 576px;
+$break-md: 768px; 
+$break-lg: 992px;
+$break-xl: 1200px;
 
-$color-gradient1: $color-accent-1;
-$color-gradient2: $color-accent-2;
-
-$color-gradient: linear-gradient(to left, $color-gradient1, $color-gradient2);
-
-/*----------  Grid & Spacing  ----------*/
 $grid-columns: 12;
 $grid-padding: 15px;
 $max-width: 1600px;
@@ -24,8 +46,11 @@ $max-width: 1600px;
     float: left;
   }
 }
+/*=====  End of Grid & Spacing   ======*/
 
-/*----------  Typography  ----------*/
+/*=============================================
+=            Typography            =
+=============================================*/
 $font-size-md: 1rem;
 $font-size-sm: 0.9rem;
 $font-size-xs: 0.8rem;
@@ -37,4 +62,4 @@ $font-sans: 'Work Sans', sans-serif;
 
 $text_light: #fff;
 $text_dark: #222;
-/*=====  End of Variables & Mixins  ======*/
+/*=====  End of Typography  ======*/

@@ -1,8 +1,35 @@
 <template>
-  <div class="p-container">
-    <h1>Header</h1>
-    <BaseSearch></BaseSearch>
-  </div>
+  <header class="he">
+    <div class="he_placeholder"></div>
+    <nav class="he-in">
+      <div class="p-container">
+        <div class="he-flex">
+          <!-- search -->
+          <button
+            class="he-search-btn"
+            v-on:click="metSearchToggle"
+            v-bind="{ 'aria-label': isSearchVisible ? 'Close Search' : 'Open Search' }"
+          >
+            <i class="fas" aria-hidden="true" v-bind:class="[isSearchVisible ? 'fa-arrow-circle-left' : 'fa-search']"></i>
+          </button>
+          <BaseSearch v-show="isSearchVisible" class="he-search" data-comp="basesearch"></BaseSearch>
+          <!-- non-search group -->
+          <div class="he-nav-group" v-bind:class="{ 'hidden-xs': isSearchVisible }">
+            <span>
+              <router-link
+                class="he-logo"
+                :to="{
+                  name: 'home'
+                }"
+              >
+                PodChaser
+              </router-link>
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -13,10 +40,98 @@ export default {
   props: ['msg'],
   components: {},
   data: function() {
-    return {};
+    return {
+      isSearchVisible: false
+    };
+  },
+  methods: {
+    metSearchToggle: function() {
+      this.isSearchVisible = this.isSearchVisible ? false : true;
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@import '../../style/base/_variables.scss';
+
+/*=============================================
+=            helper classes             =
+=============================================*/
+.hidden-xs {
+  @media all and (max-width: $break-sm - 1) {
+    display: none;
+  }
+}
+/*=====  End of helper classes   ======*/
+
+.he {
+  &-placeholder {
+    height: 4rem;
+  }
+  &-in {
+    width: 100%;
+    height: 4rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: $color-black;
+    display: flex;
+  }
+  &-flex {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
+  /*=============================================
+  =            Search            =
+  =============================================*/
+  [data-comp='basesearch'] {
+    // width: 100%;
+    max-width: 600px;
+    flex-grow: 1;
+  }
+  /*----------  search button  ----------*/
+  &-search-btn {
+    border: none;
+    background: transparent;
+    -webkit-appearance: none;
+    color: $color-white;
+    font-size: 1.5rem;
+
+    /* show search button only on mobile */
+    display: inline-block;
+    @media all and (min-width: $break-sm) {
+      display: none;
+    }
+  }
+  /*----------  Search COMPONENT  ----------*/
+  /* target the child search component */
+  &-search {
+    @media all and (min-width: $break-sm) {
+      display: block !important;
+    }
+  }
+  /*=====  End of Search  ======*/
+
+  /*=============================================
+  =            nav group (except for seach)            =
+  =============================================*/
+  &-nav-group {
+    padding-left: 15px;
+  }
+
+  /*=====  End of nav group (except for seach)  ======*/
+
+  &-logo {
+    text-decoration: none;
+    font-weight: bold;
+  }
+}
+</style>
