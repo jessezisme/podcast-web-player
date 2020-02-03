@@ -1,6 +1,6 @@
 const Axios = require('axios');
-// const MockAdapter = require("axios-mock-adapter");
-// const Mock = new MockAdapter(Axios);
+const MockAdapter = require('axios-mock-adapter');
+const Mock = new MockAdapter(Axios);
 const Pod_api = {};
 const GetKey = process.env.POD_ENV_API_LISTEN_TOKEN;
 
@@ -48,27 +48,34 @@ var mockDataTypeahead = {
   ],
   podcasts: [
     {
-      title_highlighted: 'Rebel Force Radio: <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Podcast',
+      title_highlighted:
+        'Rebel Force Radio: <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Podcast',
       title_original: 'Rebel Force Radio: Star Wars Podcast',
       publisher_highlighted: '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
       publisher_original: 'Star Wars',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/rebel-force-radio-star-wars-podcast-star-wars-4v5pRaEg1Ub.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/rebel-force-radio-star-wars-podcast-star-wars-4v5pRaEg1Ub.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/rebel-force-radio-star-wars-podcast-star-wars-4v5pRaEg1Ub.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/rebel-force-radio-star-wars-podcast-star-wars-4v5pRaEg1Ub.300x300.jpg',
       id: 'ca3b35271db04291ba56fab8a4f731e4',
       explicit_content: false
     },
     {
-      title_highlighted: '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Explained',
+      title_highlighted:
+        '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Explained',
       title_original: 'Star Wars Explained',
       publisher_highlighted: 'Alex & Mollie',
       publisher_original: 'Alex & Mollie',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/star-wars-explained-alex-mollie-SMhNZbDY7Il-zuwl0R2DOjf.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/star-wars-explained-alex-mollie-SMhNZbDY7Il-zuwl0R2DOjf.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/star-wars-explained-alex-mollie-SMhNZbDY7Il-zuwl0R2DOjf.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/star-wars-explained-alex-mollie-SMhNZbDY7Il-zuwl0R2DOjf.300x300.jpg',
       id: '699701ca2479411f9c0bbf8dd85323e8',
       explicit_content: false
     },
     {
-      title_highlighted: 'Inside <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      title_highlighted:
+        'Inside <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
       title_original: 'Inside Star Wars',
       publisher_highlighted: 'Wondery',
       publisher_original: 'Wondery',
@@ -80,20 +87,26 @@ var mockDataTypeahead = {
     {
       title_highlighted: 'Skytalkers',
       title_original: 'Skytalkers',
-      publisher_highlighted: 'Charlotte Errity & Caitlin Plesher - <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      publisher_highlighted:
+        'Charlotte Errity & Caitlin Plesher - <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
       publisher_original: 'Charlotte Errity & Caitlin Plesher - Star Wars',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/skytalkers-charlotte-errity-caitlin-plesher--hNC10LzS4A.300x290.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/skytalkers-charlotte-errity-caitlin-plesher--hNC10LzS4A.300x290.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/skytalkers-charlotte-errity-caitlin-plesher--hNC10LzS4A.300x290.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/skytalkers-charlotte-errity-caitlin-plesher--hNC10LzS4A.300x290.jpg',
       id: '46c50b17a1c6474fb77e21f438ccd78d',
       explicit_content: false
     },
     {
       title_highlighted: 'The Mindalorian',
       title_original: 'The Mindalorian',
-      publisher_highlighted: '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Minute',
+      publisher_highlighted:
+        '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Minute',
       publisher_original: 'Star Wars Minute',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/the-mindalorian-star-wars-minute-ioQ-swnS2Vu-yntWxcMS0YD.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/the-mindalorian-star-wars-minute-ioQ-swnS2Vu-yntWxcMS0YD.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/the-mindalorian-star-wars-minute-ioQ-swnS2Vu-yntWxcMS0YD.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/the-mindalorian-star-wars-minute-ioQ-swnS2Vu-yntWxcMS0YD.300x300.jpg',
       id: 'cc1fd08a83084c06b6040748aa50a285',
       explicit_content: false
     }
@@ -113,7 +126,7 @@ Pod_api.typeahead = function(req, res) {
     safe_mode: req.query.safe_mode || '0'
   };
 
-  // Mock.onGet("https://listen-api.listennotes.com/api/v2/typeahead").reply(200, mockDataTypeahead);
+  Mock.onGet('https://listen-api.listennotes.com/api/v2/typeahead').reply(200, mockDataTypeahead);
 
   Axios.get('https://listen-api.listennotes.com/api/v2/typeahead', {
     headers: {
@@ -168,7 +181,8 @@ var mockDataBest = {
       earliest_pub_date_ms: 1576805757000,
       language: 'English',
       country: 'United States',
-      website: 'http://playwatchlisten.libsyn.com/website?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      website:
+        'http://playwatchlisten.libsyn.com/website?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
       extra: {
         twitter_handle: '',
         facebook_handle: '',
@@ -197,12 +211,15 @@ var mockDataBest = {
       id: '4ae1e15cbd1f48308a9fcf1a12530c5c',
       title: 'Arcade Perfect Podcast',
       publisher: 'Darren Borg/Sean Tagg',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/arcade-perfect-podcast-darren-borgsean-tagg-Vp7CAJU2T1W.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/arcade-perfect-podcast-darren-borgsean-tagg-Vp7CAJU2T1W.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/arcade-perfect-podcast-darren-borgsean-tagg-Vp7CAJU2T1W.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/arcade-perfect-podcast-darren-borgsean-tagg-Vp7CAJU2T1W.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/4ae1e15cbd1f48308a9fcf1a12530c5c/',
       total_episodes: 41,
       explicit_content: false,
-      description: "Join Taggsta and Daz as they sort after the best Arcade Perfect home ports on Console and Vintage computer's.",
+      description:
+        "Join Taggsta and Daz as they sort after the best Arcade Perfect home ports on Console and Vintage computer's.",
       itunes_id: 1257337417,
       rss: 'https://www.listennotes.com/c/r/4ae1e15cbd1f48308a9fcf1a12530c5c',
       latest_pub_date_ms: 1576060230000,
@@ -238,12 +255,15 @@ var mockDataBest = {
       id: '8fdb403b9f244d5c96b35a8b166b3199',
       title: 'The Hyper Voice',
       publisher: 'The Hyper Voice',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/the-hyper-voice-the-hyper-voice-QTjkAwdDLbv-JwH59koicuC.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/the-hyper-voice-the-hyper-voice-QTjkAwdDLbv-JwH59koicuC.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/the-hyper-voice-the-hyper-voice-QTjkAwdDLbv-JwH59koicuC.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/the-hyper-voice-the-hyper-voice-QTjkAwdDLbv-JwH59koicuC.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/8fdb403b9f244d5c96b35a8b166b3199/',
       total_episodes: 73,
       explicit_content: false,
-      description: 'Pokemon experts discuss anything and everything about the official competitive scene, the Video Game Championship Series. Welcome to the world of competitive Pokemon!',
+      description:
+        'Pokemon experts discuss anything and everything about the official competitive scene, the Video Game Championship Series. Welcome to the world of competitive Pokemon!',
       itunes_id: 1463265834,
       rss: 'https://www.listennotes.com/c/r/8fdb403b9f244d5c96b35a8b166b3199',
       latest_pub_date_ms: 1576926000000,
@@ -279,19 +299,23 @@ var mockDataBest = {
       id: '6e7787a1d2384dc092f2f760484ec8c2',
       title: 'Indie Incursion: An Indie Games Podcast',
       publisher: 'The HP Video Game Podcast Network',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/indie-incursion-an-indie-games-podcast-the-icbV9-AxFSr-oRdLDqvX0FK.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/indie-incursion-an-indie-games-podcast-the-icbV9-AxFSr-oRdLDqvX0FK.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/indie-incursion-an-indie-games-podcast-the-icbV9-AxFSr-oRdLDqvX0FK.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/indie-incursion-an-indie-games-podcast-the-icbV9-AxFSr-oRdLDqvX0FK.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/6e7787a1d2384dc092f2f760484ec8c2/',
       total_episodes: 65,
       explicit_content: false,
-      description: '<p>Indie Incursion is a podcast about indie games and their creators. Showcasing indie games news, indie games on Kickstarter and anything indie game related you might want to know.</p>',
+      description:
+        '<p>Indie Incursion is a podcast about indie games and their creators. Showcasing indie games news, indie games on Kickstarter and anything indie game related you might want to know.</p>',
       itunes_id: 1459327958,
       rss: 'https://www.listennotes.com/c/r/6e7787a1d2384dc092f2f760484ec8c2',
       latest_pub_date_ms: 1577444400000,
       earliest_pub_date_ms: 1541902140058,
       language: 'English',
       country: 'United States',
-      website: 'https://indieincursionpodcast.podbean.com?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      website:
+        'https://indieincursionpodcast.podbean.com?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
       extra: {
         twitter_handle: '',
         facebook_handle: '',
@@ -321,7 +345,8 @@ var mockDataBest = {
       title: 'Quest Log',
       publisher: 'John-Luke Pollock',
       image: 'https://cdn-images-1.listennotes.com/podcasts/quest-log-john-luke-pollock-YUE9OcudaQC-AOY9B-SxbsD.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/quest-log-john-luke-pollock-YUE9OcudaQC-AOY9B-SxbsD.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/quest-log-john-luke-pollock-YUE9OcudaQC-AOY9B-SxbsD.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/2894e3337a17463fa9a5e8f3f01eb311/',
       total_episodes: 1,
       explicit_content: false,
@@ -361,8 +386,10 @@ var mockDataBest = {
       id: '67a0c4c9b09c41e2afd289ffe2cadb7e',
       title: 'WoW Killer: A World of Warcraft Podcast',
       publisher: 'Garrett Weinzierl & Taliesin',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/wow-killer-a-world-of-warcraft-podcast-qis0NTz9IWF-1fcYHLu2bVn.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/wow-killer-a-world-of-warcraft-podcast-qis0NTz9IWF-1fcYHLu2bVn.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/wow-killer-a-world-of-warcraft-podcast-qis0NTz9IWF-1fcYHLu2bVn.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/wow-killer-a-world-of-warcraft-podcast-qis0NTz9IWF-1fcYHLu2bVn.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/67a0c4c9b09c41e2afd289ffe2cadb7e/',
       total_episodes: 2,
       explicit_content: false,
@@ -402,8 +429,10 @@ var mockDataBest = {
       id: '434d41ff41e240bfac3da44bb497e7d7',
       title: 'Unlocked: The Nancy Drew Podcast',
       publisher: 'Her Interactive',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/unlocked-the-nancy-drew-podcast-her-iVlFj9nEgfp-KPpTalDnxL9.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/unlocked-the-nancy-drew-podcast-her-iVlFj9nEgfp-KPpTalDnxL9.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/unlocked-the-nancy-drew-podcast-her-iVlFj9nEgfp-KPpTalDnxL9.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/unlocked-the-nancy-drew-podcast-her-iVlFj9nEgfp-KPpTalDnxL9.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/434d41ff41e240bfac3da44bb497e7d7/',
       total_episodes: 71,
       explicit_content: false,
@@ -455,7 +484,8 @@ var mockDataBest = {
       earliest_pub_date_ms: 1572657409024,
       language: 'English',
       country: 'United States',
-      website: 'https://roosterteeth.com/series/inside-gaming-daily?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      website:
+        'https://roosterteeth.com/series/inside-gaming-daily?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
       extra: {
         twitter_handle: '',
         facebook_handle: '',
@@ -489,7 +519,8 @@ var mockDataBest = {
       listennotes_url: 'https://www.listennotes.com/c/02a04671fcc44b47b7952c7935d5aafb/',
       total_episodes: 26,
       explicit_content: false,
-      description: "It's the Diablo Show, with Scott Johnson, creator and host of the top rated WoW show, The Instance.  If you love Diablo, then you're home.  Enjoy this look at the game and culture surounding everyone's favorite Prime Evil!",
+      description:
+        "It's the Diablo Show, with Scott Johnson, creator and host of the top rated WoW show, The Instance.  If you love Diablo, then you're home.  Enjoy this look at the game and culture surounding everyone's favorite Prime Evil!",
       itunes_id: 867757714,
       rss: 'https://www.listennotes.com/c/r/02a04671fcc44b47b7952c7935d5aafb',
       latest_pub_date_ms: 1572743152000,
@@ -525,8 +556,10 @@ var mockDataBest = {
       id: '9d40e2a2df684e30aefb876e02d06132',
       title: 'Side Pull',
       publisher: 'Blink Entertainment',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/side-pull-blink-entertainment-1vJ-rcoZePH-NshWHR2toPl.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/side-pull-blink-entertainment-1vJ-rcoZePH-NshWHR2toPl.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/side-pull-blink-entertainment-1vJ-rcoZePH-NshWHR2toPl.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/side-pull-blink-entertainment-1vJ-rcoZePH-NshWHR2toPl.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/9d40e2a2df684e30aefb876e02d06132/',
       total_episodes: 10,
       explicit_content: false,
@@ -567,8 +600,10 @@ var mockDataBest = {
       id: '60a9a415dc144e2c8c25cd1d82aeeb02',
       title: 'The Outer Worlds Show',
       publisher: 'Richard & Gio ',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/the-outer-worlds-show-richard-gio-EKknJLPS0U2-MOnyKiCkjlG.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/the-outer-worlds-show-richard-gio-EKknJLPS0U2-MOnyKiCkjlG.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/the-outer-worlds-show-richard-gio-EKknJLPS0U2-MOnyKiCkjlG.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/the-outer-worlds-show-richard-gio-EKknJLPS0U2-MOnyKiCkjlG.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/60a9a415dc144e2c8c25cd1d82aeeb02/',
       total_episodes: 27,
       explicit_content: false,
@@ -610,7 +645,8 @@ var mockDataBest = {
       title: 'The MinnMax Show',
       publisher: 'MinnMax',
       image: 'https://cdn-images-1.listennotes.com/podcasts/the-minnmax-show-minnmax-MBhsGpqv-WJ-tfpoFdQD3Ym.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/the-minnmax-show-minnmax-MBhsGpqv-WJ-tfpoFdQD3Ym.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/the-minnmax-show-minnmax-MBhsGpqv-WJ-tfpoFdQD3Ym.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/9fe0077322d941ccb67be44fb9595332/',
       total_episodes: 10,
       explicit_content: false,
@@ -693,8 +729,10 @@ var mockDataBest = {
       id: 'e09e622559b6495d95947005e79172f0',
       title: 'Twofivesix: Gaming and Marketing',
       publisher: 'Twofivesix',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/twofivesix-gaming-and-marketing-HMB8UnuDoxX-ZNU_kwOnuRh.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/twofivesix-gaming-and-marketing-HMB8UnuDoxX-ZNU_kwOnuRh.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/twofivesix-gaming-and-marketing-HMB8UnuDoxX-ZNU_kwOnuRh.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/twofivesix-gaming-and-marketing-HMB8UnuDoxX-ZNU_kwOnuRh.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/e09e622559b6495d95947005e79172f0/',
       total_episodes: 8,
       explicit_content: false,
@@ -735,8 +773,10 @@ var mockDataBest = {
       id: '1e05a76b8c9a4d7388fa86d448ea57b6',
       title: 'Barrens Chat | World of Warcraft Classic & Retail',
       publisher: 'Barrens Chat Podcast',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/barrens-chat-world-of-warcraft-classic-retail-ZN_tAiemhWz-7BpH-sKOr1z.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/barrens-chat-world-of-warcraft-classic-retail-ZN_tAiemhWz-7BpH-sKOr1z.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/barrens-chat-world-of-warcraft-classic-retail-ZN_tAiemhWz-7BpH-sKOr1z.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/barrens-chat-world-of-warcraft-classic-retail-ZN_tAiemhWz-7BpH-sKOr1z.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/1e05a76b8c9a4d7388fa86d448ea57b6/',
       total_episodes: 28,
       explicit_content: false,
@@ -781,7 +821,8 @@ var mockDataBest = {
       listennotes_url: 'https://www.listennotes.com/c/698f7bf530574173aeb657a0461b285c/',
       total_episodes: 2,
       explicit_content: false,
-      description: 'Join Slanik as he discusses World of Warcraft, interacts with the thing that made WoW the most successful MMO of all time, the Community, and most of all tries to have as much fun as possible while doing it.',
+      description:
+        'Join Slanik as he discusses World of Warcraft, interacts with the thing that made WoW the most successful MMO of all time, the Community, and most of all tries to have as much fun as possible while doing it.',
       itunes_id: 1479059936,
       rss: 'https://www.listennotes.com/c/r/698f7bf530574173aeb657a0461b285c',
       latest_pub_date_ms: 1567733813000,
@@ -817,12 +858,15 @@ var mockDataBest = {
       id: '85fb53abdc3e43d79e7c8269fae574b5',
       title: 'Unrelated At Birth',
       publisher: 'Dave Adams and Adam Russell',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/unrelated-at-birth-dave-adams-and-adam-hm31AZ_PLix-3tIXRog4xdU.300x282.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/unrelated-at-birth-dave-adams-and-adam-hm31AZ_PLix-3tIXRog4xdU.300x282.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/unrelated-at-birth-dave-adams-and-adam-hm31AZ_PLix-3tIXRog4xdU.300x282.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/unrelated-at-birth-dave-adams-and-adam-hm31AZ_PLix-3tIXRog4xdU.300x282.jpg',
       listennotes_url: 'https://www.listennotes.com/c/85fb53abdc3e43d79e7c8269fae574b5/',
       total_episodes: 107,
       explicit_content: false,
-      description: 'Life has so much to enjoy, so why talk only about one thing?  Each week we take you on a podcast journey through topics that are unrelated, but are things we can all get passionate about!',
+      description:
+        'Life has so much to enjoy, so why talk only about one thing?  Each week we take you on a podcast journey through topics that are unrelated, but are things we can all get passionate about!',
       itunes_id: 1304051170,
       rss: 'https://www.listennotes.com/c/r/85fb53abdc3e43d79e7c8269fae574b5',
       latest_pub_date_ms: 1577160170000,
@@ -863,14 +907,16 @@ var mockDataBest = {
       listennotes_url: 'https://www.listennotes.com/c/dc30677d81d44ccab51ac39d1732e54c/',
       total_episodes: 72,
       explicit_content: true,
-      description: "The PC Gamer UK podcast is a weekly discussion show about PC gaming. Each week, the PC Gamer UK team chat about new releases, old classics and whatever else they've been playing.",
+      description:
+        "The PC Gamer UK podcast is a weekly discussion show about PC gaming. Each week, the PC Gamer UK team chat about new releases, old classics and whatever else they've been playing.",
       itunes_id: 1092726736,
       rss: 'https://www.listennotes.com/c/r/dc30677d81d44ccab51ac39d1732e54c',
       latest_pub_date_ms: 1565360228000,
       earliest_pub_date_ms: 1457701340071,
       language: 'English',
       country: 'United States',
-      website: 'https://audioboom.com/channels/4999138?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      website:
+        'https://audioboom.com/channels/4999138?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
       extra: {
         twitter_handle: '',
         facebook_handle: '',
@@ -899,8 +945,10 @@ var mockDataBest = {
       id: '8f3094f560ee4b729a4324e79e6997d9',
       title: 'ExtremePCUK - A weekly show about PC Gaming, Building, Modding and Reviews.',
       publisher: 'Contact@ExtremePCUK.co.uk',
-      image: 'https://cdn-images-1.listennotes.com/podcasts/extremepcuk-a-monthly-show-about-pc-gaming-nbKC8GU7oQO-4Sucmy-6O9z.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/extremepcuk-a-monthly-show-about-pc-gaming-nbKC8GU7oQO-4Sucmy-6O9z.300x300.jpg',
+      image:
+        'https://cdn-images-1.listennotes.com/podcasts/extremepcuk-a-monthly-show-about-pc-gaming-nbKC8GU7oQO-4Sucmy-6O9z.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/extremepcuk-a-monthly-show-about-pc-gaming-nbKC8GU7oQO-4Sucmy-6O9z.300x300.jpg',
       listennotes_url: 'https://www.listennotes.com/c/8f3094f560ee4b729a4324e79e6997d9/',
       total_episodes: 79,
       explicit_content: false,
@@ -912,7 +960,8 @@ var mockDataBest = {
       earliest_pub_date_ms: 1435972758078,
       language: 'English',
       country: 'United States',
-      website: 'https://extreme-pc-uk.zencast.website?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      website:
+        'https://extreme-pc-uk.zencast.website?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
       extra: {
         twitter_handle: '',
         facebook_handle: '',
@@ -993,10 +1042,9 @@ var mockDataBest = {
 //   data: mockData
 // };
 
-// Mock.onGet("https://listen-api.listennotes.com/api/v2/best_podcasts").reply(200, mockDataBest);
+Mock.onGet('https://listen-api.listennotes.com/api/v2/best_podcasts').reply(200, mockDataBest);
 
 Pod_api.bestPodcasts = function(req, res) {
-  // console.log("BEST PODCAST");
   const buildParams = {
     genre_id: req.query.genre_id,
     page: req.query.page || 1,
@@ -1201,7 +1249,7 @@ var mockObj = {
   genres: mockGenres
 };
 
-// Mock.onGet("https://listen-api.listennotes.com/api/v2/genres").reply(200, mockObj);
+Mock.onGet('https://listen-api.listennotes.com/api/v2/genres').reply(200, mockObj);
 
 Pod_api.genres = function(req, res) {
   Axios.get('https://listen-api.listennotes.com/api/v2/genres', {

@@ -3,7 +3,7 @@
     <form class="form">
       <!-- search input -->
       <div class="search-cont">
-        <label for="search-l" class="p-sr-only">Search Podcasts</label>
+        <label for="search-l" class="b_sr-only">Search Podcasts</label>
         <i class="icon icon-search" aria-hidden="true"></i>
         <div class="search-input-cont">
           <input
@@ -17,7 +17,7 @@
             v-on:focus="onFocus"
             v-on:blur="onBlur"
           />
-          <span class="search-clear" aria-hidden="true" v-show="query && query.length" v-on:click: metSearchClear>
+          <span class="search-clear" aria-hidden="true" v-show="query && query.length" v-on:click="metSearchClear">
             <span>
               <i class="fas fa-times" aria-hidden="true"></i>
             </span>
@@ -33,10 +33,13 @@
         </div>
       </div>
       <!-- results dropdown -->
-      <div class="search-drop" v-show="isFocused">
+      <div class="search-drop" v-show="isFocused && compDataPod">
         <span class="pod-sr-only">Results</span>
         <div class="search-drop-in" role="listbox" v-if="compDataPod">
           <!-- podcasts -->
+          <div class="search-drop-group">
+            <button>Close</button>
+          </div>
           <div class="search-drop-group" v-if="compDataPod.podcasts && compDataPod.podcasts.length">
             <div class="search-drop-label search-drop-item">Podcasts</div>
             <div class="search-drop-item" v-for="podcast in compDataPod.podcasts" v-bind:key="podcast.id">
@@ -55,10 +58,10 @@
             </div>
           </div>
           <!-- genres -->
-          <div class="search-drop-group" v-if="dataPod.genres && dataPod.genres.length">
+          <div class="search-drop-group" v-if="compDataPod.genres && compDataPod.genres.length">
             <div class="search-drop-label search-drop-item">Genres</div>
             <router-link
-              class="drop-item"
+              class="search-drop-item"
               role="option"
               tabindex="0"
               v-for="genre in compDataPod.genres"
@@ -101,16 +104,18 @@ export default {
     };
   },
   computed: {
-    // api typeahead response, formatted
+    /*
+      api typeahead response, formatted
+    */
     compDataPod() {
       var getData = this.dataPod;
-      var getDataGenre = getData && getData.genres ? getData.genres.slice(0, 5) : null;
-      var getDataPodcasts = getData && getData.podcasts ? getData.podcasts.slice(0, 10) : null;
+      var getGenre = getData && getData.genres && Array.isArray(getData.genres) ? getData.genres.slice(0, 15) : [];
+      var getPodcasts = getData && getData.podcasts && Array.isArray(getData.podcasts) ? getData.podcasts.slice(0, 15) : [];
       var formatData = {
-        genres: getDataGenre,
-        podcasts: getDataPodcasts
+        genres: getGenre,
+        podcasts: getPodcasts
       };
-      if (getData) {
+      if (getGenre.length || getPodcasts.length) {
         return formatData;
       } else {
         return null;
@@ -139,12 +144,6 @@ export default {
     }
   },
   methods: {
-    /**
-     *
-     * Handle opening and closing dropdown:
-     * reacts to focus and blur events
-     *
-     */
     /*
       Focus: 
       add focus class to focused element; 
@@ -155,7 +154,7 @@ export default {
       event.target && event.target.classList.add(this.focusClass);
     },
     /*
-      Blur:
+      blur:
       check if any elements have focus class to determined if dropdown can be closed
     */
     onBlur: function(event) {
@@ -172,20 +171,16 @@ export default {
         }
       }, 80);
     },
-    /**
-     *
-     * Query Update:
-     * updates query value on search inputs
-     *
-     */
+    /*
+      query update:
+      updates query value on search input  
+    */
     queryUpdate: function(event) {
       this.query = event.target.value;
     },
-    /**
-     *
-     * Get API typeahead data
-     *
-     */
+    /*
+      get API typeahead data 
+    */
     getPodcasts: function() {
       let self = this;
       let getQuery = this.queryDebounced;
@@ -211,10 +206,16 @@ export default {
           console.log(err);
         });
     },
+    /*
+      clear search 
+    */
     metSearchClear: function() {
       this.query = '';
       this.queryDebounced = '';
     },
+    /*
+      return imported utility module for use 
+    */
     metUtilUrl: function() {
       return Util_url;
     }

@@ -1,8 +1,8 @@
 <template>
   <header class="he">
-    <div class="he_placeholder"></div>
-    <nav class="he-in">
-      <div class="p-container">
+    <div id="pod-fixed-nav-placeholder" class="visibility-none" v-bind:style="{ height: fixedNavHeight }"></div>
+    <nav id="pod-fixed-nav" class="he-in">
+      <div class="b_wrapper">
         <div class="he-flex">
           <!-- search -->
           <button
@@ -33,29 +33,59 @@
 </template>
 
 <script>
-// import BaseSearch from './BaseSearch.vue';
-
 export default {
   name: 'BaseHeader',
   props: ['msg'],
   components: {},
   data: function() {
     return {
-      isSearchVisible: false
+      isLoaded: false,
+      isSearchVisible: false,
+      fixedNavHeight: '0px'
     };
+  },
+  computed: {
+    compScreenWidth() {
+      let refreshHack = this.isLoaded;
+      let getScreenWidth = this.$store.state.podUtil.screenWidthPixels;
+      return this.$store.state.podUtil.screenWidthPixels;
+    },
+    compHeaderHeight() {
+      let refreshHack = this.isLoaded;
+      let getScreenWidth = this.compScreenWidth;
+      this.metHeaderHeight();
+    }
+  },
+  mounted: function() {
+    this.$nextTick().then(() => {
+      this.metHeaderHeight();
+    });
+  },
+  created: function() {
+    this.isLoaded = true;
+  },
+  destroyed: function() {
+    this.isLoaded = false;
   },
   methods: {
     metSearchToggle: function() {
       this.isSearchVisible = this.isSearchVisible ? false : true;
+    },
+    metHeaderHeight: function() {
+      let elFixedNav = document.getElementById('pod-fixed-nav');
+      if (elFixedNav) {
+        this.fixedNavHeight = elFixedNav.offsetHeight + 'px';
+      }
     }
   }
 };
 </script>
 
+scrollPosY
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import '../../style/base/_variables.scss';
-
 /*=============================================
 =            helper classes             =
 =============================================*/
@@ -64,15 +94,14 @@ export default {
     display: none;
   }
 }
+.visibility-none {
+  visibility: hidden;
+}
 /*=====  End of helper classes   ======*/
-
 .he {
-  &-placeholder {
-    height: 4rem;
-  }
   &-in {
     width: 100%;
-    height: 4rem;
+    padding: 10px 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -119,16 +148,13 @@ export default {
     }
   }
   /*=====  End of Search  ======*/
-
   /*=============================================
   =            nav group (except for seach)            =
   =============================================*/
   &-nav-group {
     padding-left: 15px;
   }
-
   /*=====  End of nav group (except for seach)  ======*/
-
   &-logo {
     text-decoration: none;
     font-weight: bold;

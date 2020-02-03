@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <header>
-      <BaseSearch></BaseSearch>
-    </header>
-    <main class="p-container">
-      <div class="feature"></div>
-
-      <div class="eps"></div>
+  <div class="home">
+    <div class="b_wrapper">
+      <div class="home-ft">
+        <h1>Podcast Web Player Demo</h1>
+        <h2>Discover your next favorite podcast</h2>
+      </div>
 
       <div class="recs">
+        <PodCarousel v-bind:prop_genre_id="67">Comedy</PodCarousel>
         <PodCarousel v-bind:prop_genre_id="68">Video Games</PodCarousel>
       </div>
-    </main>
-    <footer></footer>
+    </div>
   </div>
 </template>
 
@@ -24,6 +22,24 @@ export default {
   // props: ["genre_id"],
   components: {
     PodCarousel: PodCarousel
+  },
+  data: function() {
+    return {
+      isLiving: false
+    };
+  },
+  computed: {
+    compScreenSize() {
+      let refreshHack = this.isLiving;
+      this.screenSize = this.$store.state.podUtil.screenWidth;
+      return this.$store.state.podUtil.screenWidth;
+    }
+  },
+  created: function() {
+    this.isLiving = true;
+  },
+  destroyed: function() {
+    this.isLiving = false;
   }
 };
 </script>
@@ -32,5 +48,12 @@ export default {
 <style lang="scss">
 .intro {
   padding-top: 150px;
+}
+.home {
+  padding: 3rem 0;
+}
+.home-ft {
+  text-align: center;
+  padding: 2rem 0;
 }
 </style>

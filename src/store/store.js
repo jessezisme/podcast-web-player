@@ -9,23 +9,19 @@ import Vuex from 'vuex';
 // store modules
 import ModPodApi from './store-pod-api';
 import ModPodAudio from './store-audio';
+import ModUtil from './store-util';
 
 Vue.use(Vuex);
 
-console.log(window);
-
 const store = new Vuex.Store({
-  state: {
-    count: 0
+  state: function() {
+    count: 0;
   },
-  mutations: {
-    increment(state) {
-      state.count++;
-    }
-  },
+  mutations: {},
   modules: {
     podAPI: ModPodApi,
-    podAudio: ModPodAudio
+    podAudio: ModPodAudio,
+    podUtil: ModUtil
   }
 });
 

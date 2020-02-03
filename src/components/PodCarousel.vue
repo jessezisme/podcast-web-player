@@ -6,21 +6,21 @@
       </h3>
       <div class="car-wrap">
         <div class="car" v-on:scroll="scrollArrow">
-          <div
-            class="car-it"
-            v-for="podcast in limitPodcasts(dataPod.podcasts, 20)"
-            v-bind:key="podcast.id"
-          >
+          <div class="car-it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
             <div class="car-it-in">
-              <router-link :to="returnURL(podcast)">
-                <div class="car-it-img">
+              <router-link :to="returnURL(podcast)" class="car-it-link">
+                <div class="car-it-img-wrap">
                   <img
-                    class="lazyload"
+                    class="lazyload car-it-img"
                     v-bind:data-src="podcast.image"
                     v-bind:alt="podcast.title"
                     aria-hidden="true"
                   />
                 </div>
+                <div class="car-it-desc" v-if="podcast.id && podcast.description">
+                  <div v-html="metHtmlToText(podcast.description, compScreenSize === 'xs' ? 50 : 100)"></div>
+                </div>
+                <span class="car-it-desc-link"> See More </span>
               </router-link>
             </div>
           </div>
@@ -28,29 +28,24 @@
         <div class="car-ctr-btn-wrap">
           <button
             class="car-ctr-btn is-left"
+            aria-label="Previous"
             v-on:click="slide($event, 'left')"
-            v-bind:class="{ hidden: !showLeftArrow }"
+            v-bind:class="{ 'not-visible': !showLeftArrow }"
           >
-            <svg class="car-ctr-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm43.4 289.1c7.5 7.5 7.5 19.8 0 27.3-3.8 3.8-8.7 5.6-13.6 5.6s-9.9-1.9-13.7-5.7l-94-94.3c-6.9-7.6-6.7-19.3.6-26.6l95.4-95.7c7.5-7.5 19.7-7.6 27.3 0 7.5 7.5 7.6 19.7 0 27.3l-81.9 81 79.9 81.1z"
-              />
-            </svg>
+            <i aria-hidden="true" class="fas fa-chevron-left"></i>
           </button>
           <button
+            aria-label="Next"
             class="car-ctr-btn is-right"
             v-on:click="slide($event, 'right')"
-            v-bind:class="{ hidden: !showRightArrow }"
+            v-bind:class="{ 'not-visible': !showRightArrow }"
           >
-            <svg class="car-ctr-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M48 256c0 114.9 93.1 208 208 208s208-93.1 208-208S370.9 48 256 48 48 141.1 48 256zm244.5 0l-81.9-81.1c-7.5-7.5-7.5-19.8 0-27.3s19.8-7.5 27.3 0l95.4 95.7c7.3 7.3 7.5 19.1.6 26.6l-94 94.3c-3.8 3.8-8.7 5.7-13.7 5.7-4.9 0-9.9-1.9-13.6-5.6-7.5-7.5-7.6-19.7 0-27.3l79.9-81z"
-              />
-            </svg>
+            <i aria-hidden="true" class="fas fa-chevron-right"></i>
           </button>
         </div>
       </div>
     </div>
+    <!-- Card Display -->
   </div>
 </template>
 
@@ -58,6 +53,8 @@
 //
 import Util_url from '../../utils/util-url.js';
 
+// https://github.com/werk85/node-html-to-text
+import HtmlToText from 'html-to-text';
 // Axios
 import Axios from 'axios';
 // css scroll-behavior polyfill; needed to implement scroll-behavior smooth for unsupporting browsers
@@ -70,6 +67,8 @@ export default {
   props: ['prop_genre_id'],
   data: function() {
     return {
+      // flag for when created and destroyed; can be used to help computed props update on creation
+      isLoaded: false,
       dataPod: null,
       // genre_id: unique category identifier; copy from prop directly to data
       genre_id: this.prop_genre_id,
@@ -78,14 +77,36 @@ export default {
       showLeftArrow: false
     };
   },
-  computed: {},
-  watch: {},
+  computed: {
+    compScreenSize() {
+      let refreshHack = this.isLoaded;
+      return this.$store.state.podUtil.screenWidth;
+    }
+  },
+  created: function() {
+    this.isLoaded = true;
+  },
+  destroyed: function() {
+    this.isLoaded = false;
+  },
   mounted: function() {
     var self = this;
     // API Get Podcasts
     this.apiGetPodcasts();
   },
   methods: {
+    /**
+     *
+     * convert html to text
+     *
+     */
+
+    metHtmlToText: function(getHTML, _length) {
+      let getText = HtmlToText.fromString(getHTML) || '';
+      let getLength = _length ? _length : 100;
+      getText = getText.length > getLength ? getText.slice(0, getLength) + '...' : getText;
+      return getText;
+    },
     /**
      *
      * Limit podcast size
@@ -123,7 +144,6 @@ export default {
     },
 
     returnURL: function(podcast) {
-      console.log(podcast);
       return Util_url.podcastURL({
         id: podcast.id,
         title: podcast.title
@@ -144,14 +164,24 @@ export default {
       var $getLastCarItem = $getCar.querySelector('.car > div:last-of-type');
       /*
         left arrow:
-        compare first item's left position against carousel's left position 
+        compare first item's left position against carousel's left position
       */
-      this.showLeftArrow = $getCar && $getFirstCarItem && parseInt($getFirstCarItem.getBoundingClientRect().left) < parseInt($getCar.getBoundingClientRect().left) ? true : false;
+      this.showLeftArrow =
+        $getCar &&
+        $getFirstCarItem &&
+        parseInt($getFirstCarItem.getBoundingClientRect().left) < parseInt($getCar.getBoundingClientRect().left)
+          ? true
+          : false;
       /*
         right arrow:
         compare last item's right position against carousel's right position
       */
-      this.showRightArrow = $getCar && $getLastCarItem && parseInt($getLastCarItem.getBoundingClientRect().right) > parseInt($getCar.getBoundingClientRect().right) ? true : false;
+      this.showRightArrow =
+        $getCar &&
+        $getLastCarItem &&
+        parseInt($getLastCarItem.getBoundingClientRect().right) > parseInt($getCar.getBoundingClientRect().right)
+          ? true
+          : false;
     },
     /**
      *
@@ -189,7 +219,10 @@ export default {
         // use reversed node list
         for (let $carItem of $getCarItemsReverseOrder) {
           if ($carItem.getBoundingClientRect().left < getCarBounding.left) {
-            $getCar.scrollLeft = $carItem.offsetLeft - $getCar.offsetLeft - ($getCar.getBoundingClientRect().width - $carItem.getBoundingClientRect().width);
+            $getCar.scrollLeft =
+              $carItem.offsetLeft -
+              $getCar.offsetLeft -
+              ($getCar.getBoundingClientRect().width - $carItem.getBoundingClientRect().width);
             break;
           }
         }
@@ -209,8 +242,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import '../style/base/_variables.scss';
+
 .hidden {
+  display: none;
+}
+.not-visible {
   visibility: hidden;
+}
+.car a {
+  text-decoration: none;
 }
 
 .car,
@@ -241,9 +282,10 @@ export default {
   padding: 0.5rem 0;
   font-size: 1.25rem;
 }
-
 .car-it {
   padding: 15px;
+  background: lighten($color-accent-1, 5%);
+  background-clip: content-box;
   scroll-snap-align: start;
 
   /*
@@ -251,11 +293,16 @@ export default {
   */
   width: 50%;
   min-width: 50%;
-  @media all and (min-width: 550px) {
+
+  @media all and (min-width: 768px) {
     min-width: 33.3333333%;
     width: 33.3333333%;
   }
-  @media all and (min-width: 768px) {
+  @media all and (min-width: 992px) {
+    min-width: 20%;
+    width: 20%;
+  }
+  @media all and (min-width: 1337px) {
     width: 16.666%;
     min-width: 16.666%;
   }
@@ -263,22 +310,44 @@ export default {
 .car-it-in {
   width: 100%;
   height: 100%;
-  background: #000;
+}
+.car-it-img-wrap {
+  position: relative;
+  max-height: 300px;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
 }
 .car-it-img {
-  padding-bottom: 100%;
-  position: relative;
-
-  img {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    max-height: 100%;
-    margin: auto;
-  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.car-it-link {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+.car-it-desc {
+  flex-grow: 1;
+  font-size: 0.85rem;
+  padding: 8px;
+}
+.car-it-desc-link {
+  padding: 8px;
+  text-decoration: underline;
 }
 .car-ctr-btn-wrap {
   display: flex;
@@ -288,17 +357,12 @@ export default {
   display: inline-block;
   -webkit-appearance: none;
   margin: 0;
-  padding: 0;
+  padding: 5px 25px;
   border: none;
   background: transparent;
   line-height: 1em;
   overflow: hidden;
-
-  padding: 5px;
-}
-.car-ctr-ic {
-  width: 50px;
-  height: 50px;
-  fill: #fff;
+  font-size: 2rem;
+  color: $text_light;
 }
 </style>
