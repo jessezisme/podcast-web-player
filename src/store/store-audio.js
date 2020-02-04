@@ -6,7 +6,6 @@ import Vue from 'vue/dist/vue.esm.js';
  * used to store the
  *
  */
-
 const moduleAudio = {
   namespaced: true,
   state: {

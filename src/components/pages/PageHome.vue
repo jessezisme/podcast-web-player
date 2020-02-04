@@ -50,10 +50,10 @@ export default {
   padding-top: 150px;
 }
 .home {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 .home-ft {
   text-align: center;
-  padding: 2rem 0;
+  padding: 8rem 0;
 }
 </style>

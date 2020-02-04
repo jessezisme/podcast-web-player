@@ -38,6 +38,7 @@ export default {
 @import '../../style/base/_variables.scss';
 
 .foo {
+  margin-top: 4rem;
   padding: 1rem 0;
   background: $color-black;
   font-size: 0.85rem;
