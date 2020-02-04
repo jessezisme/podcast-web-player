@@ -1,12 +1,94 @@
-@import '~normalize.css';
 @import './_variables.scss';
+
+/*=============================================
+=            Global             =
+=============================================*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html,
+body {
+  min-height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: $color-accent-1;
+  scroll-behavior: smooth;
+}
+img {
+  max-width: 100%;
+}
+.b_main {
+  min-height: 100vh;
+}
+/*=====  End of Global   ======*/
+
+/*=============================================
+=            Vue specific            =
+=============================================*/
+*[v-cloak] {
+  display: none !important;
+}
+/*=====  End of Vue specific  ======*/
+
+/*=============================================
+=            Typography            =
+=============================================*/
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap');
+html,
+body {
+  font-family: $font-sans;
+  color: $text_light;
+  line-height: 1.5em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.35rem;
+}
+h5 {
+  font-size: 1.15rem;
+}
+h6 {
+  font-size: 1.05rem;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+/*=====  End of Typography  ======*/
 
 /*=============================================
 =            Grid            =
 =============================================*/
 .container {
   width: 100%;
-  max-width: $max-width;
+  max-width: $grid-max-width;
   padding-left: $grid-padding;
   padding-right: $grid-padding;
   margin-left: auto;
@@ -20,7 +102,6 @@
   min-height: 1px;
   margin-left: -#{$grid-padding};
   margin-right: -#{$grid-padding};
-  // ? not sure if necessary
   overflow: hidden;
 }
 @media all and (min-width: 1px) {
@@ -29,109 +110,41 @@
   }
   @include initGrid($grid-columns, 'xs');
 }
-@media all and (min-width: 576px) {
+@media all and (min-width: $break-sm) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'sm');
   }
   @include initGrid($grid-columns, 'sm');
 }
-@media all and (min-width: 992px) {
+@media all and (min-width: $break-md) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'md');
   }
   @include initGrid($grid-columns, 'md');
 }
-@media all and (min-width: 1200px) {
+@media all and (min-width: $break-lg) {
   @for $i from 1 to $grid-columns {
     @include initGrid($i, 'lg');
   }
   @include initGrid($grid-columns, 'lg');
 }
+@media all and (min-width: $break-xl) {
+  @for $i from 1 to $grid-columns {
+    @include initGrid($i, 'xl');
+  }
+  @include initGrid($grid-columns, 'xl');
+}
 /*=====  End of Grid  ======*/
 
 /*=============================================
-=            Global styling            =
+=            buttons & links     =
 =============================================*/
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 100%;
-}
-html,
-body {
-  font-family: $font-serif;
-  line-height: 1.5em;
-  min-height: 100%;
-  min-height: 100vh;
-  background: #fff;
-  color: $text_dark;
-  scroll-behavior: smooth;
-}
-body {
-  min-width: 300px;
-  min-height: 100vh;
-}
-a {
-  color: inherit;
-}
 a,
 button {
+  color: inherit;
   cursor: pointer;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  font-family: $font-sans;
-  margin: 0;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  line-height: 1.5em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: bold;
-}
-img {
-  max-width: 100%;
-}
-.b_main {
-  min-height: 50vh;
-}
-
-/*----------  header  ----------*/
-.b_header {
-  background: $color-gradient;
-  color: $color-white;
-}
-/*----------  /end header  ----------*/
-
-/*=====  End of Global styling  ======*/
-
-/*=============================================
-=            Typography            =
-=============================================*/
-/*----------  fonts  ----------*/
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap');
-html,
-body {
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-}
-body {
-  font-size: 1rem;
-}
-/*=====  End of Typography  ======*/
+/*=====  End of buttons & links  ======*/
 
 /*=============================================
 =            Forms            =
@@ -140,63 +153,24 @@ input {
   border: none;
   outline: none;
 }
-
+/*----------  search  ----------*/
+input[type='search'] {
+  border-radius: 15px;
+}
+input[type='search']::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type='search']::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  display: none;
+}
 /*=====  End of Forms  ======*/
-
-.p-container {
-  margin: auto;
-  max-width: 1400px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-.p-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  overflow: auto;
-}
-
-html {
-  // background: linear-gradient(to bottom, lighten(#111523, 2%), #111523);
-}
-
-body {
-  min-height: 100%;
-  margin: 0;
-  background: linear-gradient(to bottom, #140d28, #040404);
-  color: #fff;
-  overflow: auto;
-}
-
-/**
- *
- * Helper Classes
- *
- */
-.pod-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-/* end helper classes */
-
-*[v-cloak] {
-  display: none !important;
-}

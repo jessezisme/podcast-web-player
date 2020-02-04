@@ -1,97 +1,62 @@
 <template>
-  <div>
-    <header>
-      <BaseSearch></BaseSearch>
-    </header>
-    <main class="p-container">
-      <!-- # podcast intro # -->
-      <div class="intro" v-if="compPodDetails">
-        <div class="intro_img-wrap">
-          <div class="intro_img-in">
-            <img
-              class="intro_img"
-              v-bind:src="compPodDetails.image"
-              alt="Featured image of podcast"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-        <div class="intro_det">
-          <h1 class="intro_title" v-if="compPodDetails.publisher">{{ compPodDetails.publisher }}</h1>
-          <p class="intro_sum" v-if="compPodDetails.description">{{ compPodDetails.description }}</p>
-          <p class="intro_more">
-            <a
-              class="intro_more-link"
-              title="Link to external podcast site"
-              target="_blank"
-              v-if="compPodDetails.website"
-              v-bind:href="compPodDetails.website"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                <path
-                  d="M280 341.1l-1.2.1c-3.6.4-7 2-9.6 4.5l-64.6 64.6c-13.7 13.7-32 21.2-51.5 21.2s-37.8-7.5-51.5-21.2c-13.7-13.7-21.2-32-21.2-51.5s7.5-37.8 21.2-51.5l68.6-68.6c3.5-3.5 7.3-6.6 11.4-9.3 4.6-3 9.6-5.6 14.8-7.5 4.8-1.8 9.9-3 15-3.7 3.4-.5 6.9-.7 10.2-.7 1.4 0 2.8.1 4.6.2 17.7 1.1 34.4 8.6 46.8 21 7.7 7.7 13.6 17.1 17.1 27.3 2.8 8 11.2 12.5 19.3 10.1.1 0 .2-.1.3-.1.1 0 .2 0 .2-.1 8.1-2.5 12.8-11 10.5-19.1-4.4-15.6-12.2-28.7-24.6-41-15.6-15.6-35.9-25.8-57.6-29.3-1.9-.3-3.8-.6-5.7-.8-3.7-.4-7.4-.6-11.1-.6-2.6 0-5.2.1-7.7.3-5.4.4-10.8 1.2-16.2 2.5-1.1.2-2.1.5-3.2.8-6.7 1.8-13.3 4.2-19.5 7.3-10.3 5.1-19.6 11.7-27.7 19.9l-68.6 68.6C58.9 304.4 48 330.8 48 359c0 28.2 10.9 54.6 30.7 74.4C98.5 453.1 124.9 464 153 464c28.2 0 54.6-10.9 74.4-30.7l65.3-65.3c10.4-10.5 2-28.3-12.7-26.9z"
-                />
-                <path
-                  d="M433.3 78.7C413.5 58.9 387.1 48 359 48s-54.6 10.9-74.4 30.7l-63.7 63.7c-9.7 9.7-3.6 26.3 10.1 27.4 4.7.4 9.3-1.3 12.7-4.6l63.8-63.6c13.7-13.7 32-21.2 51.5-21.2s37.8 7.5 51.5 21.2c13.7 13.7 21.2 32 21.2 51.5s-7.5 37.8-21.2 51.5l-68.6 68.6c-3.5 3.5-7.3 6.6-11.4 9.3-4.6 3-9.6 5.6-14.8 7.5-4.8 1.8-9.9 3-15 3.7-3.4.5-6.9.7-10.2.7-1.4 0-2.9-.1-4.6-.2-17.7-1.1-34.4-8.6-46.8-21-7.3-7.3-12.8-16-16.4-25.5-2.9-7.7-11.1-11.9-19.1-9.8-8.9 2.3-14.1 11.7-11.3 20.5 4.5 14 12.1 25.9 23.7 37.5l.2.2c16.9 16.9 39.4 27.6 63.3 30.1 3.7.4 7.4.6 11.1.6 2.6 0 5.2-.1 7.8-.3 6.5-.5 13-1.6 19.3-3.2 6.7-1.8 13.3-4.2 19.5-7.3 10.3-5.1 19.6-11.7 27.7-19.9l68.6-68.6c19.8-19.8 30.7-46.2 30.7-74.4s-11.1-54.6-30.9-74.4z"
-                />
-              </svg>
-              <span class="intro_more-link-label">Web</span>
-            </a>
-          </p>
+  <main class="b_wrapper">
+    <!-- # podcast intro # -->
+    <div class="intro" v-if="compPodDetails">
+      <div class="intro_img-wrap">
+        <div class="intro_img-in">
+          <img class="intro_img" v-bind:src="compPodDetails.image" alt="Featured image of podcast" aria-hidden="true" />
         </div>
       </div>
-      <!-- /end # podcast intro # -->
-      <!-- # podcast episodes # -->
-      <div class="eps" v-if="compPodResults && compPodResults.length">
-        <div v-for="result in compPodResults" v-bind:key="result._customRequestTime">
-          <div v-if="result.episodes && result.episodes.length">
-            <!-- episode -->
-            <div class="ep" v-for="ep in result.episodes" v-bind:key="ep.id" tabindex="0">
-              <div class="ep_sum">
-                <h3 class="ep_title">{{ ep.title || "" }}</h3>
-                <p class="ep_desc" v-if="ep.description">
-                  <span v-html="methLimitStringLength(metHtmlCleanToText(ep.description), 200)"></span>
-                </p>
-              </div>
-              <div class="ep_date">
-                <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"></span>
-              </div>
-              <div class="ep_play">
-                <button
-                  class="ep_play-btn"
-                  v-on:click="metToggleAudio($event, ep, true)"
-                  v-bind:style="{ 'background-image': ep.thumbnail ? 'url(' + ep.thumbnail + ')' : '' }"
-                >
-                  <span class="ep_play-btn-in">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                      <path
-                        d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm83.8 211.9l-137.2 83c-2.9 1.8-6.7-.4-6.7-3.9V173c0-3.5 3.7-5.7 6.7-3.9l137.2 83c2.9 1.7 2.9 6.1 0 7.8z"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </div>
+      <div class="intro_det">
+        <h1 class="intro_title" v-if="compPodDetails.publisher">{{ compPodDetails.publisher }}</h1>
+        <p class="intro_sum" v-if="compPodDetails.description">{{ compPodDetails.description }}</p>
+        <p class="intro_more">
+          <a
+            class="intro_more-link"
+            title="Link to external podcast site"
+            target="_blank"
+            v-if="compPodDetails.website"
+            v-bind:href="compPodDetails.website"
+          >
+            <i aria-hidden="true" class="fas fa-link"></i>
+            <span class="intro_more-link-label">Web</span>
+          </a>
+        </p>
+      </div>
+    </div>
+    <!-- /end # podcast intro # -->
+    <!-- # podcast episodes # -->
+    <div class="eps" v-if="compPodResults && compPodResults.length">
+      <div v-for="result in compPodResults" v-bind:key="result._customRequestTime">
+        <div v-if="result.episodes && result.episodes.length">
+          <!-- episode -->
+          <div class="ep" v-for="ep in result.episodes" v-bind:key="ep.id">
+            <div class="ep_sum">
+              <h3 tabindex="0" class="ep_title">{{ ep.title || '' }}</h3>
+              <p class="ep_desc" v-if="ep.description">
+                <span class="ep_thumb-wrap">
+                  <img class="ep_thumb" v-bind:src="ep.thumbnail" />
+                </span>
+                <span v-html="methLimitStringLength(metHtmlCleanToText(ep.description), 200)"></span>
+              </p>
             </div>
-            <!-- /end episode -->
+            <div class="ep_date">
+              <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"></span>
+            </div>
+            <div class="ep_play">
+              <button class="ep_play-btn" v-on:click="metToggleAudio($event, ep, true)">
+                <span class="ep_play-btn-in">
+                  <i aria-hidden="true" class="far fa-play-circle"></i>
+                </span>
+              </button>
+            </div>
           </div>
+          <!-- /end episode -->
         </div>
       </div>
-      <!-- # /end podcast episodes # -->
-      <div class="recs">
-        <!-- <PodCarousel v-bind:prop_genre_id="68">
-          Video Games
-        </PodCarousel>-->
-      </div>
-    </main>
-    <footer>
-      <audio id="test" width="320" height="240" class="mejs__player" controls>
-        <source
-          type="audio/mp3"
-          src="https://www.listennotes.com/e/p/894576e2f8d54ddbadd831fb3eff8ff3/"
-        />
-      </audio>
-    </footer>
-  </div>
+    </div>
+    <!-- # /end podcast episodes # -->
+  </main>
 </template>
 
 <script>
@@ -108,14 +73,16 @@ var mockData = {
   listennotes_url: 'https://www.listennotes.com/c/ecdf29d1d03c48e693189e220947587e/',
   total_episodes: 190,
   explicit_content: false,
-  description: 'Best Of Friends is a weekly podcast in which Erin Mallory Long and Jamie Woodham hilariously guide you through every episode of Friends from beginning to end.',
+  description:
+    'Best Of Friends is a weekly podcast in which Erin Mallory Long and Jamie Woodham hilariously guide you through every episode of Friends from beginning to end.',
   itunes_id: 952471642,
   rss: 'https://www.listennotes.com/c/r/ecdf29d1d03c48e693189e220947587e',
   latest_pub_date_ms: 1575170539000,
   earliest_pub_date_ms: 1419397200186,
   language: 'English',
   country: 'United States',
-  website: 'https://www.spreaker.com/show/best-of-friends?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+  website:
+    'https://www.spreaker.com/show/best-of-friends?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
   extra: {
     twitter_handle: '',
     facebook_handle: '',
@@ -150,7 +117,8 @@ var mockData = {
       audio_length_sec: 5297,
       listennotes_url: 'https://www.listennotes.com/e/894576e2f8d54ddbadd831fb3eff8ff3/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/894576e2f8d54ddbadd831fb3eff8ff3/#edit',
       explicit_content: false
@@ -165,7 +133,8 @@ var mockData = {
       audio_length_sec: 2830,
       listennotes_url: 'https://www.listennotes.com/e/53280be9d84b4b01ad1690f05b3d4669/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/53280be9d84b4b01ad1690f05b3d4669/#edit',
       explicit_content: false
@@ -180,7 +149,8 @@ var mockData = {
       audio_length_sec: 2952,
       listennotes_url: 'https://www.listennotes.com/e/43bfb5a53f7440bda015d54d1809e0d7/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/43bfb5a53f7440bda015d54d1809e0d7/#edit',
       explicit_content: false
@@ -195,7 +165,8 @@ var mockData = {
       audio_length_sec: 4874,
       listennotes_url: 'https://www.listennotes.com/e/149a3efb9e214e37a04980a28219a8a1/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/149a3efb9e214e37a04980a28219a8a1/#edit',
       explicit_content: false
@@ -210,7 +181,8 @@ var mockData = {
       audio_length_sec: 3391,
       listennotes_url: 'https://www.listennotes.com/e/fe364ae89c504321a2de98462a80e00b/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/fe364ae89c504321a2de98462a80e00b/#edit',
       explicit_content: false
@@ -225,7 +197,8 @@ var mockData = {
       audio_length_sec: 3128,
       listennotes_url: 'https://www.listennotes.com/e/d594edaa48be4159925cc29667510ea2/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/d594edaa48be4159925cc29667510ea2/#edit',
       explicit_content: false
@@ -240,7 +213,8 @@ var mockData = {
       audio_length_sec: 3143,
       listennotes_url: 'https://www.listennotes.com/e/ee362f7b30294442bb033aab018f90e6/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/ee362f7b30294442bb033aab018f90e6/#edit',
       explicit_content: false
@@ -255,7 +229,8 @@ var mockData = {
       audio_length_sec: 3375,
       listennotes_url: 'https://www.listennotes.com/e/51ab98c3fbe84c40aa164c14ffdc5b34/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/51ab98c3fbe84c40aa164c14ffdc5b34/#edit',
       explicit_content: false
@@ -270,7 +245,8 @@ var mockData = {
       audio_length_sec: 2671,
       listennotes_url: 'https://www.listennotes.com/e/74d452838d7344818a76aab8bbbc9d8c/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/74d452838d7344818a76aab8bbbc9d8c/#edit',
       explicit_content: false
@@ -285,7 +261,8 @@ var mockData = {
       audio_length_sec: 3032,
       listennotes_url: 'https://www.listennotes.com/e/5adc1528202e4b0eb7e99fd4871e94da/',
       image: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
-      thumbnail: 'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
+      thumbnail:
+        'https://cdn-images-1.listennotes.com/podcasts/best-of-friends-podcast-best-of-friends-IcZVnRyoX2B.300x300.jpg',
       maybe_audio_invalid: false,
       listennotes_edit_url: 'https://www.listennotes.com/e/5adc1528202e4b0eb7e99fd4871e94da/#edit',
       explicit_content: false
@@ -295,7 +272,7 @@ var mockData = {
 };
 
 export default {
-  name: 'PageHome',
+  name: 'PagePodcast',
   props: ['routeID'],
   components: {
     PodCarousel: PodCarousel
@@ -405,7 +382,20 @@ export default {
       return getString.slice(0, _length + 1) + '...';
     },
     methDatePrettyPrint: function(_getTime) {
-      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
       const dateObj = new Date(_getTime);
       let dateText = '';
       if (_getTime) {
@@ -622,6 +612,14 @@ svg {
   font-weight: bold;
   padding-bottom: 5px;
 }
+.ep_thumb-wrap {
+  max-width: 65px;
+  float: left;
+  padding: 0 10px 10px 0;
+}
+.ep_thumb {
+  max-width: 100%;
+}
 .ep_desc {
   font-size: 0.85rem;
 }
@@ -633,25 +631,17 @@ svg {
   width: 60px;
   height: 60px;
   padding: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  font-size: 2.65rem;
+  background: transparent;
   /* reset button styles */
   appearance: none;
   border: none;
-
-  svg {
-    fill: #fff;
-    width: 45px;
-    height: auto;
-  }
 }
 .ep_date {
   font-size: 0.85rem;
 }
 .ep_play-btn-in {
   display: flex;
-  background: rgba(0, 0, 0, 0.8);
   width: 100%;
   height: 100%;
   align-items: stretch;

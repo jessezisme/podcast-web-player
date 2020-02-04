@@ -5,7 +5,8 @@
  *
  */
 
-import PagePodcast from '../components/pages/PagePodcast.vue';
+// import PagePodcast from '../components/pages/PagePodcast.vue';
+const PagePodcast = () => import(/* webpackChunkName: "page-podcast" */ '../components/pages/PagePodcast.vue');
 
 const RoutePodcast = {
   name: 'podcast',

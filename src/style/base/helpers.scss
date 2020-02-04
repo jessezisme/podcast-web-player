@@ -1,16 +1,24 @@
 @import './_variables.scss';
 
-/**
- *
- * Helpers:
- * 
- *
- */
+/* clearfix */
 .b_clearfix::after {
   content: '';
   clear: both;
   display: table;
 }
+/* container */
+.b_wrapper {
+  margin: auto;
+  width: 100%;
+  max-width: 1600px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+/* main body */
+.b_main {
+  min-height: 50vh;
+}
+/* screen reader only */
 .b_sr-only {
   position: absolute;
   width: 1px;
@@ -21,34 +29,38 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-.b_wrapper {
-  width: 100%;
-  max-width: 1600px;
-}
+/* floats */
 .b_float-right {
   float: right !important;
 }
 .b_float-left {
   float: left !important;
 }
+/* display */
+.b_block {
+  display: flex;
+}
 .b_inline-block {
   display: inline-block;
 }
+/* spacing */
 .b_no-padding {
   padding: 0;
 }
 .b_no-margin {
   margin: 0;
 }
-.b_w100 {
-  width: 100%;
-}
-.b_font-small {
-  font-size: $font-size-sm;
-}
+/* text align */
 .b_text-center {
   text-align: center;
 }
+.b_text-right {
+  text-align: right;
+}
+.b_text-left {
+  text-align: left;
+}
+/* box shadow */
 .b_box-shadow {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }

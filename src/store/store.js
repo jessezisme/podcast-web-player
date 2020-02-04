@@ -6,26 +6,22 @@
  */
 import Vue from 'vue/dist/vue.esm.js';
 import Vuex from 'vuex';
-/*
-  import store modules 
-*/
+// store modules
 import ModPodApi from './store-pod-api';
 import ModPodAudio from './store-audio';
+import ModUtil from './store-util';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  state: {
-    count: 0
+  state: function() {
+    count: 0;
   },
-  mutations: {
-    increment(state) {
-      state.count++;
-    }
-  },
+  mutations: {},
   modules: {
     podAPI: ModPodApi,
-    podAudio: ModPodAudio
+    podAudio: ModPodAudio,
+    podUtil: ModUtil
   }
 });
 
