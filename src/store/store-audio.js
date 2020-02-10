@@ -9,26 +9,25 @@ import Vue from 'vue/dist/vue.esm.js';
 const moduleAudio = {
   namespaced: true,
   state: {
-    isPlay: false,
-    podcast: null,
+    podcastRequest: null,
+    player: null,
     playlist: []
   },
   getters: {},
   mutations: {
     mutPlayPodcast(state, _ep) {
-      Vue.set(state, 'podcast', _ep);
+      Vue.set(state, 'podcastRequest', _ep);
     },
-    mutPlayToggle(state, _isPlaying) {
-      Vue.set(state, 'isPlay', _isPlaying);
+    mutPlayer(state, _player) {
+      Vue.set(state, 'player', _player);
     }
   },
   actions: {
     actPlayPodcast(context, _ep) {
       context.commit('mutPlayPodcast', _ep);
     },
-    actPlayToggle(context, _isPlaying) {
-      const setPlaying = _isPlaying ? true : false;
-      context.commit('mutPlayToggle', setPlaying);
+    actPlayer(context, _player) {
+      context.commit('mutPlayer', _player);
     }
   }
 };
