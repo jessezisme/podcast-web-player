@@ -44,9 +44,19 @@
               <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"></span>
             </div>
             <div class="ep_play">
-              <button class="ep_play-btn" v-on:click="metToggleAudio($event, ep, true)">
+              <button class="ep_play-btn" v-on:click="metPlayerPlayToggle($event, ep)">
                 <span class="ep_play-btn-in">
-                  <i aria-hidden="true" class="far fa-play-circle"></i>
+                  <!-- pause: if -->
+                  <span
+                    aria-label="play"
+                    v-if="compPlayer.isPlaying && compPlayer.podcast && compPlayer.podcast.id == ep.id"
+                  >
+                    <i aria-hidden="true" class="far fa-pause-circle"></i>
+                  </span>
+                  <!-- play: else-->
+                  <span aria-label="play" v-else>
+                    <i aria-hidden="true" class="far fa-play-circle"></i>
+                  </span>
                 </span>
               </button>
             </div>
@@ -302,9 +312,16 @@ export default {
   },
   computed: {
     /*
-        ID:
-        unique for each podcast; passed from router;
-      */
+      Player Audio from Vuex; 
+      necessary to know state of podcast audio
+    */
+    compPlayer() {
+      return this.$store.state.podAudio.player || {};
+    },
+    /*
+      ID:
+      unique for each podcast; passed from router;
+    */
     dataPodID() {
       return this.routeID;
     },
@@ -413,9 +430,9 @@ export default {
      * - if newly-played, adds podcast data to current podcast playing
      *
      */
-    metToggleAudio: function(event, _ep, _setPlayState) {
-      this.$store.dispatch('podAudio/actPlayToggle', _setPlayState);
-      this.$store.dispatch('podAudio/actPlayPodcast', _ep);
+    metPlayerPlayToggle: function(event, _ep) {
+      var isPlaying = this.compPlayer && this.compPlayer.isPlaying;
+      isPlaying ? this.$root.$emit('player.pause', _ep) : this.$root.$emit('player.play', _ep);
     },
     metPodGetData: function() {
       var self = this;
