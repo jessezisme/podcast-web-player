@@ -9,7 +9,6 @@
     "build-prod": "webpack --mode=production & NODE_ENV=production nodemon ./bin/www"
   },
   "dependencies": {
-    "amplitudejs": "^5.0.3",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",

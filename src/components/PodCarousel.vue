@@ -283,10 +283,12 @@ export default {
   font-size: 1.25rem;
 }
 .car-it {
+  margin: 8px;
   padding: 15px;
-  background: lighten($color-accent-1, 5%);
-  background-clip: content-box;
+  background: darken($color-accent-1, 5%);
+  // background-clip: content-box;
   scroll-snap-align: start;
+  border: inset 1px solid $color-accent-3;
 
   /*
     set carousel items per row
@@ -313,7 +315,10 @@ export default {
 }
 .car-it-img-wrap {
   position: relative;
-  max-height: 300px;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  max-width: 150px;
 
   &::after {
     content: '';
@@ -329,6 +334,8 @@ export default {
   left: 0;
   max-width: 100%;
   max-height: 100%;
+  margin: auto;
+  max-width: 150px;
   margin: auto;
   width: 100%;
   height: 100%;

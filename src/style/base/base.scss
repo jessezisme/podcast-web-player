@@ -137,6 +137,37 @@ p {
 /*=====  End of Grid  ======*/
 
 /*=============================================
+=            links            =
+=============================================*/
+a {
+  color: inherit;
+  cursor: pointer;
+}
+/*=====  End of links  ======*/
+
+/*=============================================
+=            buttons            =
+=============================================*/
+button {
+  display: inline-block;
+  color: inherit;
+  cursor: pointer;
+  /* reset default */
+  background: transparent;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1.15em;
+}
+
+.b_btn {
+  background: $color-accent-2;
+  padding: .375rem .75rem;
+}
+/*=====  End of buttons  ======*/
+
+/*=============================================
 =            buttons & links     =
 =============================================*/
 a,
@@ -144,6 +175,8 @@ button {
   color: inherit;
   cursor: pointer;
 }
+/*----------  buttons  ----------*/
+
 /*=====  End of buttons & links  ======*/
 
 /*=============================================

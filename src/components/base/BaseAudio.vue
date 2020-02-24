@@ -1,27 +1,76 @@
 <template>
   <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
-    <!-- podcast image -->
-
-    <!-- progress control -->
-    <div class="aud-prog-wrap">
-      <input
-        class="aud-prog"
-        type="range"
-        ref="BaseAudio-player-progress-slider"
-        v-on:mousedown="metPlayerProgressUserModifying"
-        step="1"
-        min="1"
-        value="1"
-        v-bind="{
-          max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
-        }"
-      />
-    </div>
     <!-- episode name -->
     <div class="aud-title">
       <span class="aud-title-text" v-if="player.podcast.title">
         {{ player.podcast.title }}
       </span>
+    </div>
+    <!-- flexbox wrapper -->
+    <div class="aud-flexwrap">
+      <!-- thumbnail -->
+      <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud-thumb-link">
+        <img
+          class="aud-thumb-img"
+          v-bind:src="player.podcast.image || player.podcast.thumbnail"
+          v-bind:alt="player.podcast.title"
+          aria-hidden="true"
+        />
+        <span class="b_sr-only"> </span>
+      </a>
+      <!-- play/pause group -->
+      <div class="aud-ctrl">
+        <!-- skip back -->
+        <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('back')">
+          <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
+        </button>
+        <!-- play/pause -->
+        <button class="aud-ctrl-btn aud-ctrl-btn-play" v-on:click="metControlTogglePlay">
+          <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
+          <span v-show="player.isPlaying" aria-label="pause"><i aria-hidden="true" class="far fa-pause-circle"></i></span>
+        </button>
+        <!-- skip ahead -->
+        <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+          <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
+        </button>
+      </div>
+      <!-- progress/seek -->
+      <div class="aud-prog-wrap">
+        <input
+          class="aud-prog"
+          type="range"
+          ref="BaseAudio-player-progress-slider"
+          v-on:mousedown="metPlayerProgressUserModifying"
+          step="1"
+          min="1"
+          value="1"
+          v-bind="{
+            max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
+          }"
+        />
+      </div>
+      <div class="aud-volume-wrap">
+        <span class="aud-volume-icon-wrap">
+          <i
+            class="fas"
+            v-bind:class="{
+              'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
+              'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
+              'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
+            }"
+            aria-hidden="true"
+          ></i>
+        </span>
+        <input
+          class="aud-volume aud-range-styling "
+          type="range"
+          min="0"
+          max="1"
+          step=".01"
+          v-bind="{ value: player.volume }"
+          v-on:input="metControlVolume"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +87,6 @@ export default {
     return {
       isLoaded: false,
       isMounted: false,
-
       isPlayerProgressActive: false,
       /*
         player controls
@@ -63,6 +111,7 @@ export default {
   },
   created: function() {
     const self = this;
+
     // set loading flag; used to help force computed properties to recalc on initialization
     this.isLoaded = true;
     /**
@@ -75,9 +124,9 @@ export default {
       Play
     */
     this.$root.$on('player.play', (_podcast) => {
-      self.metControlAdd(_podcast);
-      // self.metControlPlay();
+      self.metControlPlay.call(self, _podcast);
     });
+
     /*
       Pause
     */
@@ -104,41 +153,47 @@ export default {
      */
     metControlAdd: function(_podcast) {
       const self = this;
-      let shouldAdd = !this.player || _podcast.id !== this.player.podcast.id;
-      if (!shouldAdd) {
-        return false;
-      }
-      // Note: place this first; remove previous podcast before adding new one
-      this.metControlRemove();
-      // howler player
-      let playerHowl = new Howl({
-        src: [_podcast.audio],
-        html5: true,
-        onload: self.metControlLoadCallback.bind(self),
-        onplay: self.metControlPlayCallback.bind(self),
-        onend: self.metControlPauseCallback.bind(self),
-        onpause: self.metControlPauseCallback.bind(self)
-      });
-      // main player object
-      let player = {
+      const shouldAdd = !self.player || _podcast.id !== self.player.podcast.id ? true : false;
+      const getVolume = self.player && self.player.playerVolume ? parseFloat(self.player.playerVolume) : 1.0;
+
+      function runAdd() {
+        // Note: place this first; remove previous podcast before adding new one
+        self.metControlRemove();
         // howler player
-        playerHowl: playerHowl,
-        playerID: null,
-        podcast: _podcast,
-        playerProgressSeconds: 0,
-        podcastDuration: 0,
-        pauseOnLoad: false,
-        isPlaying: false,
-        isLoading: true,
-        isLoaded: false
-      };
-      // entire player is reactive
-      Vue.set(self, 'player', player);
-      // play, unless paused before loading has finished
-      if (!self.player.pauseOnLoad) {
-        this.metControlPlay();
+        let playerHowl = new Howl({
+          src: [_podcast.audio],
+          html5: true,
+          volume: getVolume,
+          onload: self.metControlLoadCallback.bind(self),
+          onplay: self.metControlPlayCallback.bind(self),
+          onend: self.metControlPauseCallback.bind(self),
+          onpause: self.metControlPauseCallback.bind(self),
+          onvolume: self.metControlVolumeCallback.bind(self)
+        });
+        // main player object
+        let player = {
+          // howler player
+          playerHowl: playerHowl,
+          playerID: null,
+          podcast: _podcast,
+          volume: getVolume,
+          playerProgressSeconds: 0,
+          podcastDuration: 0,
+          pauseOnLoad: false,
+          isPlaying: false,
+          isLoading: true,
+          isLoaded: false
+        };
+        // entire player is reactive
+        Vue.set(self, 'player', player);
       }
+
+      if (shouldAdd) {
+        runAdd();
+      }
+      return shouldAdd;
     },
+
     /**
      *
      * Loading Callback:
@@ -155,6 +210,7 @@ export default {
         self.metControlGetDuration();
       }
     },
+
     /**
      *
      * Duration of Podcast:
@@ -169,8 +225,10 @@ export default {
           ? self.player.playerHowl.duration(self.player.playerID)
           : 0;
       let getDuration = Math.floor(getDurationFromPlayer);
+      // set player duration
       Vue.set(self.player, 'podcastDuration', getDuration);
     },
+
     /**
      *
      * Removes current podcast:
@@ -187,17 +245,43 @@ export default {
         Vue.set(self, 'player', null);
       }
     },
+
     /**
      *
-     * Play it
+     * Toggle play-pause;
+     * handles logic to either play or pause here;
+     * helps to avoid including play/pause logic in template bindinds
      *
      */
-    metControlPlay: function() {
+    metControlTogglePlay: function() {
       const self = this;
-      // Howler only returns unique player-id when play() is called
-      const getPlayerID = this.player.playerHowl.play();
-      Vue.set(self.player, 'playerID', getPlayerID);
+      if (self.player && self.player.playerHowl) {
+        self.player.isPlaying ? self.player.playerHowl.pause() : self.player.playerHowl.play();
+      }
     },
+
+    /**
+     *
+     * Play it:
+     *
+     */
+    metControlPlay: function(_episode) {
+      const self = this;
+      /*
+        every time play is called; attempt to add new podcast in case not yet initialized; 
+        return boolean of newly-added status;         
+      */
+      const isPodcastNew = self.metControlAdd.call(self, _episode);
+      const shouldPlay = isPodcastNew && self.player.pauseOnLoad ? false : true;
+
+      function runPlay() {
+        // Howler only returns unique player-id when play() is called
+        const getPlayerID = self.player.playerHowl.play();
+        Vue.set(self.player, 'playerID', getPlayerID);
+      }
+      shouldPlay && runPlay();
+    },
+
     /**
      *
      * Play Callback:
@@ -226,6 +310,7 @@ export default {
       // set play state
       Vue.set(self.player, 'isPlaying', true);
     },
+
     /**
      *
      * Pause podcast:
@@ -247,6 +332,29 @@ export default {
       const self = this;
       Vue.set(self.player, 'isPlaying', false);
     },
+
+    /**
+     *
+     * Skip ahead/backward
+     * @param {string} _action - 'back' or 'ahead'
+     *
+     */
+    metControlSkip: function(_action) {
+      const self = this;
+      // run duration update to ensure accuracy
+      self.metControlGetDuration();
+      // skip ahead 15 seconds; set to end if this will exceed duration
+      const timeGoAhead =
+        self.player.playerProgressSeconds + 15 >= self.player.podcastDuration
+          ? self.player.podcastDuration
+          : self.player.playerProgressSeconds + 15;
+      // go back 15 seconds; lowest value is 1 second, the beginning
+      const timeGoBack = self.player.playerProgressSeconds - 15 < 1 ? 1 : self.player.playerProgressSeconds - 15;
+
+      _action === 'ahead' && self.player.playerHowl.seek(timeGoAhead);
+      _action === 'back' && self.player.playerHowl.seek(timeGoBack, self.player.playerID);
+    },
+
     /**
      *
      * a window.interval is used to continously check podcast time/progress;
@@ -268,6 +376,7 @@ export default {
         this.playerIntervalChecks = [];
       }
     },
+
     /**
      *
      * Progress Bar:
@@ -284,11 +393,12 @@ export default {
         Vue.set(self.player, 'playerProgressSeconds', getProgress);
       }
     },
+
     /**
      *
      * Event handler for user mousedown on input progress slider;
      * on mousedown, a seek may occur;
-     * while in mousedown state, the slider should NOT be updated current progress; add disabled flag, until mouseup release
+     * while in mousedown state, the slider should NOT be updated with current progress; add disabled flag, until mouseup release
      * at that point, check if input value doesn't match current seek progress returned from howler player;
      * then check if player should be seeked;
      * finally, clear disabled boolean flag
@@ -322,6 +432,44 @@ export default {
         so this will always conclude the mousedown on input progress slider
       */
       document.addEventListener('mouseup', seekCheck);
+    },
+
+    /**
+     *
+     * Volume UI event:
+     * handles setting volume based on UI events;
+     * updates player volume property, which is bound in UI
+     * @param {object} event - from input on volume slider
+     *
+     */
+    metControlVolume: function(event) {
+      const self = this;
+      let getVolume = parseFloat(event.target.value);
+      // set player reference to volume
+      Vue.set(self.player, 'volume', getVolume);
+      // call howler volume change
+      self.player.playerHowl && self.player.playerHowl.volume(getVolume);
+    },
+
+    /**
+     *
+     * Volume callback from Howler player:
+     * to be sure UI reflects actual volume set in Howler player,
+     * this callback runs and, if necessary, updates player volume setting bound in UI;
+     * this is not necessary, but just serves as additional check
+     *
+     */
+    metControlVolumeCallback: function(event) {
+      const self = this;
+      let getHowlerVolume;
+      let getPlayerVolume;
+
+      if (this.player && this.player.playerHowl) {
+        getHowlerVolume = parseFloat(self.player.playerHowl.volume());
+        getPlayerVolume = parseFloat(self.player.volume);
+        // set player volume if it doesn't match volume returned from howler
+        getHowlerVolume !== getPlayerVolume ? Vue.set(self.player, 'volume', getVolume) : false;
+      }
     }
   }
 };
@@ -336,13 +484,14 @@ export default {
   z-index: 3;
   bottom: 0;
   width: 100%;
+  padding: 5px 15px;
   background: repeating-linear-gradient(
     to right,
-    darken($color-accent-1, 2%),
-    darken($color-accent-2, 15%),
-    darken($color-accent-1, 2%)
+    lighten($color-accent-1, 1%),
+    darken(adjust-hue($color-accent-2, 8%), 10%),
+    lighten($color-accent-1, 1%)
   );
-  box-shadow: 0 1px 4px 1px lighten($color-accent-2, 40%);
+  box-shadow: 0 1px 4px 0 lighten($color-accent-2, 25%);
   /* hide and reveal based on active state */
   transform: translateY(1000%);
   transition: 0.4s transform;
@@ -351,123 +500,213 @@ export default {
   }
 }
 
-/* podcast name display */
+/*=============================================
+=            flexbox wrapper            =
+=============================================*/
+.aud-flexwrap {
+  display: flex;
+  align-items: center;
+  // fallback
+  justify-content: center;
+  // justify-content: space-evenly;
+}
+.aud-prog-wrap {
+  flex-grow: 1;
+}
+/*=====  End of flexbox wrapper  ======*/
+
+/*=============================================
+=            thumbnail image            =
+=============================================*/
+.aud-thumb-link {
+  display: inline-block;
+}
+.aud-thumb-img {
+  display: inline-block;
+  max-width: 55px;
+  max-height: 55px;
+}
+/*=====  End of thumbnail image  ======*/
+
+/*=============================================
+=            play/pause/skip group            =
+=============================================*/
+.aud-ctrl {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.aud-ctrl-btn {
+  min-width: 50px;
+  min-height: 50px;
+  margin: 0 10px;
+  font-size: 2.5rem;
+}
+.aud-ctrl-btn-play i {
+  border-radius: 100%;
+  box-shadow: 0 0 4px 8px $color-accent-3;
+}
+.aud-ctrl-btn-skip {
+  opacity: 0.8;
+  font-size: 1.75rem;
+}
+/*=====  End of play/pause/skip group  ======*/
+
+/*=============================================
+=            podcast name/episode display     =
+=============================================*/
 .aud-title {
   text-align: center;
   padding: 5px;
   font-size: 0.8rem;
-  background: rgba($color-black, 0.25);
+  font-weight: bold;
 }
 .aud-title-text {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
-/**/
+/*=====  End of podcast name display  ======*/
+
+/*=============================================
+=            Volume            =
+=============================================*/
+.aud-volume-wrap {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.aud-volume {
+  @extend .aud-range-styling;
+
+  max-width: 125px;
+  margin-left: 8px !important;
+}
+
+.aud-volume-icon-wrap {
+  width: 1.3em;
+  overflow: visible;
+  font-size: 1.25rem;
+}
+
+/*=====  End of Volume  ======*/
 
 /*=============================================
 =            input range slider            =
 =============================================*/
 /* wrapper */
 .aud-prog-wrap {
+  width: 100%;
+  max-width: 1088px;
   text-align: center;
-  padding: 15px;
+  margin: 10px;
 }
+
 /* slider */
 .aud-prog {
   display: inline-block;
   width: 100%;
-  max-width: 1000px;
+
+  @extend .aud-range-styling;
 }
+
 /**
  *
  * Built with http://danielstern.ca/range.css/#/
  *
  */
-input[type='range'].aud-prog {
-  -webkit-appearance: none;
-  width: 100%;
-  margin: 5px 0;
+
+.aud-range-styling {
+  & {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    margin: 5px 0;
+  }
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
+    background: rgba(239, 239, 239, 0.8);
+    border-radius: 0px;
+    border: 0.2px solid rgba(239, 239, 239, 0.25);
+  }
+  &::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 1px solid #706097;
+    height: 15px;
+    width: 15px;
+    border-radius: 50px;
+    background: #706097;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5.2px;
+  }
+  &:focus::-webkit-slider-runnable-track {
+    background: rgba(239, 239, 239, 0.8);
+  }
+  &::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
+    // background: rgba(239, 239, 239, 0.8);
+    border-radius: 0px;
+    border: 0.2px solid rgba(239, 239, 239, 0.25);
+  }
+  &::-moz-range-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 1px solid #706097;
+    height: 15px;
+    width: 15px;
+    border-radius: 50px;
+    background: #706097;
+    cursor: pointer;
+  }
+  &::-ms-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  &::-ms-fill-lower {
+    background: rgba(239, 239, 239, 0.8);
+    border: 0.2px solid rgba(239, 239, 239, 0.25);
+    border-radius: 0px;
+    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
+  }
+  &::-ms-fill-upper {
+    background: rgba(239, 239, 239, 0.8);
+    border: 0.2px solid rgba(239, 239, 239, 0.25);
+    border-radius: 0px;
+    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
+  }
+  &::-ms-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 1px solid #706097;
+    height: 15px;
+    width: 15px;
+    border-radius: 50px;
+    background: #706097;
+    cursor: pointer;
+    height: 5px;
+  }
+  &:focus::-ms-fill-lower {
+    background: rgba(239, 239, 239, 0.8);
+  }
+  &:focus::-ms-fill-upper {
+    background: rgba(239, 239, 239, 0.8);
+  }
 }
-input[type='range'].aud-prog:focus {
-  outline: none;
-}
-input[type='range'].aud-prog::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-  background: rgba(239, 239, 239, 0.8);
-  border-radius: 0px;
-  border: 0.2px solid rgba(239, 239, 239, 0.25);
-}
-input[type='range'].aud-prog::-webkit-slider-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid #706097;
-  height: 15px;
-  width: 15px;
-  border-radius: 50px;
-  background: #706097;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -5.2px;
-}
-input[type='range'].aud-prog:focus::-webkit-slider-runnable-track {
-  background: rgba(239, 239, 239, 0.8);
-}
-input[type='range'].aud-prog::-moz-range-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-  background: rgba(239, 239, 239, 0.8);
-  border-radius: 0px;
-  border: 0.2px solid rgba(239, 239, 239, 0.25);
-}
-input[type='range'].aud-prog::-moz-range-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid #706097;
-  height: 15px;
-  width: 15px;
-  border-radius: 50px;
-  background: #706097;
-  cursor: pointer;
-}
-input[type='range'].aud-prog::-ms-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-input[type='range'].aud-prog::-ms-fill-lower {
-  background: rgba(239, 239, 239, 0.8);
-  border: 0.2px solid rgba(239, 239, 239, 0.25);
-  border-radius: 0px;
-  box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-}
-input[type='range'].aud-prog::-ms-fill-upper {
-  background: rgba(239, 239, 239, 0.8);
-  border: 0.2px solid rgba(239, 239, 239, 0.25);
-  border-radius: 0px;
-  box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-}
-input[type='range'].aud-prog::-ms-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid #706097;
-  height: 15px;
-  width: 15px;
-  border-radius: 50px;
-  background: #706097;
-  cursor: pointer;
-  height: 5px;
-}
-input[type='range'].aud-prog:focus::-ms-fill-lower {
-  background: rgba(239, 239, 239, 0.8);
-}
-input[type='range'].aud-prog:focus::-ms-fill-upper {
-  background: rgba(239, 239, 239, 0.8);
-}
+
 /*=====  End of input range slider  ======*/
 </style>
