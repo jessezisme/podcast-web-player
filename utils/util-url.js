@@ -1,5 +1,21 @@
+// https://www.npmjs.com/package/query-string
+import QueryString from 'query-string';
+
 const Util_url = {};
 
+/**
+ *
+ * Convert object into url parameter string
+ * uses npm library
+ *
+ * @param {Object} object with parameter key/values - {b: 1, c: 2, a: 3}
+ * -- returns 'b=1&c=2&a=3'
+ *
+ *
+ */
+Util_url.stringifyURL = function(_URL, _paramObj) {
+  return QueryString.stringifyUrl({ url: _URL, query: _paramObj });
+};
 /**
  *
  * Encodes URL:

@@ -3,7 +3,7 @@
     <div class="b_wrapper">
       <div class="foo-in">
         <div class="foo-name">
-          PodChaser
+          Pod Nexus
         </div>
         <div class="foo-etc">
           <p>
@@ -39,7 +39,7 @@ export default {
 
 .foo {
   margin-top: 4rem;
-  padding: 1rem 0;
+  padding: 1rem 0 150px 0;
   background: $color-black;
   font-size: 0.85rem;
 }

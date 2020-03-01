@@ -285,10 +285,10 @@ export default {
 .car-it {
   margin: 8px;
   padding: 15px;
-  background: darken($color-accent-1, 5%);
-  // background-clip: content-box;
+  background: $color-grey-95;
   scroll-snap-align: start;
   border: inset 1px solid $color-accent-3;
+  border-radius: 8px;
 
   /*
     set carousel items per row

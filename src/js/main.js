@@ -15,6 +15,7 @@ import Store from '../store/store';
 import Axios from 'axios';
 // lazysizes: lazyloads images
 import LazySizes from 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
 
 /**
  *

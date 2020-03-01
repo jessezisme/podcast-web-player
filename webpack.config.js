@@ -17,6 +17,7 @@ module.exports = (ENV, ARGV) => {
     watchOptions: {
       ignored: /node_modules/
     },
+    stats: 'errors-only',
     module: {
       rules: [
         {

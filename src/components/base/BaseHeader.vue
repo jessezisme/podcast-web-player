@@ -22,7 +22,7 @@
                   name: 'home'
                 }"
               >
-                PodChaser
+                Pod Nexus
               </router-link>
             </span>
           </div>

@@ -145,8 +145,8 @@ export default {
   },
   methods: {
     /*
-      Focus: 
-      add focus class to focused element; 
+      Focus:
+      add focus class to focused element;
       used to check if any element has focus on-blur
     */
     onFocus: function(event) {
@@ -173,13 +173,13 @@ export default {
     },
     /*
       query update:
-      updates query value on search input  
+      updates query value on search input
     */
     queryUpdate: function(event) {
       this.query = event.target.value;
     },
     /*
-      get API typeahead data 
+      get API typeahead data
     */
     getPodcasts: function() {
       let self = this;
@@ -189,11 +189,11 @@ export default {
         q: getQuery,
         show_podcasts: 1,
         show_genres: 1,
-        safe_mode: 1
+        safe_mode: 0
       };
+
       // run axios request
-      Axios.get('/api/typeahead', {
-        params: requestParams,
+      Axios.get(Util_url.stringifyURL('/api/typeahead', requestParams), {
         responseType: 'json',
         validateStatus: function(status) {
           return status == 200;
@@ -207,14 +207,14 @@ export default {
         });
     },
     /*
-      clear search 
+      clear search
     */
     metSearchClear: function() {
       this.query = '';
       this.queryDebounced = '';
     },
     /*
-      return imported utility module for use 
+      return imported utility module for use
     */
     metUtilUrl: function() {
       return Util_url;
