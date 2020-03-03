@@ -154,16 +154,19 @@ button {
   cursor: pointer;
   /* reset default */
   background: transparent;
-  outline: none;
   border: none;
   margin: 0;
   padding: 0;
-  line-height: 1.15em;
+  line-height: 1.05em;
 }
 
 .b_btn {
-  background: $color-accent-2;
-  padding: .375rem .75rem;
+  background: linear-gradient(to right, lighten($color-accent-2, 1%), $color-accent-2);
+  padding: 10px 16px;
+  color: $text_light;
+  line-height: 1.05em;
+  font-weight: bold;
+  border: 1px solid $color-accent-3;
 }
 /*=====  End of buttons  ======*/
 

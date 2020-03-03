@@ -1,33 +1,33 @@
 <template>
   <div>
     <div v-if="dataPod && dataPod.podcasts">
-      <h3 class="car-genre">
+      <h3 class="car_genre">
         <slot></slot>
       </h3>
-      <div class="car-wrap">
+      <div class="car_wrap">
         <div class="car" v-on:scroll="scrollArrow">
-          <div class="car-it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
-            <div class="car-it-in">
-              <router-link :to="returnURL(podcast)" class="car-it-link">
-                <div class="car-it-img-wrap">
+          <div class="car_it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
+            <div class="car_it-in">
+              <router-link :to="returnURL(podcast)" class="car_it-link">
+                <div class="car_it-img-wrap">
                   <img
-                    class="lazyload car-it-img"
+                    class="lazyload car_it-img"
                     v-bind:data-src="podcast.image"
                     v-bind:alt="podcast.title"
                     aria-hidden="true"
                   />
                 </div>
-                <div class="car-it-desc" v-if="podcast.id && podcast.description">
+                <div class="car_it-desc" v-if="podcast.id && podcast.description">
                   <div v-html="metHtmlToText(podcast.description, compScreenSize === 'xs' ? 50 : 100)"></div>
                 </div>
-                <span class="car-it-desc-link"> See More </span>
+                <span class="car_it-desc-link"> See More </span>
               </router-link>
             </div>
           </div>
         </div>
-        <div class="car-ctr-btn-wrap">
+        <div class="car_ctr-btn-wrap">
           <button
-            class="car-ctr-btn is-left"
+            class="car_ctr-btn is-left"
             aria-label="Previous"
             v-on:click="slide($event, 'left')"
             v-bind:class="{ 'not-visible': !showLeftArrow }"
@@ -36,7 +36,7 @@
           </button>
           <button
             aria-label="Next"
-            class="car-ctr-btn is-right"
+            class="car_ctr-btn is-right"
             v-on:click="slide($event, 'right')"
             v-bind:class="{ 'not-visible': !showRightArrow }"
           >
@@ -192,7 +192,7 @@ export default {
     slide: function(event, direction) {
       var $getCar = this.$el.querySelector('.car');
       var getCarBounding = $getCar ? $getCar.getBoundingClientRect() : null;
-      var $getCarItems = $getCar.querySelectorAll('.car-it');
+      var $getCarItems = $getCar.querySelectorAll('.car_it');
 
       /*
         slide right:
@@ -278,17 +278,17 @@ export default {
     height: 0;
   }
 }
-.car-genre {
+.car_genre {
   padding: 0.5rem 0;
   font-size: 1.25rem;
 }
-.car-it {
+.car_it {
   margin: 8px;
   padding: 15px;
   background: $color-grey-95;
   scroll-snap-align: start;
-  border: inset 1px solid $color-accent-3;
   border-radius: 8px;
+  box-shadow: inset 0 0 4px 0px $color-accent-3;
 
   /*
     set carousel items per row
@@ -309,11 +309,11 @@ export default {
     min-width: 16.666%;
   }
 }
-.car-it-in {
+.car_it-in {
   width: 100%;
   height: 100%;
 }
-.car-it-img-wrap {
+.car_it-img-wrap {
   position: relative;
   width: 100%;
   height: auto;
@@ -326,7 +326,7 @@ export default {
     padding-bottom: 100%;
   }
 }
-.car-it-img {
+.car_it-img {
   position: absolute;
   top: 0;
   right: 0;
@@ -341,26 +341,26 @@ export default {
   height: 100%;
   object-fit: cover;
 }
-.car-it-link {
+.car_it-link {
   display: flex;
   width: 100%;
   height: 100%;
   flex-direction: column;
 }
-.car-it-desc {
+.car_it-desc {
   flex-grow: 1;
   font-size: 0.85rem;
   padding: 8px;
 }
-.car-it-desc-link {
+.car_it-desc-link {
   padding: 8px;
   text-decoration: underline;
 }
-.car-ctr-btn-wrap {
+.car_ctr-btn-wrap {
   display: flex;
   justify-content: center;
 }
-.car-ctr-btn {
+.car_ctr-btn {
   display: inline-block;
   -webkit-appearance: none;
   margin: 0;

@@ -73,7 +73,7 @@
     <!-- # /end podcast episodes # -->
     <!-- # next/load more # -->
     <div class="eps_more" v-if="compNextResult">
-      <button class="eps_more-btn" v-on:click="metGetMoreEps">
+      <button class="eps_more-btn b_btn" v-on:click="metGetMoreEps">
         Load More
       </button>
     </div>
@@ -251,8 +251,11 @@ export default {
      * -- if newly-played, adds podcast data to current podcast playing
      */
     metPlayerPlayToggle: function(event, _ep) {
-      var isPlaying = this.compPlayer && this.compPlayer.isPlaying;
-      isPlaying ? this.$root.$emit('player.pause', _ep) : this.$root.$emit('player.play', _ep);
+      const self = this;
+      let isPlaying = this.compPlayer && this.compPlayer.isPlaying;
+      isPlaying
+        ? this.$root.$emit('player.pause', _ep, self.compPodDetails)
+        : this.$root.$emit('player.play', _ep, self.compPodDetails);
     },
     /**
      * load more paginated episodes
@@ -468,4 +471,16 @@ svg {
   }
 }
 /*=====  End of Episode cards  ======*/
+
+/*=============================================
+=            load more            =
+=============================================*/
+.eps_more {
+  text-align: center;
+}
+.eps_more-btn {
+  width: 100%;
+  max-width: 250px;
+}
+/*=====  End of load more  ======*/
 </style>
