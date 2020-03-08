@@ -24,23 +24,11 @@ export default {
     PodCarousel: PodCarousel
   },
   data: function() {
-    return {
-      isLiving: false
-    };
+    return {};
   },
-  computed: {
-    compScreenSize() {
-      let refreshHack = this.isLiving;
-      this.screenSize = this.$store.state.podUtil.screenWidth;
-      return this.$store.state.podUtil.screenWidth;
-    }
-  },
-  created: function() {
-    this.isLiving = true;
-  },
-  destroyed: function() {
-    this.isLiving = false;
-  }
+  computed: {},
+  created: function() {},
+  destroyed: function() {}
 };
 </script>
 

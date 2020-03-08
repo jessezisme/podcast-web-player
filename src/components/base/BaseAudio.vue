@@ -3,52 +3,52 @@
     <!-- # audio player # -->
     <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
       <!-- control popup toggle -->
-      <div class="aud-tog">
-        <button v-on:click="metModalToggle(true)" class="aud-tog-btn" title="control menu">
+      <div class="aud_tog">
+        <button v-on:click="metModalToggle(true)" class="aud_tog-btn" title="control menu">
           <span class="b_sr-only">control menu</span>
           <i aria-hidden="true" class="fas fa-cog"></i>
         </button>
       </div>
       <!-- /end control popup toggle -->
       <!-- episode name -->
-      <div class="aud-title">
-        <span class="aud-title-text" v-if="player.podcast.title">
+      <div class="aud_title">
+        <span class="aud_title-text" v-if="player.podcast.title">
           {{ player.podcast.title }}
         </span>
       </div>
       <!-- flexbox wrapper -->
-      <div class="aud-flexwrap">
+      <div class="aud_flexwrap">
         <!-- thumbnail -->
-        <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud-thumb-link">
+        <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud_thumb-link">
           <img
-            class="aud-thumb-img"
+            class="aud_thumb-img"
             v-bind:src="player.podcast.image || player.podcast.thumbnail"
             v-bind:alt="player.podcast.title"
             aria-hidden="true"
           />
         </a>
         <!-- play/pause group -->
-        <div class="aud-ctrl">
+        <div class="aud_ctrl">
           <!-- skip back -->
-          <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('back')">
+          <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
             <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
           </button>
           <!-- play/pause -->
-          <button class="aud-ctrl-btn aud-ctrl-btn-play" v-on:click="metControlTogglePlay">
+          <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
             <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
             <span v-show="player.isPlaying" aria-label="pause"><i aria-hidden="true" class="far fa-pause-circle"></i></span>
           </button>
           <!-- skip ahead -->
-          <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+          <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
             <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
           </button>
         </div>
         <!-- progress/seek -->
-        <div class="aud-prog-wrap">
+        <div class="aud_prog-wrap b_hide-xs b_hide-sm">
           <input
-            class="aud-prog"
+            class="aud_prog"
             type="range"
-            ref="BaseAudio-player-progress-slider"
+            ref="BaseAudio-player-progress-slider-1"
             v-on:mousedown="metPlayerProgressUserModifying"
             step="1"
             min="1"
@@ -59,8 +59,8 @@
           />
         </div>
         <!-- volume control -->
-        <div class="aud-volume-wrap">
-          <span class="aud-volume-icon-wrap">
+        <div class="aud_volume-wrap b_hide-xs b_hide-sm">
+          <span class="aud_volume-icon-wrap">
             <i
               class="fas"
               v-bind:class="{
@@ -72,7 +72,7 @@
             ></i>
           </span>
           <input
-            class="aud-volume aud-range-styling "
+            class="aud_volume aud_range-styling "
             type="range"
             min="0"
             max="1"
@@ -85,20 +85,20 @@
     </div>
     <!-- # /end audio player # -->
     <!-- # modal control menu # -->
-    <div v-if="isModalVisible && player && player.podcastDetails && player.playerHowl && player.podcast" class="aud-modal">
-      <div class="aud-modal-in">
-        <div class="aud-modal-close">
-          <button v-on:click="metModalToggle(false)" class="b_btn aud-modal-close-btn">Close Menu</button>
+    <div v-if="isModalVisible && player && player.podcastDetails && player.playerHowl && player.podcast" class="aud_modal">
+      <div class="aud_modal-in">
+        <div class="aud_modal-close">
+          <button v-on:click="metModalToggle(false)" class="b_btn aud_modal-close-btn">Close Menu</button>
         </div>
-        <div class="aud-modal-heading">
+        <div class="aud_modal-heading">
           <span> Now Playing </span>
         </div>
-        <div class="aud-modal-in-wrap">
+        <div class="aud_modal-in-wrap">
           <!-- thumbnail -->
-          <div class="aud-modal-img-wrap aud-modal-section ">
-            <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud-thumb-link">
+          <div class="aud_modal-img-wrap aud_modal-section ">
+            <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud_thumb-link">
               <img
-                class="aud-modal-img"
+                class="aud_modal-img"
                 v-bind:src="player.podcast.image || player.podcast.thumbnail"
                 v-bind:alt="player.podcast.title"
                 aria-hidden="true"
@@ -106,23 +106,23 @@
             </a>
           </div>
           <!-- title & track -->
-          <div class="aud-modal-section ">
-            <div class="aud-modal-title" v-if="player.podcastDetails.title">
+          <div class="aud_modal-section ">
+            <div class="aud_modal-title" v-if="player.podcastDetails.title">
               {{ player.podcastDetails.title }}
             </div>
-            <div class="aud-modal-section aud-modal-ep" v-if="player.podcast.title">
+            <div class="aud_modal-section aud_modal-ep" v-if="player.podcast.title">
               {{ player.podcast.title }}
             </div>
           </div>
           <!-- play/pause group -->
-          <div class="aud-modal-section aud-modal-bg">
-            <div class="aud-ctrl">
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_ctrl">
               <!-- skip back -->
-              <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('back')">
+              <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
                 <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
               </button>
               <!-- play/pause -->
-              <button class="aud-ctrl-btn aud-ctrl-btn-play" v-on:click="metControlTogglePlay">
+              <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
                 <span v-show="!player.isPlaying" aria-label="play"
                   ><i aria-hidden="true" class="far fa-play-circle"></i
                 ></span>
@@ -131,18 +131,18 @@
                 ></span>
               </button>
               <!-- skip ahead -->
-              <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+              <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
                 <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
               </button>
             </div>
           </div>
           <!-- progress tracker -->
-          <div class="aud-modal-section aud-modal-bg">
-            <div class="aud-prog-wrap">
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_prog-wrap">
               <input
-                class="aud-prog"
+                class="aud_prog"
                 type="range"
-                ref="BaseAudio-player-progress-slider"
+                ref="BaseAudio-player-progress-slider-2"
                 v-on:mousedown="metPlayerProgressUserModifying"
                 step="1"
                 min="1"
@@ -154,10 +154,10 @@
             </div>
           </div>
           <!-- volume -->
-          <div class="aud-modal-section aud-modal-bg">
-            <div class="aud-modal-volume">
-              <div class="aud-volume-wrap">
-                <span class="aud-volume-icon-wrap">
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_modal-volume">
+              <div class="aud_volume-wrap">
+                <span class="aud_volume-icon-wrap">
                   <i
                     class="fas"
                     v-bind:class="{
@@ -169,7 +169,7 @@
                   ></i>
                 </span>
                 <input
-                  class="aud-volume aud-range-styling "
+                  class="aud_volume aud_range-styling "
                   type="range"
                   min="0"
                   max="1"
@@ -181,7 +181,7 @@
             </div>
           </div>
           <!-- episode description -->
-          <div v-if="player.podcast.description" class="aud-modal-section">
+          <div v-if="player.podcast.description" class="aud_modal-section">
             <span class="b_sr-only"> Podcast Details </span>
             <p v-html="metHtmlCleanToText(player.podcast.description)"></p>
           </div>
@@ -504,10 +504,16 @@ export default {
     metPlayerProgressUpdate: function(_getProgress) {
       const self = this;
       let getProgress = Math.floor(_getProgress) ? Math.floor(_getProgress) : 1;
-      let refInput = this.$refs['BaseAudio-player-progress-slider'];
-      // avoid updating if: user is sliding progress bar; and input isn't defined
-      if (!this.isPlayerProgressActive && refInput) {
-        refInput.value = getProgress;
+      // must include list of ALL $refs used on all progress trackers
+      let $refsInput = ['BaseAudio-player-progress-slider-1', 'BaseAudio-player-progress-slider-2'];
+      // avoid updating if user is modifying progress bar
+      if (!self.isPlayerProgressActive) {
+        // loop through each progress inpur, and update value with progress; using $refs references
+        $refsInput.forEach(function(val) {
+          if (self.$refs[val]) {
+            self.$refs[val].value = getProgress;
+          }
+        });
         Vue.set(self.player, 'playerProgressSeconds', getProgress);
       }
     },
@@ -521,13 +527,23 @@ export default {
      * then check if player should be seeked;
      * finally, clear disabled boolean flag
      *
+     * @param {Object} event - event from mousedown event
      */
-    metPlayerProgressUserModifying: function() {
+    metPlayerProgressUserModifying: function(event) {
       const self = this;
+      // get input currently being modified
+      const $inputProgress = event.target;
+      // set flag, which defines user is modifying
       self.isPlayerProgressActive = true;
 
-      function seekCheck() {
-        let refProgress = self.$refs['BaseAudio-player-progress-slider'];
+      /*
+        When mouseup is completed, check new value of input; 
+        and update new seek progress in player
+        
+        @param {Object} $inputProgress - input target
+       */
+      function seekCheck($inputProgress) {
+        let refProgress = $inputProgress;
         let refProgressVal = refProgress ? refProgress.value : 1;
         // get seek progress from howler
         let getSeek =
@@ -537,19 +553,18 @@ export default {
         // only run seek, if actually different than current input value
         if (refProgress && refProgressVal && refProgressVal !== getSeek) {
           self.player.playerHowl.seek(refProgressVal);
-          // not needed since update will run on next interval progress check
-          // refProgress.value = getSeek;
         }
         // clear mousedown flag
         self.isPlayerProgressActive = false;
         // clear listener
-        document.removeEventListener('mouseup', seekCheck);
+        document.removeEventListener('mouseup', seekCheckBind);
       }
-      /*
-        listen for mouseup event on entire document;
-        so this will always conclude the mousedown on input progress slider
+      let seekCheckBind = seekCheck.bind(self, $inputProgress);
+      /* 
+        listen for mouseup on document, rather than input; 
+        in case mouseup occurs outside of input
       */
-      document.addEventListener('mouseup', seekCheck);
+      document.addEventListener('mouseup', seekCheckBind);
     },
 
     /**
@@ -622,17 +637,10 @@ export default {
   padding: 5px 15px;
   background: repeating-linear-gradient(
     to right,
-    lighten($color-accent-1, 1%),
-    darken(adjust-hue($color-accent-2, 8%), 10%),
-    lighten($color-accent-1, 1%)
+    adjust-hue(lighten($color-accent-1, 10%), -4%),
+    darken(adjust-hue($color-accent-2, 1%), 2%),
+    adjust-hue(lighten($color-accent-1, 10%), -4%)
   );
-  box-shadow: 0 1px 4px 0 lighten($color-accent-2, 25%);
-  /* hide and reveal based on active state */
-  transform: translateY(1000%);
-  transition: 0.4s transform;
-  &.is-active {
-    transform: translateY(0);
-  }
 }
 
 /*=============================================
@@ -640,7 +648,7 @@ export default {
 =============================================*/
 $modal-bg: #0d0d0f;
 $modal-bg-section: lighten($modal-bg, 4%);
-.aud-modal {
+.aud_modal {
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -651,15 +659,15 @@ $modal-bg-section: lighten($modal-bg, 4%);
   z-index: 8;
   background: rgba(0, 0, 0, 0.92);
 
-  .aud-modal-bg {
+  .aud_modal-bg {
     background: $modal-bg-section;
   }
-  .aud-modal-section {
+  .aud_modal-section {
     text-align: center;
     margin: 0 0 1rem 0;
     padding: 0.5rem 10px;
   }
-  .aud-modal-in {
+  .aud_modal-in {
     width: 950px;
     height: 950px;
     max-height: 90vh;
@@ -675,22 +683,22 @@ $modal-bg-section: lighten($modal-bg, 4%);
     background: $modal-bg;
     border: $color-accent-3;
   }
-  .aud-modal-in-wrap {
+  .aud_modal-in-wrap {
     text-align: center;
   }
   /*----------  close  ----------*/
-  .aud-modal-close {
+  .aud_modal-close {
     text-align: right;
   }
-  .aud-modal-close-btn {
+  .aud_modal-close-btn {
     margin: 15px;
   }
   /*----------  volume  ----------*/
-  .aud-modal-volume {
+  .aud_modal-volume {
     display: flex;
     justify-content: center;
   }
-  .aud-volume-wrap {
+  .aud_volume-wrap {
     padding: 0;
   }
 }
@@ -700,14 +708,14 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            flexbox wrapper            =
 =============================================*/
-.aud-flexwrap {
+.aud_flexwrap {
   display: flex;
   align-items: center;
   // fallback
   justify-content: center;
   // justify-content: space-evenly;
 }
-.aud-prog-wrap {
+.aud_prog-wrap {
   flex-grow: 1;
 }
 /*=====  End of flexbox wrapper  ======*/
@@ -715,13 +723,13 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            control menu toggle            =
 =============================================*/
-.aud-tog {
+.aud_tog {
   position: relative;
   height: 25px;
   overflow: visible;
   text-align: center;
 }
-.aud-tog-btn {
+.aud_tog-btn {
   display: inline-block;
   width: 80px;
   height: 60px;
@@ -730,7 +738,14 @@ $modal-bg-section: lighten($modal-bg, 4%);
   top: -50%;
   left: 0;
   right: 0;
-  background: darken(adjust-hue($color-accent-2, 8%), 10%);
+  background: repeating-linear-gradient(
+    to right,
+    adjust-hue(lighten($color-accent-1, 10%), -4%),
+    darken(adjust-hue($color-accent-2, 1%), 2%),
+    adjust-hue(lighten($color-accent-1, 10%), -4%)
+  );
+  background-size: 100vw;
+  background-position: center;
   border-radius: 100%;
   transform: translateY(-50%);
   font-size: 1.75rem;
@@ -740,10 +755,10 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            thumbnail image            =
 =============================================*/
-.aud-thumb-link {
+.aud_thumb-link {
   display: inline-block;
 }
-.aud-thumb-img {
+.aud_thumb-img {
   display: inline-block;
   max-width: 45px;
   max-height: 45px;
@@ -753,23 +768,31 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            play/pause/skip group            =
 =============================================*/
-.aud-ctrl {
+.aud_ctrl {
   margin: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media all and (max-width: $break-md - 1px) {
+    // position: absolute; 
+    // left: 0; 
+    // right: 0; 
+    // margin: auto; 
+  }
+
 }
-.aud-ctrl-btn {
+.aud_ctrl-btn {
   min-width: 50px;
   min-height: 50px;
   margin: 0 10px;
   font-size: 2.5rem;
 }
-.aud-ctrl-btn-play i {
+.aud_ctrl-btn-play i {
   border-radius: 100%;
   box-shadow: 0 0 4px 0 $color-accent-3;
 }
-.aud-ctrl-btn-skip {
+.aud_ctrl-btn-skip {
   opacity: 0.8;
   font-size: 1.75rem;
 }
@@ -778,13 +801,13 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            podcast name/episode display     =
 =============================================*/
-.aud-title {
+.aud_title {
   text-align: center;
   padding: 5px;
   font-size: 0.8rem;
   font-weight: bold;
 }
-.aud-title-text {
+.aud_title, .aud_title-text {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -794,19 +817,19 @@ $modal-bg-section: lighten($modal-bg, 4%);
 /*=============================================
 =            Volume            =
 =============================================*/
-.aud-volume-wrap {
+.aud_volume-wrap {
   min-width: 150px;
   display: flex;
   align-items: center;
   padding-left: 30px;
 }
-.aud-volume {
-  @extend .aud-range-styling;
+.aud_volume {
+  @extend .aud_range-styling;
 
   max-width: 125px;
   margin-left: 8px !important;
 }
-.aud-volume-icon-wrap {
+.aud_volume-icon-wrap {
   width: 1.3em;
   overflow: visible;
   font-size: 1.25rem;
@@ -817,7 +840,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
 =            input range slider            =
 =============================================*/
 /* wrapper */
-.aud-prog-wrap {
+.aud_prog-wrap {
   width: 100%;
   max-width: 1088px;
   text-align: center;
@@ -825,11 +848,11 @@ $modal-bg-section: lighten($modal-bg, 4%);
 }
 
 /* slider */
-.aud-prog {
+.aud_prog {
   display: inline-block;
   width: 100%;
 
-  @extend .aud-range-styling;
+  @extend .aud_range-styling;
 }
 
 /**
@@ -837,7 +860,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
  * Built with http://danielstern.ca/range.css/#/
  *
  */
-.aud-range-styling {
+.aud_range-styling {
   & {
     -webkit-appearance: none;
     width: 100%;

@@ -86,7 +86,7 @@ p {
 /*=============================================
 =            Grid            =
 =============================================*/
-.container {
+.b_container {
   width: 100%;
   max-width: $grid-max-width;
   padding-left: $grid-padding;
@@ -98,7 +98,7 @@ p {
   padding-left: $grid-padding;
   padding-right: $grid-padding;
 }
-.row {
+.b_row {
   min-height: 1px;
   margin-left: -#{$grid-padding};
   margin-right: -#{$grid-padding};
@@ -210,3 +210,96 @@ input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 /*=====  End of Forms  ======*/
+
+/*=============================================
+=            helper classes            =
+=============================================*/
+
+/*----------  hide/show helpers  ----------*/
+.b_hide-xs {
+  @media all and (max-width: $break-sm - 1px) {
+    display: none !important;
+  }
+}
+.b_hide-sm {
+  @media all and (min-width: $break-sm) and (max-width: $break-md - 1px) {
+    display: none !important;
+  }
+}
+.b_hide-md {
+  @media all and (min-width: $break-md) and (max-width: $break-lg - 1px) {
+    display: none !important;
+  }
+}
+.b_hide-lg {
+  @media all and (min-width: $break-lg) and (max-width: $break-xl - 1px) {
+    display: none !important;
+  }
+}
+/*----------  /end hide/show helpers  ----------*/
+
+/* clearfix */
+.b_clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+/* container */
+.b_wrapper {
+  margin: auto;
+  width: 100%;
+  max-width: 1600px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+/* main body */
+.b_main {
+  min-height: 50vh;
+}
+/* screen reader only */
+.b_sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+/* floats */
+.b_float-right {
+  float: right !important;
+}
+.b_float-left {
+  float: left !important;
+}
+/* display */
+.b_block {
+  display: flex;
+}
+.b_inline-block {
+  display: inline-block;
+}
+/* spacing */
+.b_no-padding {
+  padding: 0;
+}
+.b_no-margin {
+  margin: 0;
+}
+/* text align */
+.b_text-center {
+  text-align: center;
+}
+.b_text-right {
+  text-align: right;
+}
+.b_text-left {
+  text-align: left;
+}
+/* box shadow */
+.b_box-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+/*=====  End of helper classes  ======*/

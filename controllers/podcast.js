@@ -2,15 +2,16 @@ const Axios = require('axios');
 const Pod_api = {};
 const GetKey = process.env.POD_ENV_API_LISTEN_TOKEN;
 
-const IsMocking = false;
-// const MockAdapter = require('axios-mock-adapter');
-// const Mock = new MockAdapter(Axios);
-// const MockData = {
-//   typeahead: require('./podcast-mock-data/podcast-mock-typeahead'),
-//   best_podcast: require('./podcast-mock-data/podcast-mock-best-podcasts.js'),
-//   genres: require('./podcast-mock-data/podcast-mock-genres.js'),
-//   podcasts: require('./podcast-mock-data/podcast-mock-podcasts.js')
-// };
+
+const IsMocking = true;
+const MockAdapter = require('axios-mock-adapter');
+const Mock = new MockAdapter(Axios);
+const MockData = {
+  typeahead: require('./podcast-mock-data/podcast-mock-typeahead'),
+  best_podcast: require('./podcast-mock-data/podcast-mock-best-podcasts.js'),
+  genres: require('./podcast-mock-data/podcast-mock-genres.js'),
+  podcasts: require('./podcast-mock-data/podcast-mock-podcasts.js')
+};
 
 /**
  *
@@ -18,10 +19,9 @@ const IsMocking = false;
  *
  */
 Pod_api.helpGetRequest = function(req, res, _requestURL, _params) {
+  debugger;
 
-  debugger; 
-
- Axios.get(_requestURL, {
+  Axios.get(_requestURL, {
     headers: {
       'X-ListenAPI-Key': GetKey
     },
@@ -113,7 +113,7 @@ if (IsMocking) {
 Pod_api.getPodcastID = function(req, res) {
   let requestURL = 'https://listen-api.listennotes.com/api/v2/podcasts/' + req.params.id;
   let requestParams = req.query || {};
-  debugger; 
+  debugger;
   Pod_api.helpGetRequest(req, res, requestURL, requestParams);
 };
 

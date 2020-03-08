@@ -288,7 +288,7 @@ export default {
   background: $color-grey-95;
   scroll-snap-align: start;
   border-radius: 8px;
-  box-shadow: inset 0 0 4px 0px $color-accent-3;
+  box-shadow: inset 0 0 1px 0px $color-accent-3;
 
   /*
     set carousel items per row
