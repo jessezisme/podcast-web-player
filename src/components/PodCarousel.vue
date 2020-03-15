@@ -50,7 +50,6 @@
 </template>
 
 <script>
-//
 import Util_url from '../../utils/util-url.js';
 
 // https://github.com/werk85/node-html-to-text
@@ -148,7 +147,6 @@ export default {
         id: podcast.id,
         title: podcast.title
       });
-      return '/podcast';
     },
 
     /**
@@ -370,6 +368,6 @@ export default {
   line-height: 1em;
   overflow: hidden;
   font-size: 2rem;
-  color: $text_light;
+  color: $text-light;
 }
 </style>

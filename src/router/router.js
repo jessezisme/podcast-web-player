@@ -12,8 +12,9 @@ Vue.use(VueRouter);
 // import routes
 import RouteHome from './router-home';
 import RoutePodcast from './router-podcast';
+import RouteSearch from './router-search';
 // create router and apply routes
-const routes = [RouteHome, RoutePodcast];
+const routes = [RouteHome, RoutePodcast, RouteSearch];
 const router = new VueRouter({
   scrollBehavior() {
     return { x: 0, y: 0 };

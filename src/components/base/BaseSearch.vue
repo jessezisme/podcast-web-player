@@ -5,7 +5,7 @@
       <div class="search-cont">
         <label for="search-l" class="b_sr-only">Search Podcasts</label>
         <i class="icon icon-search" aria-hidden="true"></i>
-        <div class="search-input-cont">
+        <form class="search-input-cont" v-on:submit="metFormPreventSubmit">
           <input
             id="app-search-input"
             class="search-input"
@@ -13,32 +13,40 @@
             type="search"
             autocomplete="off"
             v-model="query"
-            v-on:input="queryUpdate"
             v-on:focus="onFocus"
             v-on:blur="onBlur"
+            v-on:input="queryUpdate"
+            v-on:keyup="metFormKeySubmit"
           />
-          <span class="search-clear" aria-hidden="true" v-show="query && query.length" v-on:click="metSearchClear">
+          <button
+            type="reset"
+            class="search-clear"
+            v-show="query && query.length"
+            v-on:focus="onFocus"
+            v-on:click.prevent="metSearchClear"
+          >
             <span>
               <i class="fas fa-times" aria-hidden="true"></i>
             </span>
-          </span>
+          </button>
           <button
             class="search-submit"
             type="submit"
             aria-label="submit"
+            v-on:click.prevent="metFormSubmit"
             v-bind:disabled="!queryDebounced || !queryDebounced.length"
           >
             <i class="fas fa-search" aria-hidden="true"></i>
           </button>
-        </div>
+        </form>
       </div>
       <!-- results dropdown -->
       <div class="search-drop" v-show="isFocused && compDataPod">
-        <span class="pod-sr-only">Results</span>
+        <span class="b_sr-only">Results</span>
         <div class="search-drop-in" role="listbox" v-if="compDataPod">
           <!-- podcasts -->
-          <div class="search-drop-group">
-            <button>Close</button>
+          <div class="b_clearfix">
+            <button type="button" class="b_btn b_btn-secondary b_float-right">Close</button>
           </div>
           <div class="search-drop-group" v-if="compDataPod.podcasts && compDataPod.podcasts.length">
             <div class="search-drop-label search-drop-item">Podcasts</div>
@@ -68,10 +76,7 @@
               v-bind:key="genre.id"
               v-on:focus.native="onFocus"
               v-on:blur.native="onBlur"
-              :to="{
-                name: 'search',
-                query: { q: genre.name, genre_id: genre.id }
-              }"
+              :to="metUtilUrl().encodeURL('/search/' + genre.name)"
             >
               <span>{{ genre.name }}</span>
             </router-link>
@@ -104,9 +109,9 @@ export default {
     };
   },
   computed: {
-    /*
-      api typeahead response, formatted
-    */
+    /**
+     * api typeahead response, formatted
+     */
     compDataPod() {
       var getData = this.dataPod;
       var getGenre = getData && getData.genres && Array.isArray(getData.genres) ? getData.genres.slice(0, 15) : [];
@@ -124,18 +129,21 @@ export default {
   },
   components: {},
   created: function() {
-    /*
-      setup debouncing for query
-    */
+    /**
+     * setup debouncing for query
+     */
     function getQuery() {
       this.queryDebounced = this.query;
     }
     this.runQueryDebounced = Debounce(getQuery, 400);
   },
   watch: {
-    /*
-      setup debouncing for query
-    */
+    $route: function(to, from) {
+      this.isFocused;
+    },
+    /**
+     * setup debouncing for query
+     */
     query: function(newValue, oldValue) {
       this.runQueryDebounced();
     },
@@ -144,19 +152,19 @@ export default {
     }
   },
   methods: {
-    /*
-      Focus:
-      add focus class to focused element;
-      used to check if any element has focus on-blur
-    */
+    /**
+     * Focus:
+     * add focus class to focused element;
+     * used to check if any element has focus on-blur
+     */
     onFocus: function(event) {
       this.isFocused = true;
       event.target && event.target.classList.add(this.focusClass);
     },
-    /*
-      blur:
-      check if any elements have focus class to determined if dropdown can be closed
-    */
+    /**
+     * Blur:
+     * check if any elements have focus class to determined if dropdown can be closed
+     */
     onBlur: function(event) {
       var $getEl = this.$el;
       var self = this;
@@ -171,16 +179,60 @@ export default {
         }
       }, 80);
     },
-    /*
-      query update:
-      updates query value on search input
-    */
+    /**
+     * query update:
+     * updates query value on search input
+     */
     queryUpdate: function(event) {
       this.query = event.target.value;
     },
-    /*
-      get API typeahead data
-    */
+    /**
+     * clear search:
+     */
+    metSearchClear: function() {
+      this.query = '';
+      this.queryDebounced = '';
+    },
+    /**
+     * return imported utility module for use
+     */
+    metUtilUrl: function() {
+      return Util_url;
+    },
+    /**
+     * handle search submit
+     */
+    metFormSubmit: function() {
+      let searchURL = Util_url.encodeURL('/search/' + this.query);
+      // query should not be empty
+      if (!this.query || !this.query.length) {
+        return false;
+      }
+      // prevent trigger router change when on same page
+      if (this.$route.path === searchURL) {
+        return false;
+      }
+      this.$router.push({ path: searchURL });
+    },
+    /**
+     * prevent search form default submit
+     */
+    metFormPreventSubmit: function(event) {
+      event.preventDefault();
+      return false;
+    },
+    /**
+     * handle key events, such as enter for submit
+     */
+    metFormKeySubmit: function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        this.metFormSubmit();
+      }
+    },
+    /**
+     * get API typeahead data
+     */
     getPodcasts: function() {
       let self = this;
       let getQuery = this.queryDebounced;
@@ -192,6 +244,13 @@ export default {
         safe_mode: 0
       };
 
+      function successCB(response) {
+        self.dataPod = response.data.success;
+      }
+      function errorCB(error) {
+        console.log(error);
+      }
+
       // run axios request
       Axios.get(Util_url.stringifyURL('/api/typeahead', requestParams), {
         responseType: 'json',
@@ -199,25 +258,8 @@ export default {
           return status == 200;
         }
       })
-        .then(function(response) {
-          self.dataPod = response.data.success;
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    },
-    /*
-      clear search
-    */
-    metSearchClear: function() {
-      this.query = '';
-      this.queryDebounced = '';
-    },
-    /*
-      return imported utility module for use
-    */
-    metUtilUrl: function() {
-      return Util_url;
+        .then(successCB)
+        .catch(errorCB);
     }
   }
 };
@@ -231,6 +273,7 @@ export default {
   display: block;
   width: 100%;
   position: relative;
+  font-size: $font-size-sm;
 
   &-input-cont {
     position: relative;
@@ -288,6 +331,18 @@ export default {
   margin-top: 5px;
   border-radius: 10px;
 
+  a {
+    display: block;
+    width: 100%;
+    padding: 5px;
+
+    &:hover {
+      background: $color-grey-10;
+    }
+  }
+  &-group {
+    margin-bottom: 15px;
+  }
   &-in {
     padding: 15px;
     border-radius: 5px;

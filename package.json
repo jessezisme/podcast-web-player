@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=development nodemon ./bin/www",
-    "build": "webpack --mode=development & NODE_ENV=development nodemon ./bin/www --ignore dist/  ",
-    "start-prod": "NODE_ENV=production nodemon ./bin/www --ignore dist/ ",
-    "build-prod": "webpack --mode=production & NODE_ENV=production nodemon ./bin/www --ignore dist/ "
+    "start": "NODE_ENV=development nodemon --delay 2000ms ./bin/www",
+    "build": "webpack --mode=development & NODE_ENV=development nodemon --delay 2000ms ./bin/www --ignore dist/  ",
+    "start-prod": "NODE_ENV=production nodemon --delay 2000ms ./bin/www --ignore dist/ ",
+    "build-prod": "webpack --mode=production & NODE_ENV=production nodemon --delay 2000ms ./bin/www --ignore dist/ "
   },
   "dependencies": {
     "animate.css": "^3.7.2",
@@ -23,7 +23,7 @@
     "lazysizes": "^5.2.0",
     "morgan": "^1.9.1",
     "normalize.css": "^8.0.1",
-    "query-string": "^6.11.0",
+    "query-string": "^6.11.1",
     "scroll-behavior-polyfill": "^2.0.13",
     "serve-favicon": "~2.4.2",
     "vue": "^2.6.11",
@@ -33,9 +33,9 @@
     "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
+    "@babel/core": "^7.8.7",
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
-    "@babel/preset-env": "^7.8.6",
+    "@babel/preset-env": "^7.8.7",
     "autoprefixer": "^7.1.6",
     "axios-mock-adapter": "^1.17.0",
     "babel-loader": "^8.0.6",
@@ -55,7 +55,7 @@
     "postcss-loader": "^2.1.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
-    "webpack": "^4.41.6",
+    "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^2.11.5"
   }

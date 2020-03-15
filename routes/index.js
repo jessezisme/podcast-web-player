@@ -8,7 +8,13 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/podcast/:podTitle/:podID', function(req, res, next) {
+router.get('/podcast/:routePodTitle/:routePodID', function(req, res, next) {
+  res.render('index', {
+    title: 'Express'
+  });
+});
+
+router.get('/search/:routeSearch', function(req, res, next) {
   res.render('index', {
     title: 'Express'
   });

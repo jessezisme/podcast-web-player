@@ -19,14 +19,17 @@
       <!-- flexbox wrapper -->
       <div class="aud_flexwrap">
         <!-- thumbnail -->
-        <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud_thumb-link">
-          <img
-            class="aud_thumb-img"
-            v-bind:src="player.podcast.image || player.podcast.thumbnail"
-            v-bind:alt="player.podcast.title"
-            aria-hidden="true"
-          />
-        </a>
+        <span v-if="(player.podcastDetails && player.podcast.image) || player.podcast.thumbnail" class="aud_thumb-link">
+          <router-link :to="metReturnURL(player.podcastDetails)" class="car_it-link">
+            <img
+              class="aud_thumb-img"
+              v-bind:src="player.podcast.image || player.podcast.thumbnail"
+              v-bind:alt="player.podcastDetails.title"
+              v-bind:title="player.podcastDetails.title"
+              aria-hidden="true"
+            />
+          </router-link>
+        </span>
         <!-- play/pause group -->
         <div class="aud_ctrl">
           <!-- skip back -->
@@ -195,6 +198,8 @@
 <script>
 import Vue from 'vue/dist/vue.esm.js';
 import { Howl, Howler } from 'howler';
+
+import Util_url from '../../../utils/util-url.js';
 
 export default {
   name: 'BaseAudio',
@@ -620,6 +625,13 @@ export default {
     metHtmlCleanToText: function(getHtmlStr) {
       var temp = new DOMParser().parseFromString(getHtmlStr, 'text/html');
       return temp.body.textContent || '';
+    },
+
+    metReturnURL: function(podcast) {
+      return Util_url.podcastURL({
+        id: podcast.id,
+        title: podcast.title
+      });
     }
   }
 };
@@ -762,6 +774,11 @@ $modal-bg-section: lighten($modal-bg, 4%);
   display: inline-block;
   max-width: 45px;
   max-height: 45px;
+
+  @media all and (min-width: $break-md) {
+    max-width: 65px;
+    max-height: 65px;
+  }
 }
 /*=====  End of thumbnail image  ======*/
 
@@ -773,14 +790,6 @@ $modal-bg-section: lighten($modal-bg, 4%);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media all and (max-width: $break-md - 1px) {
-    // position: absolute; 
-    // left: 0; 
-    // right: 0; 
-    // margin: auto; 
-  }
-
 }
 .aud_ctrl-btn {
   min-width: 50px;
@@ -807,7 +816,8 @@ $modal-bg-section: lighten($modal-bg, 4%);
   font-size: 0.8rem;
   font-weight: bold;
 }
-.aud_title, .aud_title-text {
+.aud_title,
+.aud_title-text {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -821,7 +831,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
   min-width: 150px;
   display: flex;
   align-items: center;
-  padding-left: 30px;
+  padding-left: 20px;
 }
 .aud_volume {
   @extend .aud_range-styling;

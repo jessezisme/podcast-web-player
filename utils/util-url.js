@@ -24,13 +24,13 @@ Util_url.stringifyURL = function(_URL, _paramObj) {
  * @param {string} getURL - url
  */
 Util_url.encodeURL = function(getURL) {
-  var getEncodedURL = encodeURI(getURL);
-  var getDecodedURL = decodeURI(getURL);
+  let getEncodedURL = encodeURI(getURL);
+  let getDecodedURL = decodeURI(getURL);
   // compare encoded against decoded to check if already encoded
   if (getEncodedURL === getDecodedURL) {
-    return getEncodedURL;
+    return getURL;
   } else {
-    return getDecodedURL;
+    return getEncodedURL;
   }
 };
 

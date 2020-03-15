@@ -2,16 +2,23 @@ const Axios = require('axios');
 const Pod_api = {};
 const GetKey = process.env.POD_ENV_API_LISTEN_TOKEN;
 
+// var IS_MOCKING = false;
+var IS_MOCKING = true;
 
-const IsMocking = true;
-const MockAdapter = require('axios-mock-adapter');
-const Mock = new MockAdapter(Axios);
-const MockData = {
-  typeahead: require('./podcast-mock-data/podcast-mock-typeahead'),
-  best_podcast: require('./podcast-mock-data/podcast-mock-best-podcasts.js'),
-  genres: require('./podcast-mock-data/podcast-mock-genres.js'),
-  podcasts: require('./podcast-mock-data/podcast-mock-podcasts.js')
-};
+var MockAdapter;
+var Mock;
+var MockData;
+if (IS_MOCKING) {
+  MockAdapter = require('axios-mock-adapter');
+  Mock = new MockAdapter(Axios);
+  MockData = {
+    typeahead: require('./podcast-mock-data/podcast-mock-typeahead'),
+    search: require('./podcast-mock-data/podcast-mock-search.js'),
+    best_podcast: require('./podcast-mock-data/podcast-mock-best-podcasts.js'),
+    genres: require('./podcast-mock-data/podcast-mock-genres.js'),
+    podcasts: require('./podcast-mock-data/podcast-mock-podcasts.js')
+  };
+}
 
 /**
  *
@@ -19,8 +26,6 @@ const MockData = {
  *
  */
 Pod_api.helpGetRequest = function(req, res, _requestURL, _params) {
-  debugger;
-
   Axios.get(_requestURL, {
     headers: {
       'X-ListenAPI-Key': GetKey
@@ -39,6 +44,7 @@ Pod_api.helpGetRequest = function(req, res, _requestURL, _params) {
       });
     })
     .catch(function(_error) {
+      console.log(_error);
       res.status(503);
       res.json({
         error: _error
@@ -48,20 +54,25 @@ Pod_api.helpGetRequest = function(req, res, _requestURL, _params) {
 
 /**
  *
- * Typeahead
+ * Typeahead:
+ * for typeahead feature in search bar
  *
  */
-if (IsMocking) {
+if (IS_MOCKING) {
   Mock.onGet('https://listen-api.listennotes.com/api/v2/typeahead').reply(200, MockData.typeahead);
 }
 Pod_api.typeahead = function(req, res) {
   let requestURL = 'https://listen-api.listennotes.com/api/v2/typeahead';
+  let optionalParams = ['show_podcasts', 'show_genres', 'safe_mode'];
   let requestParams = {
-    q: req.query.q,
-    show_podcasts: req.query.show_podcasts || '0',
-    show_genres: req.query.show_genres || '0',
-    safe_mode: req.query.safe_mode || '0'
+    q: req.query.q
   };
+
+  optionalParams.forEach((val) => {
+    if (req.query[val]) {
+      requestParams[val] = req.query[val];
+    }
+  });
 
   if (!req.query || !req.query.q) {
     res.json({
@@ -73,10 +84,48 @@ Pod_api.typeahead = function(req, res) {
 
 /**
  *
+ * Search:
+ * full search
+ *
+ */
+if (IS_MOCKING) {
+  Mock.onGet('https://listen-api.listennotes.com/api/v2/search').reply(200, MockData.search);
+}
+
+Pod_api.search = function(req, res) {
+  let requestURL = 'https://listen-api.listennotes.com/api/v2/search';
+  let optionalParams = [
+    'sort_by_date',
+    'type',
+    'offset',
+    'genre_ids',
+    'published_before',
+    'published_after',
+    'only_in',
+    'language',
+    'ocid',
+    'ncid',
+    'safe_mode'
+  ];
+  let requestParams = {
+    q: req.params.routeSearch
+  };
+
+  optionalParams.forEach((val) => {
+    if (req.query[val]) {
+      requestParams[val] = req.query[val];
+    }
+  });
+
+  Pod_api.helpGetRequest(req, res, requestURL);
+};
+
+/**
+ *
  * Podcast Best Podcasts by Genre
  *
  */
-if (IsMocking) {
+if (IS_MOCKING) {
   Mock.onGet('https://listen-api.listennotes.com/api/v2/best_podcasts').reply(200, MockData.best_podcast);
 }
 Pod_api.bestPodcasts = function(req, res) {
@@ -94,7 +143,7 @@ Pod_api.bestPodcasts = function(req, res) {
  * Podcast Genres Response
  *
  */
-if (IsMocking) {
+if (IS_MOCKING) {
   Mock.onGet('https://listen-api.listennotes.com/api/v2/genres').reply(200, MockData.genres);
 }
 Pod_api.genres = function(req, res) {
@@ -107,13 +156,13 @@ Pod_api.genres = function(req, res) {
  * Get podcast episodes and meta data by ID
  *
  */
-if (IsMocking) {
+if (IS_MOCKING) {
   Mock.onGet(/.\/podcasts\/./).reply(200, MockData.podcasts);
 }
 Pod_api.getPodcastID = function(req, res) {
   let requestURL = 'https://listen-api.listennotes.com/api/v2/podcasts/' + req.params.id;
   let requestParams = req.query || {};
-  debugger;
+
   Pod_api.helpGetRequest(req, res, requestURL, requestParams);
 };
 

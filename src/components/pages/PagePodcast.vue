@@ -148,12 +148,16 @@ export default {
       var dataPodResults = this.dataPodResults;
       var dataPodResultsItem = this.dataPodResults.find((val) => val.id == dataPodID) || {};
 
-      if (dataPodResultsItem.id && dataPodResultsItem.id == dataPodID) {
-        this.dataPodDetails = dataPodResultsItem;
-      } else {
-        this.dataPodDetails = {};
+      if (dataPodResults && dataPodResults[0]) {
+        return dataPodResults[0];
       }
-      return this.dataPodDetails;
+
+      // if (dataPodResultsItem.id && dataPodResultsItem.id == dataPodID) {
+      //   this.dataPodDetails = dataPodResultsItem;
+      // } else {
+      //   this.dataPodDetails = {};
+      // }
+      // return this.dataPodDetails;
     },
     compPodResults() {
       // TODO: NEED TO ADD FILTERS HERE
@@ -296,27 +300,32 @@ export default {
       if (_requestParamsOverride) {
         requestParams = Object.assign(requestParams, _requestParamsOverride);
       }
+      // success callback
+      function successCB(response) {
+        let finalData = Object.assign(response.data.success, customProps);
+        self.dataPodResults.push(finalData);
+        self.dataRequestInProgress = false;
+      }
+      // error callback
+      function errorCB(err) {
+        console.log(err);
+      }
+      // callback which always runs
+      function alwaysCB() {
+        // turn off flag
+        self.dataRequestInProgress = false;
+      }
       // run podcast request
       function runRequest() {
-        return Axios.get(Util_url.stringifyURL('/api/podcast/' + self.dataPodID, requestParams))
-          .then((response) => {
-            let finalData = Object.assign(response.data.success, customProps);
-            self.dataPodResults.push(finalData);
-            // turn off flag
-            self.dataRequestInProgress = false;
-          })
-          .catch((err) => {
-            // turn off flag
-            self.dataRequestInProgress = false;
-            console.log(err);
-          });
-      }
-      // run request; flip boolean flags to check if in-progress
-      if (!self.dataRequestInProgress) {
         // turn on flag
         self.dataRequestInProgress = true;
-        runRequest();
+        return Axios.get(Util_url.stringifyURL('/api/podcast/' + self.dataPodID, requestParams))
+          .then(successCB)
+          .catch(errorCB)
+          .then(alwaysCB);
       }
+      // run request; flip boolean flags to check if in-progress
+      self.dataRequestInProgress ? false : runRequest();
     }
   },
   created: function() {},
