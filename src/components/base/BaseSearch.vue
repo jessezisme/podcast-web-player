@@ -1,5 +1,5 @@
 <template>
-  <div class="search" v-bind:class="{ active: isFocused }">
+  <div class="search" v-on:focusin="metFormFocusIn" v-on:focusout="metFormFocusOut">
     <form class="form">
       <!-- search input -->
       <div class="search-cont">
@@ -13,18 +13,10 @@
             type="search"
             autocomplete="off"
             v-model="query"
-            v-on:focus="onFocus"
-            v-on:blur="onBlur"
             v-on:input="queryUpdate"
             v-on:keyup="metFormKeySubmit"
           />
-          <button
-            type="reset"
-            class="search-clear"
-            v-show="query && query.length"
-            v-on:focus="onFocus"
-            v-on:click.prevent="metSearchClear"
-          >
+          <button type="reset" class="search-clear" v-show="query" v-on:click.prevent="metSearchClear">
             <span>
               <i class="fas fa-times" aria-hidden="true"></i>
             </span>
@@ -41,21 +33,16 @@
         </form>
       </div>
       <!-- results dropdown -->
-      <div class="search-drop" v-show="isFocused && compDataPod">
+      <div class="search-drop" v-show="compShowDropdown">
         <span class="b_sr-only">Results</span>
-        <div class="search-drop-in" role="listbox" v-if="compDataPod">
+        <div class="search-drop-in" role="listbox" v-if="compShowDropdown">
           <!-- podcasts -->
-          <div class="b_clearfix">
-            <button type="button" class="b_btn b_btn-secondary b_float-right">Close</button>
-          </div>
           <div class="search-drop-group" v-if="compDataPod.podcasts && compDataPod.podcasts.length">
             <div class="search-drop-label search-drop-item">Podcasts</div>
             <div class="search-drop-item" v-for="podcast in compDataPod.podcasts" v-bind:key="podcast.id">
               <router-link
                 role="option"
                 tabindex="0"
-                v-on:focus.native="onFocus"
-                v-on:blur.native="onBlur"
                 :to="{
                   name: 'podcast',
                   params: { routeName: metUtilUrl().prettyString(podcast.publisher_original), routeID: podcast.id }
@@ -74,8 +61,6 @@
               tabindex="0"
               v-for="genre in compDataPod.genres"
               v-bind:key="genre.id"
-              v-on:focus.native="onFocus"
-              v-on:blur.native="onBlur"
               :to="metUtilUrl().encodeURL('/search/' + genre.name)"
             >
               <span>{{ genre.name }}</span>
@@ -90,7 +75,7 @@
 <script>
 import Axios from 'axios';
 import Debounce from 'debounce';
-import Util_url from '../../../utils/util-url.js';
+import Util_main from '../../../utils/util-main.js';
 
 export default {
   name: 'BaseSearch',
@@ -102,13 +87,19 @@ export default {
       query: '',
       // query term, debounced to reduced excessive api requests
       queryDebounced: '',
-      // used to display dropdown
-      isFocused: false,
-      // class set on elements to check if any element in dropdown is focused
-      focusClass: 'is-focus'
+      // show dropdown toggle
+      dataShowDropdown: false,
+      //
+      dataFormHasFocus: false
     };
   },
   computed: {
+    /**
+     * used to toggle dropdown
+     */
+    compShowDropdown() {
+      return this.compDataPod && this.dataFormHasFocus ? true : false;
+    },
     /**
      * api typeahead response, formatted
      */
@@ -139,7 +130,7 @@ export default {
   },
   watch: {
     $route: function(to, from) {
-      this.isFocused;
+      this.metSearchClear();
     },
     /**
      * setup debouncing for query
@@ -153,39 +144,33 @@ export default {
   },
   methods: {
     /**
-     * Focus:
-     * add focus class to focused element;
-     * used to check if any element has focus on-blur
-     */
-    onFocus: function(event) {
-      this.isFocused = true;
-      event.target && event.target.classList.add(this.focusClass);
-    },
-    /**
-     * Blur:
-     * check if any elements have focus class to determined if dropdown can be closed
-     */
-    onBlur: function(event) {
-      var $getEl = this.$el;
-      var self = this;
-      var formatClassQuery = '.' + self.focusClass;
-      // run on timeout to handle focus shifting between elements
-      window.setTimeout(function() {
-        event.target && event.target.classList.remove(self.focusClass);
-        if ($getEl && $getEl.querySelector(formatClassQuery)) {
-          self.isFocused = true;
-        } else {
-          self.isFocused = false;
-        }
-      }, 80);
-    },
-    /**
      * query update:
      * updates query value on search input
      */
     queryUpdate: function(event) {
       this.query = event.target.value;
     },
+    /**
+     * used to check if any element inside form has focus
+     */
+    metFormFocusIn: function(event) {
+      this.dataFormHasFocus = true;
+    },
+    /**
+     * every time a form element runs focus-out, check if any element inside form still has focus;
+     * used to control dropdown visibility
+     */
+    metFormFocusOut: function(event) {
+      const self = this;
+      window.setTimeout(function() {
+        if (document.activeElement && self.$el.contains(document.activeElement)) {
+          self.dataFormHasFocus = true;
+        } else {
+          self.dataFormHasFocus = false;
+        }
+      }, 200);
+    },
+
     /**
      * clear search:
      */
@@ -197,13 +182,13 @@ export default {
      * return imported utility module for use
      */
     metUtilUrl: function() {
-      return Util_url;
+      return Util_main;
     },
     /**
      * handle search submit
      */
     metFormSubmit: function() {
-      let searchURL = Util_url.encodeURL('/search/' + this.query);
+      let searchURL = Util_main.encodeURL('/search/' + this.query);
       // query should not be empty
       if (!this.query || !this.query.length) {
         return false;
@@ -250,9 +235,8 @@ export default {
       function errorCB(error) {
         console.log(error);
       }
-
       // run axios request
-      Axios.get(Util_url.stringifyURL('/api/typeahead', requestParams), {
+      Axios.get(Util_main.stringifyURL('/api/typeahead', requestParams), {
         responseType: 'json',
         validateStatus: function(status) {
           return status == 200;

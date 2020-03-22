@@ -1,7 +1,9 @@
 // https://www.npmjs.com/package/query-string
 import QueryString from 'query-string';
+// https://github.com/werk85/node-html-to-text
+import HtmlToText from 'html-to-text';
 
-const Util_url = {};
+const Util_main = {};
 
 /**
  *
@@ -13,7 +15,7 @@ const Util_url = {};
  *
  *
  */
-Util_url.stringifyURL = function(_URL, _paramObj) {
+Util_main.stringifyURL = function(_URL, _paramObj) {
   return QueryString.stringifyUrl({ url: _URL, query: _paramObj });
 };
 /**
@@ -23,7 +25,7 @@ Util_url.stringifyURL = function(_URL, _paramObj) {
  *
  * @param {string} getURL - url
  */
-Util_url.encodeURL = function(getURL) {
+Util_main.encodeURL = function(getURL) {
   let getEncodedURL = encodeURI(getURL);
   let getDecodedURL = decodeURI(getURL);
   // compare encoded against decoded to check if already encoded
@@ -41,7 +43,7 @@ Util_url.encodeURL = function(getURL) {
  *
  * @param {string} uglyString - raw url string to be formatted
  */
-Util_url.prettyString = function(uglyString) {
+Util_main.prettyString = function(uglyString) {
   let formatString = uglyString;
   formatString = formatString
     // lowercase
@@ -70,15 +72,59 @@ Util_url.prettyString = function(uglyString) {
  * {string} urlObj.title - podcast title
  *
  */
-Util_url.podcastURL = function(urlObj) {
+Util_main.podcastURL = function(urlObj) {
   // podcast unique ID
   let getID = urlObj.id + '' || '';
   getID = getID.trim();
   // podcast raw name to be formatted
   let getTitle = urlObj.title + '' || '';
-  getTitle = Util_url.prettyString(getTitle);
+  getTitle = Util_main.prettyString(getTitle);
   // final URL
   return '/podcast/' + getTitle + '/' + getID;
 };
 
-export default Util_url;
+/**
+ *
+ * convert html to text
+ *
+ * @param {string} getHTML - html string
+ * @param {number} _length - length to limit string
+ *
+ */
+Util_main.htmlToText = function(getHTML, _length) {
+  let getText = HtmlToText.fromString(getHTML) || '';
+  let getLength = _length ? _length : 888;
+  getText = getText.length > getLength ? getText.slice(0, getLength) + '...' : getText;
+  return getText;
+};
+
+/**
+ * Converts timestamp to readable data
+ * @param {number} timestamp
+ */
+Util_main.datePrettyPrint = function(_getTime) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const dateObj = new Date(_getTime);
+  let dateText = '';
+  if (_getTime) {
+    dateText += monthNames[dateObj.getMonth()];
+    dateText += ' ' + dateObj.getDate() + ',' + ' ';
+    dateText += dateObj.getFullYear();
+  }
+  return dateText;
+};
+
+export default Util_main;

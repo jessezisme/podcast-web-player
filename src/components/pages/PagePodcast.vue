@@ -14,7 +14,11 @@
       </div>
       <div class="intro_det">
         <h1 class="intro_title" v-if="compPodDetails.publisher">{{ compPodDetails.publisher }}</h1>
-        <p class="intro_sum" v-if="compPodDetails.description" v-html="metHtmlCleanToText(compPodDetails.description)"></p>
+        <p
+          class="intro_sum"
+          v-if="compPodDetails.description"
+          v-html="metUtilUrl().htmlToText(compPodDetails.description)"
+        ></p>
         <p class="intro_more">
           <a
             class="intro_more-link"
@@ -34,39 +38,44 @@
     <div class="eps" v-if="compPodResults && compPodResults.length">
       <div v-for="result in compPodResults" v-bind:key="result._customRequestTime">
         <div v-if="result.episodes && result.episodes.length">
-          <!-- episode -->
-          <div class="ep" v-for="ep in result.episodes" v-bind:key="ep.id">
-            <div class="ep_sum">
-              <h3 tabindex="0" class="ep_title">{{ ep.title || '' }}</h3>
-              <p class="ep_desc" v-if="ep.description">
-                <span class="ep_thumb-wrap">
-                  <img class="ep_thumb lazyload" v-bind:data-src="ep.thumbnail" />
-                </span>
-                <span v-html="methLimitStringLength(metHtmlCleanToText(ep.description), 200)"></span>
-              </p>
-            </div>
-            <div class="ep_date">
-              <span v-if="ep.pub_date_ms" v-html="methDatePrettyPrint(ep.pub_date_ms)"></span>
-            </div>
-            <div class="ep_play">
-              <button class="ep_play-btn" v-on:click="metPlayerPlayToggle($event, ep)">
-                <span class="ep_play-btn-in">
-                  <!-- pause: if -->
-                  <span
-                    aria-label="play"
-                    v-if="compPlayer.isPlaying && compPlayer.podcast && compPlayer.podcast.id == ep.id"
-                  >
-                    <i aria-hidden="true" class="far fa-pause-circle"></i>
+          <PodCardEp v-for="ep in result.episodes" v-bind:key="ep.id">
+            <!-- title -->
+            <template v-slot:slot-cardep-title>
+              {{ ep.title || '' }}
+            </template>
+            <!-- image -->
+            <template v-slot:slot-cardep-thumb>
+              <img class="lazyload" v-bind:data-src="ep.thumbnail" />
+            </template>
+            <!-- description -->
+            <template v-slot:slot-cardep-desc>
+              <span v-html="metUtilUrl().htmlToText(ep.description, 200)"></span>
+            </template>
+            <!-- date -->
+            <template v-slot:slot-cardep-date>
+              <span v-if="ep.pub_date_ms" v-html="metUtilUrl().datePrettyPrint(ep.pub_date_ms)"></span>
+            </template>
+            <!-- controls -->
+            <template v-slot:slot-cardep-controls>
+              <div class="ep_play">
+                <button class="ep_play-btn" v-on:click="metPlayerPlayToggle($event, ep)">
+                  <span class="ep_play-btn-in">
+                    <!-- pause: if -->
+                    <span
+                      aria-label="play"
+                      v-if="compPlayer.isPlaying && compPlayer.podcast && compPlayer.podcast.id == ep.id"
+                    >
+                      <i aria-hidden="true" class="far fa-pause-circle"></i>
+                    </span>
+                    <!-- play: else-->
+                    <span aria-label="play" v-else>
+                      <i aria-hidden="true" class="far fa-play-circle"></i>
+                    </span>
                   </span>
-                  <!-- play: else-->
-                  <span aria-label="play" v-else>
-                    <i aria-hidden="true" class="far fa-play-circle"></i>
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
-          <!-- /end episode -->
+                </button>
+              </div>
+            </template>
+          </PodCardEp>
         </div>
       </div>
     </div>
@@ -86,13 +95,15 @@ import BaseAudio from '../base/BaseAudio.vue';
 import Axios from 'axios';
 
 import PodCarousel from '../PodCarousel.vue';
-import Util_url from '../../../utils/util-url.js';
+import PodCardEp from '../PodCardEp.vue';
+import Util_main from '../../../utils/util-main.js';
 
 export default {
   name: 'PagePodcast',
   props: ['routeID'],
   components: {
-    PodCarousel: PodCarousel
+    PodCarousel: PodCarousel,
+    PodCardEp: PodCardEp
   },
   data: function() {
     return {
@@ -190,6 +201,9 @@ export default {
     }
   },
   methods: {
+    metUtilUrl: function() {
+      return Util_main;
+    },
     /**
      * Page changes
      * run on every page change
@@ -205,48 +219,6 @@ export default {
      */
     metClearDataResults: function() {
       this.dataPodResults = [];
-    },
-    /**
-     * Parses html to text string
-     */
-    metHtmlCleanToText: function(getHtmlStr) {
-      var temp = new DOMParser().parseFromString(getHtmlStr, 'text/html');
-      return temp.body.textContent || '';
-    },
-    /**
-     * Helper to limit string length
-     */
-    methLimitStringLength: function(_getString, _length) {
-      let getString = _getString || '';
-      return getString.slice(0, _length + 1) + '...';
-    },
-    /**
-     * Converts timestamp to readable data
-     * @param {number} timestamp
-     */
-    methDatePrettyPrint: function(_getTime) {
-      const monthNames = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ];
-      const dateObj = new Date(_getTime);
-      let dateText = '';
-      if (_getTime) {
-        dateText += monthNames[dateObj.getMonth()];
-        dateText += ' ' + dateObj.getDate() + ',' + ' ';
-        dateText += dateObj.getFullYear();
-      }
-      return dateText;
     },
     /**
      * Click play/pause button
@@ -319,7 +291,7 @@ export default {
       function runRequest() {
         // turn on flag
         self.dataRequestInProgress = true;
-        return Axios.get(Util_url.stringifyURL('/api/podcast/' + self.dataPodID, requestParams))
+        return Axios.get(Util_main.stringifyURL('/api/podcast/' + self.dataPodID, requestParams))
           .then(successCB)
           .catch(errorCB)
           .then(alwaysCB);

@@ -102,54 +102,54 @@ p {
 /*=============================================
 =            Grid            =
 =============================================*/
-.b_container {
-  width: 100%;
-  max-width: $grid-max-width;
-  padding-left: $grid-padding;
-  padding-right: $grid-padding;
-  margin-left: auto;
-  margin-right: auto;
-}
-[class*='col-'] {
-  padding-left: $grid-padding;
-  padding-right: $grid-padding;
-}
-.b_row {
-  min-height: 1px;
-  margin-left: -#{$grid-padding};
-  margin-right: -#{$grid-padding};
-  overflow: hidden;
-}
-@media all and (min-width: 1px) {
-  @for $i from 1 to $grid-columns {
-    @include initGrid($i, 'xs');
-  }
-  @include initGrid($grid-columns, 'xs');
-}
-@media all and (min-width: $break-sm) {
-  @for $i from 1 to $grid-columns {
-    @include initGrid($i, 'sm');
-  }
-  @include initGrid($grid-columns, 'sm');
-}
-@media all and (min-width: $break-md) {
-  @for $i from 1 to $grid-columns {
-    @include initGrid($i, 'md');
-  }
-  @include initGrid($grid-columns, 'md');
-}
-@media all and (min-width: $break-lg) {
-  @for $i from 1 to $grid-columns {
-    @include initGrid($i, 'lg');
-  }
-  @include initGrid($grid-columns, 'lg');
-}
-@media all and (min-width: $break-xl) {
-  @for $i from 1 to $grid-columns {
-    @include initGrid($i, 'xl');
-  }
-  @include initGrid($grid-columns, 'xl');
-}
+// .b_container {
+//   width: 100%;
+//   max-width: $grid-max-width;
+//   padding-left: $grid-padding;
+//   padding-right: $grid-padding;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+// [class*='col-'] {
+//   padding-left: $grid-padding;
+//   padding-right: $grid-padding;
+// }
+// .b_row {
+//   min-height: 1px;
+//   margin-left: -#{$grid-padding};
+//   margin-right: -#{$grid-padding};
+//   overflow: hidden;
+// }
+// @media all and (min-width: 1px) {
+//   @for $i from 1 to $grid-columns {
+//     @include initGrid($i, 'xs');
+//   }
+//   @include initGrid($grid-columns, 'xs');
+// }
+// @media all and (min-width: $break-sm) {
+//   @for $i from 1 to $grid-columns {
+//     @include initGrid($i, 'sm');
+//   }
+//   @include initGrid($grid-columns, 'sm');
+// }
+// @media all and (min-width: $break-md) {
+//   @for $i from 1 to $grid-columns {
+//     @include initGrid($i, 'md');
+//   }
+//   @include initGrid($grid-columns, 'md');
+// }
+// @media all and (min-width: $break-lg) {
+//   @for $i from 1 to $grid-columns {
+//     @include initGrid($i, 'lg');
+//   }
+//   @include initGrid($grid-columns, 'lg');
+// }
+// @media all and (min-width: $break-xl) {
+//   @for $i from 1 to $grid-columns {
+//     @include initGrid($i, 'xl');
+//   }
+//   @include initGrid($grid-columns, 'xl');
+// }
 /*=====  End of Grid  ======*/
 
 /*=============================================
@@ -158,6 +158,8 @@ p {
 a {
   color: inherit;
   cursor: pointer;
+  word-break: break-word;
+  hyphens: auto;
 }
 /*=====  End of links  ======*/
 
@@ -177,16 +179,25 @@ button {
 }
 
 .b_btn {
-  background: linear-gradient(to right, lighten($color-accent-2, 1%), $color-accent-2);
-  padding: 8px 13px;
-  color: $text-light;
-  line-height: 1.05em;
-  font-weight: bold;
-  border: 1px solid $color-accent-3;
+  @mixin mixin-btn {
+    background: linear-gradient(to right, lighten($color-accent-2, 1%), $color-accent-2);
+    padding: 8px 13px;
+    color: $text-light;
+    line-height: 1.05em;
+    font-weight: bold;
+    border: 1px solid $color-accent-3;
+  }
+  @include mixin-btn;
 
   &-secondary {
+    @include mixin-btn;
     background: $color-grey-80;
     color: $text-light;
+  }
+  &-large {
+    @include mixin-btn;
+    width: 100%;
+    max-width: 250px;
   }
 }
 /*=====  End of buttons  ======*/

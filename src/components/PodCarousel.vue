@@ -6,24 +6,33 @@
       </h3>
       <div class="car_wrap">
         <div class="car" v-on:scroll="scrollArrow">
-          <div class="car_it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
-            <div class="car_it-in">
-              <router-link :to="returnURL(podcast)" class="car_it-link">
-                <div class="car_it-img-wrap">
-                  <img
-                    class="lazyload car_it-img"
-                    v-bind:data-src="podcast.image"
-                    v-bind:alt="podcast.title"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div class="car_it-desc" v-if="podcast.id && podcast.description">
-                  <div v-html="metHtmlToText(podcast.description, compScreenSize === 'xs' ? 50 : 100)"></div>
-                </div>
-                <span class="car_it-desc-link"> See More </span>
+          <!-- component: card  -->
+          <PodCard class="car_it" v-for="podcast in limitPodcasts(dataPod.podcasts, 20)" v-bind:key="podcast.id">
+            <!-- card hero image -->
+            <template v-slot:slot-card-hero>
+              <router-link :to="metReturnURL(podcast)">
+                <img
+                  class="lazyload car_it-img"
+                  v-bind:data-src="podcast.image"
+                  v-bind:alt="podcast.title"
+                  aria-hidden="true"
+                />
               </router-link>
-            </div>
-          </div>
+            </template>
+            <!-- main text -->
+            <template v-slot:slot-card-desc>
+              <div v-if="podcast.id && podcast.description">
+                <div v-html="metUtilMain().htmlToText(podcast.description, compScreenSize === 'xs' ? 50 : 100)"></div>
+              </div>
+            </template>
+            <!-- footer link/text -->
+            <template v-slot:slot-card-footer>
+              <router-link :to="metReturnURL(podcast)">
+                See More
+              </router-link>
+            </template>
+          </PodCard>
+          <!-- end component: card -->
         </div>
         <div class="car_ctr-btn-wrap">
           <button
@@ -50,19 +59,28 @@
 </template>
 
 <script>
-import Util_url from '../../utils/util-url.js';
-
-// https://github.com/werk85/node-html-to-text
-import HtmlToText from 'html-to-text';
+/*
+  modules:
+*/
 // Axios
 import Axios from 'axios';
 // css scroll-behavior polyfill; needed to implement scroll-behavior smooth for unsupporting browsers
 // https://github.com/wessberg/scroll-behavior-polyfill
 import 'scroll-behavior-polyfill';
+/*
+  components:
+*/
+import PodCard from './PodCard.vue';
+/*
+  utilities:
+*/
+import Util_main from '../../utils/util-main.js';
 
 export default {
   name: 'PodCarousel',
-  components: {},
+  components: {
+    PodCard: PodCard
+  },
   props: ['prop_genre_id'],
   data: function() {
     return {
@@ -94,17 +112,15 @@ export default {
     this.apiGetPodcasts();
   },
   methods: {
-    /**
-     *
-     * convert html to text
-     *
-     */
+    metUtilMain: function() {
+      return Util_main;
+    },
 
-    metHtmlToText: function(getHTML, _length) {
-      let getText = HtmlToText.fromString(getHTML) || '';
-      let getLength = _length ? _length : 100;
-      getText = getText.length > getLength ? getText.slice(0, getLength) + '...' : getText;
-      return getText;
+    metReturnURL: function(podcast) {
+      return this.metUtilMain().podcastURL({
+        id: podcast.id,
+        title: podcast.title
+      });
     },
     /**
      *
@@ -140,13 +156,6 @@ export default {
       if (this.genre_id && !this.dataPod) {
         runAPI();
       }
-    },
-
-    returnURL: function(podcast) {
-      return Util_url.podcastURL({
-        id: podcast.id,
-        title: podcast.title
-      });
     },
 
     /**
@@ -251,7 +260,6 @@ export default {
 .car a {
   text-decoration: none;
 }
-
 .car,
 .car-item {
   scroll-behavior: smooth;
@@ -266,7 +274,6 @@ export default {
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   align-items: stretch;
-
   // reveal additional items
   padding-right: 30px;
 
@@ -281,13 +288,7 @@ export default {
   font-size: 1.25rem;
 }
 .car_it {
-  margin: 8px;
-  padding: 15px;
-  background: $color-grey-95;
   scroll-snap-align: start;
-  border-radius: 8px;
-  box-shadow: inset 0 0 1px 0px $color-accent-3;
-
   /*
     set carousel items per row
   */
@@ -303,56 +304,9 @@ export default {
     width: 20%;
   }
   @media all and (min-width: 1337px) {
-    width: 16.666%;
-    min-width: 16.666%;
+    width: 185px;
+    min-width: 185px;
   }
-}
-.car_it-in {
-  width: 100%;
-  height: 100%;
-}
-.car_it-img-wrap {
-  position: relative;
-  width: 100%;
-  height: auto;
-  margin: auto;
-  max-width: 150px;
-
-  &::after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
-}
-.car_it-img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-  max-width: 150px;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.car_it-link {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-}
-.car_it-desc {
-  flex-grow: 1;
-  font-size: 0.85rem;
-  padding: 8px;
-}
-.car_it-desc-link {
-  padding: 8px;
-  text-decoration: underline;
 }
 .car_ctr-btn-wrap {
   display: flex;

@@ -1,94 +1,98 @@
 <template>
   <div>
     <!-- # audio player # -->
-    <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
-      <!-- control popup toggle -->
-      <div class="aud_tog">
-        <button v-on:click="metModalToggle(true)" class="aud_tog-btn" title="control menu">
-          <span class="b_sr-only">control menu</span>
-          <i aria-hidden="true" class="fas fa-cog"></i>
-        </button>
-      </div>
-      <!-- /end control popup toggle -->
-      <!-- episode name -->
-      <div class="aud_title">
-        <span class="aud_title-text" v-if="player.podcast.title">
-          {{ player.podcast.title }}
-        </span>
-      </div>
-      <!-- flexbox wrapper -->
-      <div class="aud_flexwrap">
-        <!-- thumbnail -->
-        <span v-if="(player.podcastDetails && player.podcast.image) || player.podcast.thumbnail" class="aud_thumb-link">
-          <router-link :to="metReturnURL(player.podcastDetails)" class="car_it-link">
-            <img
-              class="aud_thumb-img"
-              v-bind:src="player.podcast.image || player.podcast.thumbnail"
-              v-bind:alt="player.podcastDetails.title"
-              v-bind:title="player.podcastDetails.title"
-              aria-hidden="true"
-            />
-          </router-link>
-        </span>
-        <!-- play/pause group -->
-        <div class="aud_ctrl">
-          <!-- skip back -->
-          <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
-            <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
-          </button>
-          <!-- play/pause -->
-          <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
-            <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
-            <span v-show="player.isPlaying" aria-label="pause"><i aria-hidden="true" class="far fa-pause-circle"></i></span>
-          </button>
-          <!-- skip ahead -->
-          <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
-            <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
+    <transition enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
+      <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
+        <!-- control popup toggle -->
+        <div class="aud_tog">
+          <button v-on:click="metModalToggle(true)" class="aud_tog-btn" title="control menu">
+            <span class="b_sr-only">control menu</span>
+            <i aria-hidden="true" class="fas fa-cog"></i>
           </button>
         </div>
-        <!-- progress/seek -->
-        <div class="aud_prog-wrap b_hide-xs b_hide-sm">
-          <input
-            class="aud_prog"
-            type="range"
-            ref="BaseAudio-player-progress-slider-1"
-            v-on:mousedown="metPlayerProgressUserModifying"
-            step="1"
-            min="1"
-            value="1"
-            v-bind="{
-              max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
-            }"
-          />
-        </div>
-        <!-- volume control -->
-        <div class="aud_volume-wrap b_hide-xs b_hide-sm">
-          <span class="aud_volume-icon-wrap">
-            <i
-              class="fas"
-              v-bind:class="{
-                'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
-                'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
-                'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
-              }"
-              aria-hidden="true"
-            ></i>
+        <!-- /end control popup toggle -->
+        <!-- episode name -->
+        <div class="aud_title">
+          <span class="aud_title-text" v-if="player.podcast.title">
+            {{ player.podcast.title }}
           </span>
-          <input
-            class="aud_volume aud_range-styling "
-            type="range"
-            min="0"
-            max="1"
-            step=".01"
-            v-bind="{ value: player.volume }"
-            v-on:input="metControlVolume"
-          />
+        </div>
+        <!-- flexbox wrapper -->
+        <div class="aud_flexwrap">
+          <!-- thumbnail -->
+          <span v-if="(player.podcastDetails && player.podcast.image) || player.podcast.thumbnail" class="aud_thumb-link">
+            <router-link :to="metReturnURL(player.podcastDetails)" class="car_it-link">
+              <img
+                class="aud_thumb-img"
+                v-bind:src="player.podcast.image || player.podcast.thumbnail"
+                v-bind:alt="player.podcastDetails.title"
+                v-bind:title="player.podcastDetails.title"
+                aria-hidden="true"
+              />
+            </router-link>
+          </span>
+          <!-- play/pause group -->
+          <div class="aud_ctrl">
+            <!-- skip back -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
+              <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
+            </button>
+            <!-- play/pause -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
+              <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
+              <span v-show="player.isPlaying" aria-label="pause"
+                ><i aria-hidden="true" class="far fa-pause-circle"></i
+              ></span>
+            </button>
+            <!-- skip ahead -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+              <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
+            </button>
+          </div>
+          <!-- progress/seek -->
+          <div class="aud_prog-wrap b_hide-xs b_hide-sm">
+            <input
+              class="aud_prog"
+              type="range"
+              ref="BaseAudio-player-progress-slider-1"
+              v-on:mousedown="metPlayerProgressUserModifying"
+              step="1"
+              min="1"
+              value="1"
+              v-bind="{
+                max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
+              }"
+            />
+          </div>
+          <!-- volume control -->
+          <div class="aud_volume-wrap b_hide-xs b_hide-sm">
+            <span class="aud_volume-icon-wrap">
+              <i
+                class="fas"
+                v-bind:class="{
+                  'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
+                  'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
+                  'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
+                }"
+                aria-hidden="true"
+              ></i>
+            </span>
+            <input
+              class="aud_volume aud_range-styling "
+              type="range"
+              min="0"
+              max="1"
+              step=".01"
+              v-bind="{ value: player.volume }"
+              v-on:input="metControlVolume"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
     <!-- # /end audio player # -->
     <!-- # modal control menu # -->
-    <div v-if="isModalVisible && player && player.podcastDetails && player.playerHowl && player.podcast" class="aud_modal">
+    <div v-if="isModalVisible && player && player.podcast" class="aud_modal">
       <div class="aud_modal-in">
         <div class="aud_modal-close">
           <button v-on:click="metModalToggle(false)" class="b_btn aud_modal-close-btn">Close Menu</button>
@@ -196,10 +200,12 @@
 </template>
 
 <script>
+// TODO: Convert modal to separate component
+
 import Vue from 'vue/dist/vue.esm.js';
 import { Howl, Howler } from 'howler';
 
-import Util_url from '../../../utils/util-url.js';
+import Util_main from '../../../utils/util-main.js';
 
 export default {
   name: 'BaseAudio',
@@ -628,7 +634,7 @@ export default {
     },
 
     metReturnURL: function(podcast) {
-      return Util_url.podcastURL({
+      return Util_main.podcastURL({
         id: podcast.id,
         title: podcast.title
       });

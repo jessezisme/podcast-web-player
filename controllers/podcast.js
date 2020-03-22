@@ -2,8 +2,8 @@ const Axios = require('axios');
 const Pod_api = {};
 const GetKey = process.env.POD_ENV_API_LISTEN_TOKEN;
 
-// var IS_MOCKING = false;
-var IS_MOCKING = true;
+var IS_MOCKING = false;
+// var IS_MOCKING = true;
 
 var MockAdapter;
 var Mock;
@@ -108,7 +108,7 @@ Pod_api.search = function(req, res) {
     'safe_mode'
   ];
   let requestParams = {
-    q: req.params.routeSearch
+    q: req.params.searchterm
   };
 
   optionalParams.forEach((val) => {
@@ -117,7 +117,7 @@ Pod_api.search = function(req, res) {
     }
   });
 
-  Pod_api.helpGetRequest(req, res, requestURL);
+  Pod_api.helpGetRequest(req, res, requestURL, requestParams);
 };
 
 /**

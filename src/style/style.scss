@@ -6,3 +6,15 @@
  */
 @import '~normalize.css';
 @import './base/base.scss';
+
+/*=============================================
+=            vendor libraries            =
+=============================================*/
+
+/*----------  animate.css, with customizations  ----------*/
+@import './vendor/animate.scss';
+
+/*----------  bootstrap grid  ----------*/
+@import './vendor/bootstrap-grid.scss';
+
+/*=====  End of vendor libraries  ======*/
