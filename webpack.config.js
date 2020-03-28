@@ -15,8 +15,10 @@ module.exports = (ENV, ARGV) => {
     },
     watch: true,
     watchOptions: {
-      ignored: /node_modules/
+      ignored: /node_modules/,
+      aggregateTimeout: 1000
     },
+    stats: 'errors-only',
     module: {
       rules: [
         {

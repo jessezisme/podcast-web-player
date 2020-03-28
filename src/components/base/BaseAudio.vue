@@ -1,88 +1,219 @@
 <template>
-  <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
-    <!-- episode name -->
-    <div class="aud-title">
-      <span class="aud-title-text" v-if="player.podcast.title">
-        {{ player.podcast.title }}
-      </span>
-    </div>
-    <!-- flexbox wrapper -->
-    <div class="aud-flexwrap">
-      <!-- thumbnail -->
-      <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud-thumb-link">
-        <img
-          class="aud-thumb-img"
-          v-bind:src="player.podcast.image || player.podcast.thumbnail"
-          v-bind:alt="player.podcast.title"
-          aria-hidden="true"
-        />
-        <span class="b_sr-only"> </span>
-      </a>
-      <!-- play/pause group -->
-      <div class="aud-ctrl">
-        <!-- skip back -->
-        <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('back')">
-          <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
-        </button>
-        <!-- play/pause -->
-        <button class="aud-ctrl-btn aud-ctrl-btn-play" v-on:click="metControlTogglePlay">
-          <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
-          <span v-show="player.isPlaying" aria-label="pause"><i aria-hidden="true" class="far fa-pause-circle"></i></span>
-        </button>
-        <!-- skip ahead -->
-        <button class="aud-ctrl-btn aud-ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
-          <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
-        </button>
+  <div>
+    <!-- # audio player # -->
+    <transition enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
+      <div class="aud" v-if="player && player.playerHowl && player.episode" v-bind:class="{ 'is-active': player }">
+        <!-- control popup toggle -->
+        <div class="aud_tog">
+          <button v-on:click="metModalToggle(true)" class="aud_tog-btn" title="control menu">
+            <span class="b_sr-only">control menu</span>
+            <i aria-hidden="true" class="fas fa-cog"></i>
+          </button>
+        </div>
+        <!-- /end control popup toggle -->
+        <!-- episode name -->
+        <div class="aud_title">
+          <span class="aud_title-text" v-if="player.episode.title">
+            {{ player.episode.title }}
+          </span>
+        </div>
+        <!-- flexbox wrapper -->
+        <div class="aud_flexwrap">
+          <!-- thumbnail -->
+          <span v-if="(player.podcast && player.episode.image) || player.episode.thumbnail" class="aud_thumb-link">
+            <router-link :to="metReturnURL(player.podcast)" class="car_it-link">
+              <img
+                class="aud_thumb-img"
+                v-bind:src="player.episode.image || player.episode.thumbnail"
+                v-bind:alt="player.podcast.title"
+                v-bind:title="player.podcast.title"
+                aria-hidden="true"
+              />
+            </router-link>
+          </span>
+          <!-- play/pause group -->
+          <div class="aud_ctrl">
+            <!-- skip back -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
+              <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
+            </button>
+            <!-- play/pause -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
+              <span v-show="!player.isPlaying" aria-label="play"><i aria-hidden="true" class="far fa-play-circle"></i></span>
+              <span v-show="player.isPlaying" aria-label="pause"
+                ><i aria-hidden="true" class="far fa-pause-circle"></i
+              ></span>
+            </button>
+            <!-- skip ahead -->
+            <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+              <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
+            </button>
+          </div>
+          <!-- progress/seek -->
+          <div class="aud_prog-wrap b_hide-xs b_hide-sm">
+            <input
+              class="aud_prog"
+              type="range"
+              ref="BaseAudio-player-progress-slider-1"
+              v-on:mousedown="metPlayerProgressUserModifying"
+              step="1"
+              min="1"
+              value="1"
+              v-bind="{
+                max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
+              }"
+            />
+          </div>
+          <!-- volume control -->
+          <div class="aud_volume-wrap b_hide-xs b_hide-sm">
+            <span class="aud_volume-icon-wrap">
+              <i
+                class="fas"
+                v-bind:class="{
+                  'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
+                  'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
+                  'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
+                }"
+                aria-hidden="true"
+              ></i>
+            </span>
+            <input
+              class="aud_volume aud_range-styling "
+              type="range"
+              min="0"
+              max="1"
+              step=".01"
+              v-bind="{ value: player.volume }"
+              v-on:input="metControlVolume"
+            />
+          </div>
+        </div>
       </div>
-      <!-- progress/seek -->
-      <div class="aud-prog-wrap">
-        <input
-          class="aud-prog"
-          type="range"
-          ref="BaseAudio-player-progress-slider"
-          v-on:mousedown="metPlayerProgressUserModifying"
-          step="1"
-          min="1"
-          value="1"
-          v-bind="{
-            max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
-          }"
-        />
-      </div>
-      <div class="aud-volume-wrap">
-        <span class="aud-volume-icon-wrap">
-          <i
-            class="fas"
-            v-bind:class="{
-              'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
-              'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
-              'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
-            }"
-            aria-hidden="true"
-          ></i>
-        </span>
-        <input
-          class="aud-volume aud-range-styling "
-          type="range"
-          min="0"
-          max="1"
-          step=".01"
-          v-bind="{ value: player.volume }"
-          v-on:input="metControlVolume"
-        />
-      </div>
-    </div>
+    </transition>
+    <!-- # /end audio player # -->
+    <!-- # modal control menu # -->
+
+    <BaseModal class="aud_modal" v-on:modal-close="isModalVisible = false" v-if="isModalVisible && player && player.episode">
+      <template v-slot:slot-modal-header>
+        <div class="aud_modal-heading">
+          <span> Now Playing </span>
+        </div>
+      </template>
+      <template v-slot:slot-modal-main>
+        <div class="aud_modal-in-wrap">
+          <!-- thumbnail -->
+          <div class="aud_modal-img-wrap aud_modal-section ">
+            <a v-if="player.episode.image || player.episode.thumbnail" class="aud_thumb-link">
+              <img
+                class="aud_modal-img"
+                v-bind:src="player.episode.image || player.episode.thumbnail"
+                v-bind:alt="player.episode.title"
+                aria-hidden="true"
+              />
+            </a>
+          </div>
+          <!-- title & track -->
+          <div class="aud_modal-section ">
+            <div class="aud_modal-title" v-if="player.podcast.title">
+              {{ player.podcast.title }}
+            </div>
+            <div class="aud_modal-section aud_modal-ep" v-if="player.episode.title">
+              {{ player.episode.title }}
+            </div>
+          </div>
+          <!-- play/pause group -->
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_ctrl">
+              <!-- skip back -->
+              <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('back')">
+                <span aria-label="back 15 seconds"><i aria-hidden="true" class="fas fa-backward"></i></span>
+              </button>
+              <!-- play/pause -->
+              <button class="aud_ctrl-btn aud_ctrl-btn-play" v-on:click="metControlTogglePlay">
+                <span v-show="!player.isPlaying" aria-label="play"
+                  ><i aria-hidden="true" class="far fa-play-circle"></i
+                ></span>
+                <span v-show="player.isPlaying" aria-label="pause"
+                  ><i aria-hidden="true" class="far fa-pause-circle"></i
+                ></span>
+              </button>
+              <!-- skip ahead -->
+              <button class="aud_ctrl-btn aud_ctrl-btn-skip" v-on:click="metControlSkip('ahead')">
+                <span aria-label="forward 15 seconds"><i aria-hidden="true" class="fas fa-forward"></i></span>
+              </button>
+            </div>
+          </div>
+          <!-- progress tracker -->
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_prog-wrap">
+              <input
+                class="aud_prog"
+                type="range"
+                ref="BaseAudio-player-progress-slider-2"
+                v-on:mousedown="metPlayerProgressUserModifying"
+                step="1"
+                min="1"
+                value="1"
+                v-bind="{
+                  max: player.isLoaded && player.podcastDuration ? player.podcastDuration : 1
+                }"
+              />
+            </div>
+          </div>
+          <!-- volume -->
+          <div class="aud_modal-section aud_modal-bg">
+            <div class="aud_modal-volume">
+              <div class="aud_volume-wrap">
+                <span class="aud_volume-icon-wrap">
+                  <i
+                    class="fas"
+                    v-bind:class="{
+                      'fa-volume-off': parseFloat(player.volume) == 0 ? true : false,
+                      'fa-volume-down': parseFloat(player.volume) < 0.5 ? true : false,
+                      'fa-volume-up': parseFloat(player.volume) >= 0.5 ? true : false
+                    }"
+                    aria-hidden="true"
+                  ></i>
+                </span>
+                <input
+                  class="aud_volume aud_range-styling "
+                  type="range"
+                  min="0"
+                  max="1"
+                  step=".01"
+                  v-bind="{ value: player.volume }"
+                  v-on:input="metControlVolume"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- episode description -->
+          <div v-if="player.episode.description" class="aud_modal-section">
+            <span class="b_sr-only"> Podcast Details </span>
+            <p v-html="metHtmlCleanToText(player.episode.description)"></p>
+          </div>
+        </div>
+      </template>
+    </BaseModal>
+
+    <!-- # /end modal control menu # -->
   </div>
 </template>
 
 <script>
+// TODO: Convert modal to separate component
+
 import Vue from 'vue/dist/vue.esm.js';
 import { Howl, Howler } from 'howler';
+import BaseModal from './BaseModal.vue';
+import Util_main from '../../../utils/util-main.js';
 
 export default {
   name: 'BaseAudio',
   // props: [""],
-  components: {},
+  components: {
+    BaseModal: BaseModal
+  },
   data: function() {
     return {
       isLoaded: false,
@@ -92,7 +223,11 @@ export default {
         player controls
       */
       player: null,
-      playerIntervalChecks: []
+      playerIntervalChecks: [],
+      /*
+        modal for control menu
+      */
+      isModalVisible: false
     };
   },
   computed: {},
@@ -111,7 +246,6 @@ export default {
   },
   created: function() {
     const self = this;
-
     // set loading flag; used to help force computed properties to recalc on initialization
     this.isLoaded = true;
     /**
@@ -123,10 +257,9 @@ export default {
     /*
       Play
     */
-    this.$root.$on('player.play', (_podcast) => {
-      self.metControlPlay.call(self, _podcast);
+    this.$root.$on('player.play', (_episode, _podcast) => {
+      self.metControlPlay.call(self, _episode, _podcast);
     });
-
     /*
       Pause
     */
@@ -151,9 +284,9 @@ export default {
      * includes player object, and howler-player
      *
      */
-    metControlAdd: function(_podcast) {
+    metControlAdd: function(_episode, _podcast) {
       const self = this;
-      const shouldAdd = !self.player || _podcast.id !== self.player.podcast.id ? true : false;
+      const shouldAdd = !self.player || _episode.id !== self.player.podcast.id ? true : false;
       const getVolume = self.player && self.player.playerVolume ? parseFloat(self.player.playerVolume) : 1.0;
 
       function runAdd() {
@@ -161,20 +294,22 @@ export default {
         self.metControlRemove();
         // howler player
         let playerHowl = new Howl({
-          src: [_podcast.audio],
+          src: [_episode.audio],
           html5: true,
           volume: getVolume,
           onload: self.metControlLoadCallback.bind(self),
           onplay: self.metControlPlayCallback.bind(self),
           onend: self.metControlPauseCallback.bind(self),
           onpause: self.metControlPauseCallback.bind(self),
-          onvolume: self.metControlVolumeCallback.bind(self)
+          onvolume: self.metControlVolumeCallback.bind(self),
+          onloaderror: self.metControlLoadError.bind(self)
         });
         // main player object
         let player = {
           // howler player
           playerHowl: playerHowl,
           playerID: null,
+          episode: _episode,
           podcast: _podcast,
           volume: getVolume,
           playerProgressSeconds: 0,
@@ -265,13 +400,13 @@ export default {
      * Play it:
      *
      */
-    metControlPlay: function(_episode) {
+    metControlPlay: function(_episode, _podcastDetails) {
       const self = this;
       /*
-        every time play is called; attempt to add new podcast in case not yet initialized; 
-        return boolean of newly-added status;         
+        every time play is called; attempt to add new podcast in case not yet initialized;
+        return boolean of newly-added status;
       */
-      const isPodcastNew = self.metControlAdd.call(self, _episode);
+      const isPodcastNew = self.metControlAdd.call(self, _episode, _podcastDetails);
       const shouldPlay = isPodcastNew && self.player.pauseOnLoad ? false : true;
 
       function runPlay() {
@@ -310,7 +445,6 @@ export default {
       // set play state
       Vue.set(self.player, 'isPlaying', true);
     },
-
     /**
      *
      * Pause podcast:
@@ -332,7 +466,6 @@ export default {
       const self = this;
       Vue.set(self.player, 'isPlaying', false);
     },
-
     /**
      *
      * Skip ahead/backward
@@ -386,10 +519,16 @@ export default {
     metPlayerProgressUpdate: function(_getProgress) {
       const self = this;
       let getProgress = Math.floor(_getProgress) ? Math.floor(_getProgress) : 1;
-      let refInput = this.$refs['BaseAudio-player-progress-slider'];
-      // avoid updating if: user is sliding progress bar; and input isn't defined
-      if (!this.isPlayerProgressActive && refInput) {
-        refInput.value = getProgress;
+      // must include list of ALL $refs used on all progress trackers
+      let $refsInput = ['BaseAudio-player-progress-slider-1', 'BaseAudio-player-progress-slider-2'];
+      // avoid updating if user is modifying progress bar
+      if (!self.isPlayerProgressActive) {
+        // loop through each progress inpur, and update value with progress; using $refs references
+        $refsInput.forEach(function(val) {
+          if (self.$refs[val]) {
+            self.$refs[val].value = getProgress;
+          }
+        });
         Vue.set(self.player, 'playerProgressSeconds', getProgress);
       }
     },
@@ -403,13 +542,23 @@ export default {
      * then check if player should be seeked;
      * finally, clear disabled boolean flag
      *
+     * @param {Object} event - event from mousedown event
      */
-    metPlayerProgressUserModifying: function() {
+    metPlayerProgressUserModifying: function(event) {
       const self = this;
+      // get input currently being modified
+      const $inputProgress = event.target;
+      // set flag, which defines user is modifying
       self.isPlayerProgressActive = true;
 
-      function seekCheck() {
-        let refProgress = self.$refs['BaseAudio-player-progress-slider'];
+      /*
+        When mouseup is completed, check new value of input;
+        and update new seek progress in player
+
+        @param {Object} $inputProgress - input target
+       */
+      function seekCheck($inputProgress) {
+        let refProgress = $inputProgress;
         let refProgressVal = refProgress ? refProgress.value : 1;
         // get seek progress from howler
         let getSeek =
@@ -419,19 +568,18 @@ export default {
         // only run seek, if actually different than current input value
         if (refProgress && refProgressVal && refProgressVal !== getSeek) {
           self.player.playerHowl.seek(refProgressVal);
-          // not needed since update will run on next interval progress check
-          // refProgress.value = getSeek;
         }
         // clear mousedown flag
         self.isPlayerProgressActive = false;
         // clear listener
-        document.removeEventListener('mouseup', seekCheck);
+        document.removeEventListener('mouseup', seekCheckBind);
       }
+      let seekCheckBind = seekCheck.bind(self, $inputProgress);
       /*
-        listen for mouseup event on entire document; 
-        so this will always conclude the mousedown on input progress slider
+        listen for mouseup on document, rather than input;
+        in case mouseup occurs outside of input
       */
-      document.addEventListener('mouseup', seekCheck);
+      document.addEventListener('mouseup', seekCheckBind);
     },
 
     /**
@@ -470,6 +618,49 @@ export default {
         // set player volume if it doesn't match volume returned from howler
         getHowlerVolume !== getPlayerVolume ? Vue.set(self.player, 'volume', getVolume) : false;
       }
+    },
+
+    /**
+     *
+     * Error handlers from Howler player:
+     * @param {String} _id - id of failed load
+     * @param {String} _code - error/message code of failure
+     */
+    metControlLoadError: function(_id, _code) {
+      const errorObj = {
+        status: 'Error loading audio file',
+        id: _id,
+        code: _code
+      };
+      try {
+        console.error(JSON.stringify(errorObj));
+      } catch {
+        console.log(JSON.stringify(errorObj));
+      }
+    },
+    /**
+     *
+     * Toggle control modal
+     *
+     */
+    metModalToggle: function(_shouldShow) {
+      const self = this;
+      if (_shouldShow) {
+        self.isModalVisible = true;
+      } else {
+        self.isModalVisible = false;
+      }
+    },
+    metHtmlCleanToText: function(getHtmlStr) {
+      var temp = new DOMParser().parseFromString(getHtmlStr, 'text/html');
+      return temp.body.textContent || '';
+    },
+
+    metReturnURL: function(podcast) {
+      return Util_main.podcastURL({
+        id: podcast.id,
+        title: podcast.title
+      });
     }
   }
 };
@@ -487,67 +678,96 @@ export default {
   padding: 5px 15px;
   background: repeating-linear-gradient(
     to right,
-    lighten($color-accent-1, 1%),
-    darken(adjust-hue($color-accent-2, 8%), 10%),
-    lighten($color-accent-1, 1%)
+    adjust-hue(lighten($color-accent-1, 10%), -4%),
+    darken(adjust-hue($color-accent-2, 1%), 2%),
+    adjust-hue(lighten($color-accent-1, 10%), -4%)
   );
-  box-shadow: 0 1px 4px 0 lighten($color-accent-2, 25%);
-  /* hide and reveal based on active state */
-  transform: translateY(1000%);
-  transition: 0.4s transform;
-  &.is-active {
-    transform: translateY(0);
-  }
 }
-
 /*=============================================
 =            flexbox wrapper            =
 =============================================*/
-.aud-flexwrap {
+.aud_flexwrap {
   display: flex;
   align-items: center;
   // fallback
   justify-content: center;
   // justify-content: space-evenly;
 }
-.aud-prog-wrap {
+.aud_prog-wrap {
   flex-grow: 1;
 }
 /*=====  End of flexbox wrapper  ======*/
 
 /*=============================================
+=            control menu toggle            =
+=============================================*/
+.aud_tog {
+  position: relative;
+  height: 25px;
+  overflow: visible;
+  text-align: center;
+}
+.aud_tog-btn {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  margin: auto;
+  top: -50%;
+  left: 0;
+  right: 0;
+  background: repeating-linear-gradient(
+    to right,
+    adjust-hue(lighten($color-accent-1, 10%), -4%),
+    darken(adjust-hue($color-accent-2, 1%), 2%),
+    adjust-hue(lighten($color-accent-1, 10%), -4%)
+  );
+  background-size: 100vw;
+  background-position: center;
+  border-radius: 100%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+}
+/*=====  End of control menu toggle  ======*/
+
+/*=============================================
 =            thumbnail image            =
 =============================================*/
-.aud-thumb-link {
+.aud_thumb-link {
   display: inline-block;
 }
-.aud-thumb-img {
+.aud_thumb-img {
   display: inline-block;
-  max-width: 55px;
-  max-height: 55px;
+  max-width: 45px;
+  max-height: 45px;
+
+  @media all and (min-width: $break-md) {
+    max-width: 55px;
+    max-height: 55px;
+  }
 }
 /*=====  End of thumbnail image  ======*/
 
 /*=============================================
 =            play/pause/skip group            =
 =============================================*/
-.aud-ctrl {
+.aud_ctrl {
   margin: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.aud-ctrl-btn {
+.aud_ctrl-btn {
   min-width: 50px;
   min-height: 50px;
   margin: 0 10px;
   font-size: 2.5rem;
 }
-.aud-ctrl-btn-play i {
+.aud_ctrl-btn-play i {
   border-radius: 100%;
-  box-shadow: 0 0 4px 8px $color-accent-3;
+  box-shadow: 0 0 4px 0 $color-accent-3;
 }
-.aud-ctrl-btn-skip {
+.aud_ctrl-btn-skip {
   opacity: 0.8;
   font-size: 1.75rem;
 }
@@ -556,13 +776,15 @@ export default {
 /*=============================================
 =            podcast name/episode display     =
 =============================================*/
-.aud-title {
+.aud_title {
   text-align: center;
   padding: 5px;
   font-size: 0.8rem;
   font-weight: bold;
+  line-height: 1em;
 }
-.aud-title-text {
+.aud_title,
+.aud_title-text {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -572,33 +794,30 @@ export default {
 /*=============================================
 =            Volume            =
 =============================================*/
-.aud-volume-wrap {
+.aud_volume-wrap {
   min-width: 150px;
   display: flex;
   align-items: center;
-  padding-left: 30px;
+  padding-left: 20px;
 }
-
-.aud-volume {
-  @extend .aud-range-styling;
+.aud_volume {
+  @extend .aud_range-styling;
 
   max-width: 125px;
   margin-left: 8px !important;
 }
-
-.aud-volume-icon-wrap {
+.aud_volume-icon-wrap {
   width: 1.3em;
   overflow: visible;
   font-size: 1.25rem;
 }
-
 /*=====  End of Volume  ======*/
 
 /*=============================================
 =            input range slider            =
 =============================================*/
 /* wrapper */
-.aud-prog-wrap {
+.aud_prog-wrap {
   width: 100%;
   max-width: 1088px;
   text-align: center;
@@ -606,11 +825,11 @@ export default {
 }
 
 /* slider */
-.aud-prog {
+.aud_prog {
   display: inline-block;
   width: 100%;
 
-  @extend .aud-range-styling;
+  @extend .aud_range-styling;
 }
 
 /**
@@ -618,8 +837,7 @@ export default {
  * Built with http://danielstern.ca/range.css/#/
  *
  */
-
-.aud-range-styling {
+.aud_range-styling {
   & {
     -webkit-appearance: none;
     width: 100%;
@@ -709,4 +927,69 @@ export default {
 }
 
 /*=====  End of input range slider  ======*/
+</style>
+
+<style lang="scss">
+@import '../../style/base/_variables.scss';
+/*=============================================
+=            modal popup            =
+=============================================*/
+$modal-bg: #0d0d0f;
+$modal-bg-section: lighten($modal-bg, 4%);
+.aud_modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.92);
+
+  .aud_modal-bg {
+    background: $modal-bg-section;
+  }
+  .aud_modal-section {
+    text-align: center;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 10px;
+  }
+  .aud_modal-in {
+    width: 950px;
+    height: 950px;
+    max-height: 90vh;
+    max-width: calc(100% - 30px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 10px 15px;
+    margin: auto;
+    overflow: auto;
+    background: $modal-bg;
+    border: $color-accent-3;
+  }
+  .aud_modal-in-wrap {
+    text-align: center;
+  }
+  /*----------  close  ----------*/
+  .aud_modal-close {
+    text-align: right;
+  }
+  .aud_modal-close-btn {
+    margin: 15px;
+  }
+  /*----------  volume  ----------*/
+  .aud_modal-volume {
+    display: flex;
+    justify-content: center;
+  }
+  .aud_volume-wrap {
+    padding: 0;
+  }
+}
+
+/*=====  End of modal popup  ======*/
 </style>

@@ -14,6 +14,15 @@ router.get('/api/typeahead', function(req, res, next) {
 
 /**
  *
+ * Podcast Search:
+ *
+ */
+router.get('/api/search/:searchterm', function(req, res, next) {
+  PodApi.search(req, res);
+});
+
+/**
+ *
  * Podcast by ID:
  * fetch detailed meta and episodes for a podcast by ID
  *

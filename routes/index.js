@@ -1,17 +1,40 @@
-var express = require('express');
-var router = express.Router();
+const Express = require('express');
+const Router = Express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+const DEFAULT_TITLE = 'PodNexus: Podcast Web Player Demo';
+
+/**
+ * home
+ */
+Router.get('/', function(req, res, next) {
   res.render('index', {
-    title: 'Express'
+    title: DEFAULT_TITLE
   });
 });
 
-router.get('/podcast/:podTitle/:podID', function(req, res, next) {
+/**
+ * podcast detail page
+ */
+Router.get('/podcast/:routePodTitle/:routePodID', function(req, res, next) {
   res.render('index', {
-    title: 'Express'
+    title: DEFAULT_TITLE
   });
 });
 
-module.exports = router;
+/**
+ * search page
+ */
+Router.get('/search/:routeSearch', function(req, res, next) {
+  res.render('index', {
+    title: DEFAULT_TITLE
+  });
+});
+
+Router.get('*', function(req, res, next) {
+  res.status(404);
+  res.render('index', {
+    title: '404. You done did it.'
+  });
+});
+
+module.exports = Router;

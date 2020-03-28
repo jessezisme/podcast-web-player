@@ -19,10 +19,10 @@
               <router-link
                 class="he-logo"
                 :to="{
-                  name: 'home'
+                  name: 'RouteHome'
                 }"
               >
-                PodChaser
+                Pod Nexus
               </router-link>
             </span>
           </div>

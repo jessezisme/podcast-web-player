@@ -7,8 +7,12 @@
       </div>
 
       <div class="recs">
-        <PodCarousel v-bind:prop_genre_id="67">Comedy</PodCarousel>
-        <PodCarousel v-bind:prop_genre_id="68">Video Games</PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="138"> Movies </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="133"> Comedy </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="99"> News </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="77"> Sports </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="85"> Video Games </PodCarousel>
+        <PodCarousel v-bind:prop_genre_id="131"> Tech News </PodCarousel>
       </div>
     </div>
   </div>
@@ -24,23 +28,11 @@ export default {
     PodCarousel: PodCarousel
   },
   data: function() {
-    return {
-      isLiving: false
-    };
+    return {};
   },
-  computed: {
-    compScreenSize() {
-      let refreshHack = this.isLiving;
-      this.screenSize = this.$store.state.podUtil.screenWidth;
-      return this.$store.state.podUtil.screenWidth;
-    }
-  },
-  created: function() {
-    this.isLiving = true;
-  },
-  destroyed: function() {
-    this.isLiving = false;
-  }
+  computed: {},
+  created: function() {},
+  destroyed: function() {}
 };
 </script>
 
