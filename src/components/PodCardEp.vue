@@ -1,5 +1,5 @@
 <template>
-  <div class="ep zzz">
+  <div class="ep">
     <div class="ep_sum">
       <!-- title -->
       <div class="ep_title">

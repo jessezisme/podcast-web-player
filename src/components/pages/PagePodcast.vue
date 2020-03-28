@@ -63,7 +63,7 @@
                     <!-- pause: if -->
                     <span
                       aria-label="play"
-                      v-if="compPlayer.isPlaying && compPlayer.podcast && compPlayer.podcast.id == ep.id"
+                      v-if="compPlayer.isPlaying && compPlayer.episode && compPlayer.episode.id == ep.id"
                     >
                       <i aria-hidden="true" class="far fa-pause-circle"></i>
                     </span>
@@ -229,9 +229,27 @@ export default {
     metPlayerPlayToggle: function(event, _ep) {
       const self = this;
       let isPlaying = this.compPlayer && this.compPlayer.isPlaying;
-      isPlaying
-        ? this.$root.$emit('player.pause', _ep, self.compPodDetails)
-        : this.$root.$emit('player.play', _ep, self.compPodDetails);
+
+      let episode = Object.assign(_ep, {
+        id: _ep.id,
+        title: _ep.title,
+        description: _ep.description,
+        thumbnail: _ep.thumbnail,
+        image: _ep.image,
+        date: _ep.pub_date_ms,
+        audio: _ep.audio,
+        audio_length_sec: _ep.audio_length_sec
+      });
+
+      let podcast = Object.assign(self.compPodDetails, {
+        id: self.compPodDetails.id,
+        title: self.compPodDetails.title,
+        description: self.compPodDetails.description,
+        image: self.compPodDetails.image,
+        thumbnail: self.compPodDetails.thumbnail
+      });
+
+      isPlaying ? this.$root.$emit('player.pause', episode, podcast) : this.$root.$emit('player.play', episode, podcast);
     },
     /**
      * load more paginated episodes

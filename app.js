@@ -13,13 +13,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // Axios: for requests
 const axios = require('axios');
+
 /**
  * Routes:
  * routing setup
  */
 const appRoutes = {
   index: require('./routes/index'),
-  search: require('./routes/search'),
   api: require('./routes/api')
 };
 
@@ -34,17 +34,6 @@ app.locals.pod = {};
  */
 // TODO: uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
-/**
- * Redis:
- */
-// TODO: need to decide whether redis will be used; if not, remove
-// const Redis = require("ioredis");
-// const redis = new Redis(process.env.REDIS_URL || 6379);
-// app.locals.pod.redis = {
-//   client: redis,
-//   expirationTime: 21600
-// };
 
 /**
  * View engine:
@@ -79,20 +68,23 @@ app.use(function(req, res, next) {
  * Routing:
  * handle routing here
  */
-app.use('/', appRoutes.index);
-app.use('/podcast/*/*', appRoutes.index);
+// manifest file: need to set content-type before sending
+app.get('/manifest.webmanifest', function(req, res) {
+  res.set('Content-Type', 'application/manifest+json');
+  res.sendFile(path.join(__dirname, 'manifest.webmanifest'));
+});
 app.all('/api/*', appRoutes.api);
-app.use('/search', appRoutes.search);
+app.all('*', appRoutes.index);
 
 /**
  * error handlers
  */
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

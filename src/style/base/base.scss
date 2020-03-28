@@ -25,6 +25,11 @@ img {
   min-height: 100vh;
 }
 
+/*----------  body modal  ----------*/
+body.modal-open {
+  overflow: hidden;
+}
+
 /*----------  scrollbars  ----------*/
 body::-webkit-scrollbar {
   width: 14px;
@@ -93,6 +98,7 @@ h4,
 h5,
 h6,
 p {
+  line-height: 1.5em; 
   margin: 0;
   padding-top: 1em;
   padding-bottom: 1em;

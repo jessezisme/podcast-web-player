@@ -9,7 +9,7 @@
 const PagePodcast = () => import(/* webpackChunkName: "page-podcast" */ '../components/pages/PagePodcast.vue');
 
 const RoutePodcast = {
-  name: 'podcast',
+  name: 'RoutePodcast',
   path: '/podcast/:routeName/:routeID',
   components: {
     default: PagePodcast
@@ -18,9 +18,7 @@ const RoutePodcast = {
   props: {
     default: true
   },
-  meta: {
-    title: 'Podcast'
-  }
+  meta: {}
 };
 
 export default RoutePodcast;

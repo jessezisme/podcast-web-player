@@ -20,7 +20,7 @@
                 :to="
                   metUtilUrl().podcastURL({
                     id: podcast.id,
-                    title: podcast.podcast_title_original
+                    title: podcast.title_original
                   })
                 "
               >
@@ -46,7 +46,7 @@
                 :to="
                   metUtilUrl().podcastURL({
                     id: podcast.id,
-                    title: podcast.podcast_title_original
+                    title: podcast.title_original
                   })
                 "
               >
@@ -56,7 +56,7 @@
           </PodCard>
           <!-- end component: card -->
         </div>
-        <div class="search_more">
+        <div class="search_more" v-if="compPodcastRequestNextOffset">
           <button
             class="b_btn-large"
             v-bind:disabled="compPodcastRequestInProgress"
@@ -109,6 +109,15 @@
             </div>
           </template>
         </PodCardEp>
+        <div class="search_more" v-if="compEpisodeRequestNextOffset">
+          <button
+            class="b_btn-large"
+            v-bind:disabled="compEpisodeRequestInProgress"
+            v-on:click="metGetPodcast('episode', 'next')"
+          >
+            Load More
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -205,8 +214,8 @@ export default {
       let getNextOffset = getLastResult && getLastResult.next_offset ? getLastResult.next_offset : null;
       return getNextOffset;
     },
-    compPodcastRequestInProgress() {
-      return this.dataRequestsObj['podcast'] ? true : false;
+    compEpisodeRequestInProgress() {
+      return this.dataRequestsObj['episode'] ? true : false;
     },
     compScreenSize() {
       let refreshHack = this.isLoaded;
@@ -350,7 +359,29 @@ export default {
     metPlayerPlayToggle: function(event, _ep) {
       const self = this;
       let isPlaying = this.compPlayer && this.compPlayer.isPlaying;
-      isPlaying ? this.$root.$emit('player.pause', _ep, _ep) : this.$root.$emit('player.play', _ep, _ep);
+
+      let episode = Object.assign(_ep, {
+        id: _ep.id,
+        title: _ep.title_original,
+        description: _ep.description_original,
+        thumbnail: _ep.thumbnail,
+        image: _ep.image,
+        date: _ep.pub_date_ms,
+        audio: _ep.audio,
+        audio_length_sec: _ep.audio_length_sec
+      });
+
+      let podcast = Object.assign(
+        {},
+        {
+          id: _ep.podcast_id,
+          title: _ep.podcast_title_original,
+          description: null,
+          image: null,
+          thumbnail: null
+        }
+      );
+      isPlaying ? this.$root.$emit('player.pause', episode, podcast) : this.$root.$emit('player.play', episode, podcast);
     }
   },
   created: function() {

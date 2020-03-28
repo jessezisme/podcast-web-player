@@ -8,9 +8,17 @@
 const PageHome = () => import(/* webpackChunkName: "page-home" */ '../components/pages/PageHome.vue');
 
 const RouteHome = {
-  name: 'home',
+  name: 'RouteHome',
   path: '/',
-  component: PageHome
+  component: PageHome,
+  meta: {
+    metaTags: [
+      {
+        name: 'description',
+        content: 'Search and listen to all your favorite podcasts.'
+      }
+    ]
+  }
 };
 
 export default RouteHome;

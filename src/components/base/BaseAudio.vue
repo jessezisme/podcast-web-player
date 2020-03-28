@@ -2,7 +2,7 @@
   <div>
     <!-- # audio player # -->
     <transition enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-      <div class="aud" v-if="player && player.playerHowl && player.podcast" v-bind:class="{ 'is-active': player }">
+      <div class="aud" v-if="player && player.playerHowl && player.episode" v-bind:class="{ 'is-active': player }">
         <!-- control popup toggle -->
         <div class="aud_tog">
           <button v-on:click="metModalToggle(true)" class="aud_tog-btn" title="control menu">
@@ -13,20 +13,20 @@
         <!-- /end control popup toggle -->
         <!-- episode name -->
         <div class="aud_title">
-          <span class="aud_title-text" v-if="player.podcast.title">
-            {{ player.podcast.title }}
+          <span class="aud_title-text" v-if="player.episode.title">
+            {{ player.episode.title }}
           </span>
         </div>
         <!-- flexbox wrapper -->
         <div class="aud_flexwrap">
           <!-- thumbnail -->
-          <span v-if="(player.podcastDetails && player.podcast.image) || player.podcast.thumbnail" class="aud_thumb-link">
-            <router-link :to="metReturnURL(player.podcastDetails)" class="car_it-link">
+          <span v-if="(player.podcast && player.episode.image) || player.episode.thumbnail" class="aud_thumb-link">
+            <router-link :to="metReturnURL(player.podcast)" class="car_it-link">
               <img
                 class="aud_thumb-img"
-                v-bind:src="player.podcast.image || player.podcast.thumbnail"
-                v-bind:alt="player.podcastDetails.title"
-                v-bind:title="player.podcastDetails.title"
+                v-bind:src="player.episode.image || player.episode.thumbnail"
+                v-bind:alt="player.podcast.title"
+                v-bind:title="player.podcast.title"
                 aria-hidden="true"
               />
             </router-link>
@@ -92,33 +92,33 @@
     </transition>
     <!-- # /end audio player # -->
     <!-- # modal control menu # -->
-    <div v-if="isModalVisible && player && player.podcast" class="aud_modal">
-      <div class="aud_modal-in">
-        <div class="aud_modal-close">
-          <button v-on:click="metModalToggle(false)" class="b_btn aud_modal-close-btn">Close Menu</button>
-        </div>
+
+    <BaseModal class="aud_modal" v-on:modal-close="isModalVisible = false" v-if="isModalVisible && player && player.episode">
+      <template v-slot:slot-modal-header>
         <div class="aud_modal-heading">
           <span> Now Playing </span>
         </div>
+      </template>
+      <template v-slot:slot-modal-main>
         <div class="aud_modal-in-wrap">
           <!-- thumbnail -->
           <div class="aud_modal-img-wrap aud_modal-section ">
-            <a v-if="player.podcast.image || player.podcast.thumbnail" class="aud_thumb-link">
+            <a v-if="player.episode.image || player.episode.thumbnail" class="aud_thumb-link">
               <img
                 class="aud_modal-img"
-                v-bind:src="player.podcast.image || player.podcast.thumbnail"
-                v-bind:alt="player.podcast.title"
+                v-bind:src="player.episode.image || player.episode.thumbnail"
+                v-bind:alt="player.episode.title"
                 aria-hidden="true"
               />
             </a>
           </div>
           <!-- title & track -->
           <div class="aud_modal-section ">
-            <div class="aud_modal-title" v-if="player.podcastDetails.title">
-              {{ player.podcastDetails.title }}
-            </div>
-            <div class="aud_modal-section aud_modal-ep" v-if="player.podcast.title">
+            <div class="aud_modal-title" v-if="player.podcast.title">
               {{ player.podcast.title }}
+            </div>
+            <div class="aud_modal-section aud_modal-ep" v-if="player.episode.title">
+              {{ player.episode.title }}
             </div>
           </div>
           <!-- play/pause group -->
@@ -188,13 +188,14 @@
             </div>
           </div>
           <!-- episode description -->
-          <div v-if="player.podcast.description" class="aud_modal-section">
+          <div v-if="player.episode.description" class="aud_modal-section">
             <span class="b_sr-only"> Podcast Details </span>
-            <p v-html="metHtmlCleanToText(player.podcast.description)"></p>
+            <p v-html="metHtmlCleanToText(player.episode.description)"></p>
           </div>
         </div>
-      </div>
-    </div>
+      </template>
+    </BaseModal>
+
     <!-- # /end modal control menu # -->
   </div>
 </template>
@@ -204,13 +205,15 @@
 
 import Vue from 'vue/dist/vue.esm.js';
 import { Howl, Howler } from 'howler';
-
+import BaseModal from './BaseModal.vue';
 import Util_main from '../../../utils/util-main.js';
 
 export default {
   name: 'BaseAudio',
   // props: [""],
-  components: {},
+  components: {
+    BaseModal: BaseModal
+  },
   data: function() {
     return {
       isLoaded: false,
@@ -254,8 +257,8 @@ export default {
     /*
       Play
     */
-    this.$root.$on('player.play', (_podcast, _podcastDetails) => {
-      self.metControlPlay.call(self, _podcast, _podcastDetails);
+    this.$root.$on('player.play', (_episode, _podcast) => {
+      self.metControlPlay.call(self, _episode, _podcast);
     });
     /*
       Pause
@@ -281,9 +284,9 @@ export default {
      * includes player object, and howler-player
      *
      */
-    metControlAdd: function(_podcast, _podcastDetails) {
+    metControlAdd: function(_episode, _podcast) {
       const self = this;
-      const shouldAdd = !self.player || _podcast.id !== self.player.podcast.id ? true : false;
+      const shouldAdd = !self.player || _episode.id !== self.player.podcast.id ? true : false;
       const getVolume = self.player && self.player.playerVolume ? parseFloat(self.player.playerVolume) : 1.0;
 
       function runAdd() {
@@ -291,22 +294,23 @@ export default {
         self.metControlRemove();
         // howler player
         let playerHowl = new Howl({
-          src: [_podcast.audio],
+          src: [_episode.audio],
           html5: true,
           volume: getVolume,
           onload: self.metControlLoadCallback.bind(self),
           onplay: self.metControlPlayCallback.bind(self),
           onend: self.metControlPauseCallback.bind(self),
           onpause: self.metControlPauseCallback.bind(self),
-          onvolume: self.metControlVolumeCallback.bind(self)
+          onvolume: self.metControlVolumeCallback.bind(self),
+          onloaderror: self.metControlLoadError.bind(self)
         });
         // main player object
         let player = {
           // howler player
           playerHowl: playerHowl,
           playerID: null,
+          episode: _episode,
           podcast: _podcast,
-          podcastDetails: _podcastDetails,
           volume: getVolume,
           playerProgressSeconds: 0,
           podcastDuration: 0,
@@ -548,9 +552,9 @@ export default {
       self.isPlayerProgressActive = true;
 
       /*
-        When mouseup is completed, check new value of input; 
+        When mouseup is completed, check new value of input;
         and update new seek progress in player
-        
+
         @param {Object} $inputProgress - input target
        */
       function seekCheck($inputProgress) {
@@ -571,8 +575,8 @@ export default {
         document.removeEventListener('mouseup', seekCheckBind);
       }
       let seekCheckBind = seekCheck.bind(self, $inputProgress);
-      /* 
-        listen for mouseup on document, rather than input; 
+      /*
+        listen for mouseup on document, rather than input;
         in case mouseup occurs outside of input
       */
       document.addEventListener('mouseup', seekCheckBind);
@@ -613,6 +617,25 @@ export default {
         getPlayerVolume = parseFloat(self.player.volume);
         // set player volume if it doesn't match volume returned from howler
         getHowlerVolume !== getPlayerVolume ? Vue.set(self.player, 'volume', getVolume) : false;
+      }
+    },
+
+    /**
+     *
+     * Error handlers from Howler player:
+     * @param {String} _id - id of failed load
+     * @param {String} _code - error/message code of failure
+     */
+    metControlLoadError: function(_id, _code) {
+      const errorObj = {
+        status: 'Error loading audio file',
+        id: _id,
+        code: _code
+      };
+      try {
+        console.error(JSON.stringify(errorObj));
+      } catch {
+        console.log(JSON.stringify(errorObj));
       }
     },
     /**
@@ -660,69 +683,6 @@ export default {
     adjust-hue(lighten($color-accent-1, 10%), -4%)
   );
 }
-
-/*=============================================
-=            modal popup            =
-=============================================*/
-$modal-bg: #0d0d0f;
-$modal-bg-section: lighten($modal-bg, 4%);
-.aud_modal {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 8;
-  background: rgba(0, 0, 0, 0.92);
-
-  .aud_modal-bg {
-    background: $modal-bg-section;
-  }
-  .aud_modal-section {
-    text-align: center;
-    margin: 0 0 1rem 0;
-    padding: 0.5rem 10px;
-  }
-  .aud_modal-in {
-    width: 950px;
-    height: 950px;
-    max-height: 90vh;
-    max-width: calc(100% - 30px);
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 10px 15px;
-    margin: auto;
-    overflow: auto;
-    background: $modal-bg;
-    border: $color-accent-3;
-  }
-  .aud_modal-in-wrap {
-    text-align: center;
-  }
-  /*----------  close  ----------*/
-  .aud_modal-close {
-    text-align: right;
-  }
-  .aud_modal-close-btn {
-    margin: 15px;
-  }
-  /*----------  volume  ----------*/
-  .aud_modal-volume {
-    display: flex;
-    justify-content: center;
-  }
-  .aud_volume-wrap {
-    padding: 0;
-  }
-}
-
-/*=====  End of modal popup  ======*/
-
 /*=============================================
 =            flexbox wrapper            =
 =============================================*/
@@ -749,7 +709,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
 }
 .aud_tog-btn {
   display: inline-block;
-  width: 80px;
+  width: 60px;
   height: 60px;
   position: absolute;
   margin: auto;
@@ -766,7 +726,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
   background-position: center;
   border-radius: 100%;
   transform: translateY(-50%);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 /*=====  End of control menu toggle  ======*/
 
@@ -782,8 +742,8 @@ $modal-bg-section: lighten($modal-bg, 4%);
   max-height: 45px;
 
   @media all and (min-width: $break-md) {
-    max-width: 65px;
-    max-height: 65px;
+    max-width: 55px;
+    max-height: 55px;
   }
 }
 /*=====  End of thumbnail image  ======*/
@@ -821,6 +781,7 @@ $modal-bg-section: lighten($modal-bg, 4%);
   padding: 5px;
   font-size: 0.8rem;
   font-weight: bold;
+  line-height: 1em;
 }
 .aud_title,
 .aud_title-text {
@@ -966,4 +927,69 @@ $modal-bg-section: lighten($modal-bg, 4%);
 }
 
 /*=====  End of input range slider  ======*/
+</style>
+
+<style lang="scss">
+@import '../../style/base/_variables.scss';
+/*=============================================
+=            modal popup            =
+=============================================*/
+$modal-bg: #0d0d0f;
+$modal-bg-section: lighten($modal-bg, 4%);
+.aud_modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.92);
+
+  .aud_modal-bg {
+    background: $modal-bg-section;
+  }
+  .aud_modal-section {
+    text-align: center;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 10px;
+  }
+  .aud_modal-in {
+    width: 950px;
+    height: 950px;
+    max-height: 90vh;
+    max-width: calc(100% - 30px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 10px 15px;
+    margin: auto;
+    overflow: auto;
+    background: $modal-bg;
+    border: $color-accent-3;
+  }
+  .aud_modal-in-wrap {
+    text-align: center;
+  }
+  /*----------  close  ----------*/
+  .aud_modal-close {
+    text-align: right;
+  }
+  .aud_modal-close-btn {
+    margin: 15px;
+  }
+  /*----------  volume  ----------*/
+  .aud_modal-volume {
+    display: flex;
+    justify-content: center;
+  }
+  .aud_volume-wrap {
+    padding: 0;
+  }
+}
+
+/*=====  End of modal popup  ======*/
 </style>

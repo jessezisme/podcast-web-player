@@ -19,7 +19,7 @@
               <router-link
                 class="he-logo"
                 :to="{
-                  name: 'home'
+                  name: 'RouteHome'
                 }"
               >
                 Pod Nexus

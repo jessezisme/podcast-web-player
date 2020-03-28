@@ -7,7 +7,7 @@
 const PageSearch = () => import(/* webpackChunkName: "page-search" */ '../components/pages/PageSearch.vue');
 
 const RouteSearch = {
-  name: 'search',
+  name: 'RouteSearch',
   path: '/search/:routeSearch',
   components: {
     default: PageSearch
@@ -17,8 +17,15 @@ const RouteSearch = {
     default: true
   },
   meta: {
-    title: 'Search Results',
-    index: 'noindex'
+    metaTags: [
+      /**
+       * no index
+       */
+      {
+        name: 'robots',
+        content: 'noindex'
+      }
+    ]
   }
 };
 
