@@ -111,6 +111,14 @@ module.exports = (ENV, ARGV) => {
         {
           from: path.resolve(__dirname, './src/fonts'),
           to: path.resolve(__dirname, './dist/fonts')
+        },
+        {
+          from: path.resolve(__dirname, './src/favicon'),
+          to: path.resolve(__dirname, './dist/favicon')
+        },
+        {
+          from: path.resolve(__dirname, './src/img'),
+          to: path.resolve(__dirname, './dist/img')
         }
       ])
     ]
