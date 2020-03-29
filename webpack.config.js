@@ -13,7 +13,7 @@ module.exports = (ENV, ARGV) => {
       path: path.resolve(__dirname, 'dist/js'),
       filename: 'bundle.js'
     },
-    watch: true,
+    // watch: true,
     watchOptions: {
       ignored: /node_modules/,
       aggregateTimeout: 1000
