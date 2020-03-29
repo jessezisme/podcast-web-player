@@ -18,7 +18,15 @@ const RoutePodcast = {
   props: {
     default: true
   },
-  meta: {}
+  meta: {
+    title: 'PodNexus: Podcast Web Player Demo',
+    metaTags: [
+      {
+        name: 'description',
+        content: 'Find your next favorite podcast.'
+      }
+    ]
+  }
 };
 
 export default RoutePodcast;

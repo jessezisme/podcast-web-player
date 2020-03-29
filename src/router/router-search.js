@@ -17,13 +17,11 @@ const RouteSearch = {
     default: true
   },
   meta: {
+    title: 'PodNexus: Podcast Web Player Demo',
     metaTags: [
-      /**
-       * no index
-       */
       {
-        name: 'robots',
-        content: 'noindex'
+        name: 'description',
+        content: 'Find your next favorite podcast.'
       }
     ]
   }

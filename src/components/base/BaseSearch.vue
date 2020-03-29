@@ -302,11 +302,11 @@ export default {
   }
 }
 .search-drop {
+  position: absolute;
   width: 100%;
   max-width: 650px;
   max-height: 75vh;
   overflow-y: auto;
-  position: absolute;
   left: 0;
   right: 0;
   top: 100%;

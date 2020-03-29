@@ -5,11 +5,11 @@
     <!-- page -->
     <main class="b_main">
       <router-view></router-view>
-      <!-- audio player -->
-      <BaseAudio></BaseAudio>
     </main>
     <!-- footer -->
     <BaseFooter></BaseFooter>
+    <!-- audio player -->
+    <BaseAudio></BaseAudio>
   </div>
 </template>
 

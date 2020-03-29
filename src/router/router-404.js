@@ -12,15 +12,8 @@ const Route404 = {
   path: '*',
   component: Page404,
   meta: {
-    metaTags: [
-      /**
-       * no index
-       */
-      {
-        name: 'robots',
-        content: 'noindex'
-      }
-    ]
+    title: '404. You done did it.',
+    metaTags: []
   }
 };
 

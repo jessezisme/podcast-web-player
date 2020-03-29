@@ -62,7 +62,7 @@ module.exports = (ENV, ARGV) => {
               options: {
                 ident: 'postcss',
                 sourceMap: true,
-                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default' })],
+                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default', zindex: false })],
                 minimize: ARGV.mode === 'development' ? true : false
               }
             },
@@ -90,7 +90,7 @@ module.exports = (ENV, ARGV) => {
               options: {
                 ident: 'postcss',
                 sourceMap: true,
-                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default' })],
+                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default',  zindex: false })],
                 minimize: ARGV.mode === 'development' ? true : false
               }
             },

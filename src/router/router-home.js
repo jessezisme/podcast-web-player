@@ -12,10 +12,11 @@ const RouteHome = {
   path: '/',
   component: PageHome,
   meta: {
+    title: 'PodNexus: Podcast Web Player Demo',
     metaTags: [
       {
         name: 'description',
-        content: 'Search and listen to all your favorite podcasts.'
+        content: 'Find your next favorite podcast.'
       }
     ]
   }

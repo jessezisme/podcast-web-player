@@ -13,6 +13,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // Axios: for requests
 const axios = require('axios');
+// for public/static folder assets
+const STATIC_FOLDER_NAME = 'dist';
 
 /**
  * Routes:
@@ -56,7 +58,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, STATIC_FOLDER_NAME)));
 
 app.use(function(req, res, next) {
   // res.locals.user = req.user;
@@ -73,18 +75,20 @@ app.get('/manifest.webmanifest', function(req, res) {
   res.set('Content-Type', 'application/manifest+json');
   res.sendFile(path.join(__dirname, 'manifest.webmanifest'));
 });
+// api routes
 app.all('/api/*', appRoutes.api);
+// catch all for all others
 app.all('*', appRoutes.index);
 
 /**
  * error handlers
  */
 // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // error handler
 app.use(function(err, req, res, next) {

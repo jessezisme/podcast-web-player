@@ -1,10 +1,10 @@
 {
   "name": "PodNexus",
   "short_name": "PodNexus",
+  "start_url": "https://cryptic-meadow-43049.herokuapp.com",
+  "display": "browser",
   "icons": [
-    { "src": "/dist/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/dist/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
-  ],
-  "theme_color": "#23134a",
-  "background_color": "#23134a"
+    { "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
