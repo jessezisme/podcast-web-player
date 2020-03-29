@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=development nodemon --delay 2000ms ./bin/www",
-    "build": "webpack --mode=development & NODE_ENV=development nodemon --delay 2000ms ./bin/www --ignore dist/  ",
-    "start-prod": "NODE_ENV=production nodemon --delay 2000ms ./bin/www --ignore dist/ ",
-    "build-prod": "webpack --mode=production & NODE_ENV=production nodemon --delay 2000ms ./bin/www --ignore dist/ "
+    "start-dev": "NODE_ENV=development nodemon --delay 2000ms --ignore node_modules/ ./bin/www",
+    "build-dev": "webpack --mode=development --watch=true",
+    "start-prod": "NODE_ENV=production nodemon --delay 2000ms --ignore node_modules/ ./bin/www ",
+    "build-prod": "webpack --mode=production --watch=true",
+    "build": "webpack --mode=production --watch=false && node ./bin/www",
+    "heroku-postbuild": "webpack --mode=production --watch=false && node ./bin/www"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
