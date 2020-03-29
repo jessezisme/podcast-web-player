@@ -44,7 +44,7 @@
                 role="option"
                 tabindex="0"
                 :to="{
-                  name: 'podcast',
+                  name: 'RoutePodcast',
                   params: { routeName: metUtilUrl().prettyString(podcast.publisher_original), routeID: podcast.id }
                 }"
               >

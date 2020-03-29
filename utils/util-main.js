@@ -26,13 +26,13 @@ Util_main.stringifyURL = function(_URL, _paramObj) {
  * @param {string} getURL - url
  */
 Util_main.encodeURL = function(getURL) {
-  let getEncodedURL = encodeURI(getURL);
-  let getDecodedURL = decodeURI(getURL);
+  let getEncodedURL = encodeURI(getURL.toLowerCase());
+  let getDecodedURL = decodeURI(getURL.toLowerCase());
   // compare encoded against decoded to check if already encoded
   if (getEncodedURL === getDecodedURL) {
-    return getURL;
+    return getURL.toLowerCase();
   } else {
-    return getEncodedURL;
+    return getEncodedURL.toLowerCase();
   }
 };
 
