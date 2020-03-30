@@ -1,6 +1,4 @@
-# Project Title
-
-**PodNexus**
+# PodNexus
 
 **[Live Link](https://cryptic-meadow-43049.herokuapp.com/)**
 
