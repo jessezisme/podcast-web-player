@@ -95,8 +95,8 @@
                 <span class="ep_play-btn-in">
                   <!-- pause: if -->
                   <span
-                    aria-label="play"
-                    v-if="compPlayer.isPlaying && compPlayer.podcast && compPlayer.podcast.id == ep.id"
+                    aria-label="pause"
+                    v-if="compPlayer.isPlaying && compPlayer.episode && compPlayer.episode.id == ep.id"
                   >
                     <i aria-hidden="true" class="far fa-pause-circle"></i>
                   </span>
@@ -358,7 +358,7 @@ export default {
      */
     metPlayerPlayToggle: function(event, _ep) {
       const self = this;
-      let isPlaying = this.compPlayer && this.compPlayer.isPlaying;
+      let isPlaying = this.compPlayer && this.compPlayer.isPlaying && this.compPlayer.episode && this.compPlayer.episode.id == _ep.id;  
 
       let episode = Object.assign(_ep, {
         id: _ep.id,

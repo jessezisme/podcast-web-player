@@ -228,7 +228,7 @@ export default {
      */
     metPlayerPlayToggle: function(event, _ep) {
       const self = this;
-      let isPlaying = this.compPlayer && this.compPlayer.isPlaying;
+      let isPlaying = this.compPlayer && this.compPlayer.isPlaying && this.compPlayer.episode && this.compPlayer.episode.id == _ep.id;     
 
       let episode = Object.assign(_ep, {
         id: _ep.id,

@@ -627,6 +627,7 @@ export default {
      * @param {String} _code - error/message code of failure
      */
     metControlLoadError: function(_id, _code) {
+      /*
       const errorObj = {
         status: 'Error loading audio file',
         id: _id,
@@ -637,6 +638,7 @@ export default {
       } catch {
         console.log(JSON.stringify(errorObj));
       }
+      */
     },
     /**
      *
