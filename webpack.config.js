@@ -90,7 +90,7 @@ module.exports = (ENV, ARGV) => {
               options: {
                 ident: 'postcss',
                 sourceMap: true,
-                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default',  zindex: false })],
+                plugins: (loader) => [require('autoprefixer'), require('cssnano')({ preset: 'default', zindex: false })],
                 minimize: ARGV.mode === 'development' ? true : false
               }
             },
@@ -104,10 +104,6 @@ module.exports = (ENV, ARGV) => {
     plugins: [
       new VueLoaderPlugin(),
       new CopyPlugin([
-        {
-          from: path.resolve(__dirname, './src/assets'),
-          to: path.resolve(__dirname, './dist/assets')
-        },
         {
           from: path.resolve(__dirname, './src/fonts'),
           to: path.resolve(__dirname, './dist/fonts')

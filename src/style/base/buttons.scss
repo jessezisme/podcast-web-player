@@ -1,0 +1,38 @@
+@import './_variables.scss';
+
+button {
+  display: inline-block;
+  color: inherit;
+  cursor: pointer;
+  /* reset default */
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1.05em;
+  color: inherit;
+  cursor: pointer;
+}
+
+.b_btn {
+  @mixin mixin-btn {
+    background: linear-gradient(to right, lighten($color-accent-2, 1%), $color-accent-2);
+    padding: 8px 13px;
+    color: $text-light;
+    line-height: 1.05em;
+    font-weight: bold;
+    border: 1px solid $color-accent-3;
+  }
+  @include mixin-btn;
+
+  &-secondary {
+    @include mixin-btn;
+    background: $color-grey-80;
+    color: $text-light;
+  }
+  &-large {
+    @include mixin-btn;
+    width: 100%;
+    max-width: 250px;
+  }
+}

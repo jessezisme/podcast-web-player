@@ -1,5 +1,5 @@
 <template>
-  <main class="b_wrapper">
+  <div class="b_wrapper">
     <!-- # podcast intro # -->
     <div class="intro" v-if="compPodDetails">
       <div class="intro_img-wrap">
@@ -87,7 +87,7 @@
       </button>
     </div>
     <!-- /end next/load more -->
-  </main>
+  </div>
 </template>
 
 <script>
