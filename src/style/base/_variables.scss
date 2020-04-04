@@ -24,30 +24,20 @@ $color-blue: #0a67c2;
 $color-red: #7b1427;
 $color-green: #092b22;
 /*----------  accent colors  ----------*/
-$color-accent-1: #020305;
-$color-accent-2: #23134a;
+$color-accent-1: #110f15;
+$color-accent-2: #150a21;
 $color-accent-3: #cd6fff;
 
 /*=====  End of Colors  ======*/
 
 /*=============================================
-=            Media Breakpoints, Grid & Spacing      =
+=     Media Breakpoints     =
 =============================================*/
 $break-sm: 576px;
 $break-md: 768px;
 $break-lg: 992px;
 $break-xl: 1200px;
 
-$grid-columns: 12;
-$grid-padding: 15px;
-$grid-max-width: 1600px;
-
-@mixin initGrid($counter, $breakpoint) {
-  .col-#{$breakpoint}-#{$counter} {
-    width: ($counter / $grid-columns) * 100%;
-    float: left;
-  }
-}
 /*=====  End of Grid & Spacing   ======*/
 
 /*=============================================

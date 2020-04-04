@@ -5,16 +5,18 @@
  *
  */
 @import '~normalize.css';
-@import './base/base.scss';
+@import './base/global.scss';
+@import './base/helpers.scss';
+@import './base/buttons.scss';
+@import './base/forms.scss';
+@import './base/links.scss';
+@import './base/typography.scss';
 
 /*=============================================
-=            vendor libraries            =
+=            vendor librariers            =
 =============================================*/
-
-/*----------  animate.css, with customizations  ----------*/
+/**
+ * animate.css with customizations
+ */
 @import './vendor/animate.scss';
-
-/*----------  grid  ----------*/
-@import './base/grid.scss';
-
-/*=====  End of vendor libraries  ======*/
+/*=====  End of vendor librariers  ======*/
