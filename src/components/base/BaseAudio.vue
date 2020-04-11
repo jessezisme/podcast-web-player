@@ -55,7 +55,8 @@
               class="aud_prog"
               type="range"
               ref="BaseAudio-player-progress-slider-1"
-              v-on:mousedown="metPlayerProgressUserModifying"
+              @touchstart="metPlayerProgressUserModifying"
+              @mousedown="metPlayerProgressUserModifying"
               step="1"
               min="1"
               value="1"
@@ -65,7 +66,8 @@
             />
           </div>
           <!-- volume control -->
-          <div class="aud_volume-wrap b_hide-xs b_hide-sm">
+          <!-- hide volume controls if ios or android -->
+          <div class="aud_volume-wrap b_hide-xs b_hide-sm" v-if="!isIosOrAndroid">
             <span class="aud_volume-icon-wrap">
               <i
                 class="fas"
@@ -150,7 +152,8 @@
                 class="aud_prog"
                 type="range"
                 ref="BaseAudio-player-progress-slider-2"
-                v-on:mousedown="metPlayerProgressUserModifying"
+                @touchstart="metPlayerProgressUserModifying"
+                @mousedown="metPlayerProgressUserModifying"
                 step="1"
                 min="1"
                 value="1"
@@ -161,7 +164,8 @@
             </div>
           </div>
           <!-- volume -->
-          <div class="aud_modal-section aud_modal-bg">
+          <!-- hide volume controls if ios or android -->
+          <div class="aud_modal-section aud_modal-bg" v-if="!isIosOrAndroid">
             <div class="aud_modal-volume">
               <div class="aud_volume-wrap">
                 <span class="aud_volume-icon-wrap">
@@ -219,6 +223,11 @@ export default {
       isLoaded: false,
       isMounted: false,
       isPlayerProgressActive: false,
+      // detect if IOS or Android
+      isIosOrAndroid:
+        window.navigator &&
+        window.navigator.userAgent &&
+        (/iPad|iPhone|iPod|iOS/g.test(window.navigator.userAgent) || /android/gi.test(window.navigator.userAgent)),
       /*
         player controls
       */
@@ -571,8 +580,9 @@ export default {
         }
         // clear mousedown flag
         self.isPlayerProgressActive = false;
-        // clear listener
+        // clear listeners
         document.removeEventListener('mouseup', seekCheckBind);
+        document.removeEventListener('touchend', seekCheckBind);
       }
       let seekCheckBind = seekCheck.bind(self, $inputProgress);
       /*
@@ -580,6 +590,16 @@ export default {
         in case mouseup occurs outside of input
       */
       document.addEventListener('mouseup', seekCheckBind);
+      // touchend for touch devices; ios won't fire mouseup for non-focusable elements
+      document.addEventListener('touchend', seekCheckBind);
+      /*
+        set focus on input
+      */
+      try {
+        event.currentTarget.focus();
+      } catch (err) {
+        console.info(err);
+      }
     },
 
     /**
@@ -823,7 +843,7 @@ export default {
   width: 100%;
   max-width: 1088px;
   text-align: center;
-  margin: 10px;
+  padding: 10px;
 }
 
 /* slider */
@@ -839,93 +859,90 @@ export default {
  * Built with http://danielstern.ca/range.css/#/
  *
  */
-.aud_range-styling {
-  & {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 5px;
-    margin: 5px 0;
-  }
-  &:focus {
-    outline: none;
-  }
-  &::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-    background: rgba(239, 239, 239, 0.8);
-    border-radius: 0px;
-    border: 0.2px solid rgba(239, 239, 239, 0.25);
-  }
-  &::-webkit-slider-thumb {
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-    border: 1px solid #706097;
-    height: 15px;
-    width: 15px;
-    border-radius: 50px;
-    background: #706097;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -5.2px;
-  }
-  &:focus::-webkit-slider-runnable-track {
-    background: rgba(239, 239, 239, 0.8);
-  }
-  &::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-    // background: rgba(239, 239, 239, 0.8);
-    border-radius: 0px;
-    border: 0.2px solid rgba(239, 239, 239, 0.25);
-  }
-  &::-moz-range-thumb {
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-    border: 1px solid #706097;
-    height: 15px;
-    width: 15px;
-    border-radius: 50px;
-    background: #706097;
-    cursor: pointer;
-  }
-  &::-ms-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
-  }
-  &::-ms-fill-lower {
-    background: rgba(239, 239, 239, 0.8);
-    border: 0.2px solid rgba(239, 239, 239, 0.25);
-    border-radius: 0px;
-    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-  }
-  &::-ms-fill-upper {
-    background: rgba(239, 239, 239, 0.8);
-    border: 0.2px solid rgba(239, 239, 239, 0.25);
-    border-radius: 0px;
-    box-shadow: 0px 0px 0.4px rgba(239, 239, 239, 0.08), 0px 0px 0px rgba(252, 252, 252, 0.08);
-  }
-  &::-ms-thumb {
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-    border: 1px solid #706097;
-    height: 15px;
-    width: 15px;
-    border-radius: 50px;
-    background: #706097;
-    cursor: pointer;
-    height: 5px;
-  }
-  &:focus::-ms-fill-lower {
-    background: rgba(239, 239, 239, 0.8);
-  }
-  &:focus::-ms-fill-upper {
-    background: rgba(239, 239, 239, 0.8);
-  }
+input[type='range'].aud_range-styling {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 7.5px 0;
+}
+input[type='range'].aud_range-styling:focus {
+  outline: none;
+}
+input[type='range'].aud_range-styling::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  background: #efefef;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+input[type='range'].aud_range-styling::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(112, 96, 151, 0.93);
+  height: 20px;
+  width: 20px;
+  border-radius: 100px;
+  background: #706097;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8.5px;
+}
+input[type='range'].aud_range-styling:focus::-webkit-slider-runnable-track {
+  background: #ffffff;
+}
+input[type='range'].aud_range-styling::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  background: #efefef;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+input[type='range'].aud_range-styling::-moz-range-thumb {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(112, 96, 151, 0.93);
+  height: 20px;
+  width: 20px;
+  border-radius: 100px;
+  background: #706097;
+  cursor: pointer;
+}
+input[type='range'].aud_range-styling::-ms-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type='range'].aud_range-styling::-ms-fill-lower {
+  background: #dbdbdb;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+}
+input[type='range'].aud_range-styling::-ms-fill-upper {
+  background: #efefef;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+}
+input[type='range'].aud_range-styling::-ms-thumb {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(112, 96, 151, 0.93);
+  height: 20px;
+  width: 20px;
+  border-radius: 100px;
+  background: #706097;
+  cursor: pointer;
+  height: 5px;
+}
+input[type='range'].aud_range-styling:focus::-ms-fill-lower {
+  background: #efefef;
+}
+input[type='range'].aud_range-styling:focus::-ms-fill-upper {
+  background: #ffffff;
 }
 
 /*=====  End of input range slider  ======*/
