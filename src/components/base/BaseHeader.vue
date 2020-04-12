@@ -22,7 +22,7 @@
                   name: 'RouteHome'
                 }"
               >
-                Pod Nexus
+                PodNexus
               </router-link>
             </span>
           </div>
@@ -112,9 +112,10 @@ scrollPosY
   }
   &-flex {
     width: 100%;
+    min-height: 33px;
     display: flex;
     flex-wrap: nowrap;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
   }
 
@@ -128,6 +129,7 @@ scrollPosY
   }
   /*----------  search button  ----------*/
   &-search-btn {
+    margin-right: 5px;
     border: none;
     background: transparent;
     -webkit-appearance: none;
@@ -136,14 +138,14 @@ scrollPosY
 
     /* show search button only on mobile */
     display: inline-block;
-    @media all and (min-width: $break-sm) {
+    @media all and (min-width: $break-md) {
       display: none;
     }
   }
   /*----------  Search COMPONENT  ----------*/
   /* target the child search component */
   &-search {
-    @media all and (min-width: $break-sm) {
+    @media all and (min-width: $break-md) {
       display: block !important;
     }
   }
@@ -158,6 +160,7 @@ scrollPosY
   &-logo {
     text-decoration: none;
     font-weight: bold;
+    word-break: keep-all;
   }
 }
 </style>
