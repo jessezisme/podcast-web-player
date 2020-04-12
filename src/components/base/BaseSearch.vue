@@ -48,7 +48,7 @@
                   params: { routeName: metUtilUrl().prettyString(podcast.publisher_original), routeID: podcast.id }
                 }"
               >
-                <span>{{ podcast.publisher_original }}</span>
+                <span>{{ podcast.title_original }}</span>
               </router-link>
             </div>
           </div>
@@ -265,7 +265,8 @@ export default {
   &-input {
     display: inline-block;
     width: 100%;
-    height: 2rem;
+    padding-top: .5em; 
+    padding-bottom: .5em; 
     padding-left: 10px;
     border-radius: 15px;
     padding-right: 80px;

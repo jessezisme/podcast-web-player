@@ -52,7 +52,7 @@
           <!-- progress/seek -->
           <div class="aud_prog-wrap b_hide-xs b_hide-sm">
             <input
-              class="aud_prog"
+              class="aud_prog aud_range-styling "
               type="range"
               ref="BaseAudio-player-progress-slider-1"
               @touchstart="metPlayerProgressUserModifying"
@@ -80,7 +80,7 @@
               ></i>
             </span>
             <input
-              class="aud_volume aud_range-styling "
+              class="aud_volume aud_range-styling"
               type="range"
               min="0"
               max="1"
@@ -149,7 +149,7 @@
           <div class="aud_modal-section aud_modal-bg">
             <div class="aud_prog-wrap">
               <input
-                class="aud_prog"
+                class="aud_prog aud_range-styling"
                 type="range"
                 ref="BaseAudio-player-progress-slider-2"
                 @touchstart="metPlayerProgressUserModifying"
@@ -180,7 +180,7 @@
                   ></i>
                 </span>
                 <input
-                  class="aud_volume aud_range-styling "
+                  class="aud_volume aud_range-styling"
                   type="range"
                   min="0"
                   max="1"
@@ -718,6 +718,7 @@ export default {
 .aud_prog-wrap {
   flex-grow: 1;
 }
+
 /*=====  End of flexbox wrapper  ======*/
 
 /*=============================================
@@ -814,8 +815,103 @@ export default {
 /*=====  End of podcast name display  ======*/
 
 /*=============================================
-=            Volume            =
+=            Sliders             =
 =============================================*/
+
+/*----------  shared input progress styling  ----------*/
+/**
+ *
+ * Built with http://danielstern.ca/range.css/#/
+ *
+ */
+input[type='range'].aud_range-styling {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 7px 0;
+  border-radius: 4px;
+}
+input[type='range'].aud_range-styling:focus {
+  outline: none;
+}
+input[type='range'].aud_range-styling::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  border: 0px solid #010101;
+}
+input[type='range'].aud_range-styling::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
+  border: 10px solid #706097;
+  height: 20px;
+  width: 21px;
+  border-radius: 50px;
+  background: #706097;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+input[type='range'].aud_range-styling:focus::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.25);
+}
+input[type='range'].aud_range-styling::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  border: 0px solid #010101;
+}
+input[type='range'].aud_range-styling::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
+  border: 10px solid #706097;
+  height: 20px;
+  width: 21px;
+  border-radius: 50px;
+  background: #706097;
+  cursor: pointer;
+}
+input[type='range'].aud_range-styling::-ms-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type='range'].aud_range-styling::-ms-fill-lower {
+  background: rgba(0, 0, 0, 0.25);
+  border: 0px solid #010101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+}
+input[type='range'].aud_range-styling::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.25);
+  border: 0px solid #010101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+}
+input[type='range'].aud_range-styling::-ms-thumb {
+  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
+  border: 10px solid #706097;
+  height: 20px;
+  width: 21px;
+  border-radius: 50px;
+  background: #706097;
+  cursor: pointer;
+  height: 6px;
+}
+input[type='range'].aud_range-styling:focus::-ms-fill-lower {
+  background: rgba(0, 0, 0, 0.25);
+}
+input[type='range'].aud_range-styling:focus::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/*----------  volume   ----------*/
 .aud_volume-wrap {
   min-width: 150px;
   display: flex;
@@ -823,8 +919,6 @@ export default {
   padding-left: 20px;
 }
 .aud_volume {
-  @extend .aud_range-styling;
-
   max-width: 125px;
   margin-left: 8px !important;
 }
@@ -833,11 +927,8 @@ export default {
   overflow: visible;
   font-size: 1.25rem;
 }
-/*=====  End of Volume  ======*/
 
-/*=============================================
-=            input range slider            =
-=============================================*/
+/*----------  progress   ----------*/
 /* wrapper */
 .aud_prog-wrap {
   width: 100%;
@@ -850,102 +941,9 @@ export default {
 .aud_prog {
   display: inline-block;
   width: 100%;
-
-  @extend .aud_range-styling;
 }
 
-/**
- *
- * Built with http://danielstern.ca/range.css/#/
- *
- */
-input[type='range'].aud_range-styling {
-  -webkit-appearance: none;
-  width: 100%;
-  margin: 7.5px 0;
-}
-input[type='range'].aud_range-styling:focus {
-  outline: none;
-}
-input[type='range'].aud_range-styling::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
-  background: #efefef;
-  border-radius: 1px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-input[type='range'].aud_range-styling::-webkit-slider-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid rgba(112, 96, 151, 0.93);
-  height: 20px;
-  width: 20px;
-  border-radius: 100px;
-  background: #706097;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -8.5px;
-}
-input[type='range'].aud_range-styling:focus::-webkit-slider-runnable-track {
-  background: #ffffff;
-}
-input[type='range'].aud_range-styling::-moz-range-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
-  background: #efefef;
-  border-radius: 1px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-input[type='range'].aud_range-styling::-moz-range-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid rgba(112, 96, 151, 0.93);
-  height: 20px;
-  width: 20px;
-  border-radius: 100px;
-  background: #706097;
-  cursor: pointer;
-}
-input[type='range'].aud_range-styling::-ms-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-input[type='range'].aud_range-styling::-ms-fill-lower {
-  background: #dbdbdb;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
-}
-input[type='range'].aud_range-styling::-ms-fill-upper {
-  background: #efefef;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
-}
-input[type='range'].aud_range-styling::-ms-thumb {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  border: 1px solid rgba(112, 96, 151, 0.93);
-  height: 20px;
-  width: 20px;
-  border-radius: 100px;
-  background: #706097;
-  cursor: pointer;
-  height: 5px;
-}
-input[type='range'].aud_range-styling:focus::-ms-fill-lower {
-  background: #efefef;
-}
-input[type='range'].aud_range-styling:focus::-ms-fill-upper {
-  background: #ffffff;
-}
-
-/*=====  End of input range slider  ======*/
+/*=====  End of Sliders   ======*/
 </style>
 
 <style lang="scss">

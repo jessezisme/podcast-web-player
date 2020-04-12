@@ -3,7 +3,7 @@
     <div class="b_wrapper">
       <div class="foo-in">
         <div class="foo-name">
-          Pod Nexus
+          PodNexus
         </div>
         <div class="foo-etc">
           <p>
