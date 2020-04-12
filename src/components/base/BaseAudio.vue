@@ -824,91 +824,95 @@ export default {
  * Built with http://danielstern.ca/range.css/#/
  *
  */
+/* manually set */
+.aud_range-styling {
+  background: transparent;
+}
+
 input[type='range'].aud_range-styling {
   -webkit-appearance: none;
   width: 100%;
-  margin: 7px 0;
-  border-radius: 4px;
+  margin: 8px 0;
 }
 input[type='range'].aud_range-styling:focus {
   outline: none;
 }
 input[type='range'].aud_range-styling::-webkit-slider-runnable-track {
   width: 100%;
-  height: 6px;
+  height: 4px;
   cursor: pointer;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  border: 0px solid #010101;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.01), 0px 0px 1px rgba(13, 13, 13, 0.01);
+  background: #e1e1e1;
+  border-radius: 1px;
+  border: 0px solid rgba(0, 0, 0, 0);
 }
 input[type='range'].aud_range-styling::-webkit-slider-thumb {
-  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
-  border: 10px solid #706097;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
   height: 20px;
-  width: 21px;
-  border-radius: 50px;
-  background: #706097;
+  width: 20px;
+  border-radius: 100px;
+  background: #7d6ea3;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -7px;
+  margin-top: -8px;
 }
 input[type='range'].aud_range-styling:focus::-webkit-slider-runnable-track {
-  background: rgba(0, 0, 0, 0.25);
+  background: #f5f5f5;
 }
 input[type='range'].aud_range-styling::-moz-range-track {
   width: 100%;
-  height: 6px;
+  height: 4px;
   cursor: pointer;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  border: 0px solid #010101;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.01), 0px 0px 1px rgba(13, 13, 13, 0.01);
+  background: #e1e1e1;
+  border-radius: 1px;
+  border: 0px solid rgba(0, 0, 0, 0);
 }
 input[type='range'].aud_range-styling::-moz-range-thumb {
-  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
-  border: 10px solid #706097;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
   height: 20px;
-  width: 21px;
-  border-radius: 50px;
-  background: #706097;
+  width: 20px;
+  border-radius: 100px;
+  background: #7d6ea3;
   cursor: pointer;
 }
 input[type='range'].aud_range-styling::-ms-track {
   width: 100%;
-  height: 6px;
+  height: 4px;
   cursor: pointer;
   background: transparent;
   border-color: transparent;
   color: transparent;
 }
 input[type='range'].aud_range-styling::-ms-fill-lower {
-  background: rgba(0, 0, 0, 0.25);
-  border: 0px solid #010101;
-  border-radius: 50px;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  background: #cdcdcd;
+  border: 0px solid rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.01), 0px 0px 1px rgba(13, 13, 13, 0.01);
 }
 input[type='range'].aud_range-styling::-ms-fill-upper {
-  background: rgba(0, 0, 0, 0.25);
-  border: 0px solid #010101;
-  border-radius: 50px;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+  background: #e1e1e1;
+  border: 0px solid rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.01), 0px 0px 1px rgba(13, 13, 13, 0.01);
 }
 input[type='range'].aud_range-styling::-ms-thumb {
-  box-shadow: 0px 0px 0px #706097, 0px 0px 0px #7d6ea3;
-  border: 10px solid #706097;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
   height: 20px;
-  width: 21px;
-  border-radius: 50px;
-  background: #706097;
+  width: 20px;
+  border-radius: 100px;
+  background: #7d6ea3;
   cursor: pointer;
-  height: 6px;
+  height: 4px;
 }
 input[type='range'].aud_range-styling:focus::-ms-fill-lower {
-  background: rgba(0, 0, 0, 0.25);
+  background: #e1e1e1;
 }
 input[type='range'].aud_range-styling:focus::-ms-fill-upper {
-  background: rgba(0, 0, 0, 0.25);
+  background: #f5f5f5;
 }
 
 /*----------  volume   ----------*/
