@@ -1,6 +1,6 @@
 # PodNexus
 
-**[Live Link](https://cryptic-meadow-43049.herokuapp.com/)**
+**[Live Link](https://podcast-web-player.onrender.com)**
 
 A podcast web app with search and play functionality.
 
