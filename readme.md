@@ -1,16 +1,75 @@
-# PodNexus
+# Nuxt 3 Minimal Starter
 
-**[Live Link](https://podcast-web-player.onrender.com)**
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-A podcast web app with search and play functionality.
+## Setup
 
-If a podcast fails to play, it's likely the result of the podcast API returning the episode, but it has since been deleted by the publisher; the audio is 404'ing.
+Make sure to install the dependencies:
 
-## Built With
+```bash
+# npm
+npm install
 
-- [Vue.js](https://vuejs.org/) - Front-end JavaScript framework.
-- [Listen Notes](https://www.listennotes.com/) - Podcast API (finally, a good one!).
-- [Howler.js](https://howlerjs.com/) - Audio player.
-- [Node.js](https://nodejs.org/en/) - I'm sure you've heard of it.
-- [Webpack](https://webpack.js.org/) - Bundler, a must for single-file vue components
-- [Heroku](https://dashboard.heroku.com/) - Platform
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
