@@ -3,14 +3,13 @@ import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
 import { FetchOptions } from 'ofetch';
 import { type NitroFetchOptions } from 'nitropack';
 
-class PodClientService {
-  async getTypeahead(
+export class PodClientService {
+  getTypeahead(
     fetchOptions: TypeaheadTypes.RouteGetParams & UseFetchOptions<'json'>
   ) {
-    if (fetchOptions?.query?.q) {
-      return useFetch<TypeaheadTypes.RouteGetParams>('/typeahead');
-    }
+    return useFetch<TypeaheadTypes.ServerResponse>('/api/podcast/typeahead');
+    // if (fetchOptions?.query?.q) {
+    //   return useFetch<TypeaheadTypes.RouteGetParams>('/typeahead');
+    // }
   }
 }
-
-export default new PodClientService();

@@ -3,7 +3,7 @@ import { build } from 'nuxt';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@vueuse/nuxt'],
   ssr: false,
   imports: {
     dirs: [
@@ -15,5 +15,10 @@ export default defineNuxtConfig({
       'composables/**',
     ],
   },
-  css: ['@/assets/style/style.scss'],
+  postcss: {
+    plugins: {
+      'postcss-import': {},
+    },
+  },
+  css: ['@/assets/style/index.css'],
 });

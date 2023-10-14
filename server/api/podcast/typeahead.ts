@@ -1,11 +1,11 @@
 import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
-import * as PodcastTypes from '~/shared/podcast/api/types';
+import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
 
 export default defineEventHandler((event) => {
   return new PodcastDataModel().formatTypeaheadData(mockTypeahead);
 });
 
-const mockTypeahead: PodcastTypes.Typeahead.ServerResponseRaw = {
+const mockTypeahead: TypeaheadTypes.ServerResponseRaw = {
   terms: ['star wars'],
   genres: [
     {

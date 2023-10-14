@@ -1,10 +1,20 @@
 <template>
-  <div>
-
-    <header></header>
-    <TheHeader></TheHeader>
-    <footer></footer>
-
+  <div id="app-cont">
+    <TheHeader />
+    <main id="app-main">
+      <NuxtPage />
+    </main>
+    <TheFooter />
   </div>
 </template>
-<!-- <NuxtWelcome /> -->
+
+<style>
+#app-cont {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#app-main {
+  flex-grow: 1;
+}
+</style>

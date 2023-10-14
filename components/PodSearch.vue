@@ -1,28 +1,106 @@
 <template>
-  <UCommandPalette v-model="selected" :groups="groups" />
-
-  {{ groups }}
+  <UCommandPalette
+    @update:model-value="selectNavigate"
+    @keyup.enter="submitSearch"
+    v-model="selected"
+    :groups="groups"
+    :fuse="{
+      fuseOptions: {
+        threshold: 1.0,
+      },
+    }"
+    :debounce="0"
+    :loading="isLoading"
+    :nullable="false"
+    :autoclear="false"
+  />
 </template>
 
 <script setup lang="ts">
-import PodClientService from '~/shared/podcast/services';
+import { refDebounced } from '@vueuse/core';
+import { PodClientService } from '~/shared/podcast/api/services';
+
+type DataResponseType = Awaited<
+  ReturnType<typeof getResultsRequest>
+>['data']['value'];
+type DataResultItem =
+  | (typeof resultsGenres.value)[0]
+  | (typeof resultsPodcasts.value)[0];
+
+const serviceTypeahead = new PodClientService();
 
 const selected = ref([]);
+
+const query = ref('');
+const queryDebounce = refDebounced(query, 600);
+
+const results = ref<DataResponseType>();
+const resultsGenres = computed(() => {
+  const genres = results.value?.genres || [];
+  return genres.map((val) => ({ ...val, label: `${val.name}` }));
+});
+const resultsPodcasts = computed(() => {
+  const podcasts = results.value?.podcasts || [];
+  return podcasts.map((val) => ({ ...val, label: `${val.title_original}` }));
+});
+
+const isLoading = ref(false);
+
+const getResultsRequest = async () => {
+  isLoading.value = true;
+  const response = await serviceTypeahead.getTypeahead({
+    key: queryDebounce.value,
+    query: { q: queryDebounce.value },
+  });
+  isLoading.value = false;
+  return response;
+};
+
+const getResultsWatcher = watch(queryDebounce, async (newVal, oldVal) => {
+  const isMatch = () => query.value === newVal;
+
+  if (isMatch() && newVal) {
+    let { data } = await getResultsRequest();
+    if (isMatch() && data.value) {
+      results.value = data.value;
+    }
+  }
+});
+
 const groups = computed(() => {
   return [
     {
-      key: 'podcasts',
+      key: 'Podcasts',
+      label: 'Podcasts',
       search: async (q: string) => {
-        return [];
-        // const { data } = await PodClientService.getTypeahead({
-        //   params: { q: 'foo' },
-        // });
-        // return data.value?.podcasts.map((val) => ({
-        //   ...val,
-        //   label: val?._appLink,
-        // }));
+        query.value = q.trim();
+        return q.trim() ? resultsPodcasts || [] : [];
+      },
+    },
+    {
+      key: 'Genres',
+      label: 'Genres',
+      search: async (q: string) => {
+        query.value = q.trim();
+        return q.trim() ? resultsGenres || [] : [];
       },
     },
   ];
 });
+
+const submitSearch = async () => {
+  await nextTick();
+  if (!selected.value[0]) {
+    navigateTo({
+      path: '/search',
+      query: {
+        q: query.value,
+      },
+    });
+  }
+};
+
+const selectNavigate = (option: DataResultItem) => {
+  navigateTo(`${option._app.link}`);
+};
 </script>
