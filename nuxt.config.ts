@@ -3,7 +3,7 @@ import { build } from 'nuxt';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', '@vueuse/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/ui', '@vueuse/nuxt'],
   ssr: false,
   imports: {
     dirs: [

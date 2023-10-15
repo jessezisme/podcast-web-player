@@ -1,15 +1,25 @@
-import { AsyncDataOptions, UseFetchOptions } from 'nuxt/app';
+import { UseFetchOptions } from 'nuxt/app';
 import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
-import { FetchOptions } from 'ofetch';
-import { type NitroFetchOptions } from 'nitropack';
+import * as PodcastTypes from '~/shared/podcast/api/types/podcast-get';
+
+type AppUseFetchOptions<T> = Parameters<typeof useFetch<T>>[1];
+
+const defaultOptions = { lazy: true };
 
 export class PodClientService {
-  getTypeahead(
-    fetchOptions: TypeaheadTypes.RouteGetParams & UseFetchOptions<'json'>
+  getPodcast<ResponseData extends PodcastTypes.ServerResponse>(
+    fetchOptions: PodcastTypes.RouteParams & AppUseFetchOptions<ResponseData>
   ) {
-    return useFetch<TypeaheadTypes.ServerResponse>('/api/podcast/typeahead');
-    // if (fetchOptions?.query?.q) {
-    //   return useFetch<TypeaheadTypes.RouteGetParams>('/typeahead');
-    // }
+    const options = { ...defaultOptions, ...fetchOptions };
+    return useFetch<ResponseData>('/api/podcast/podcast-single', { ...options });
+  }
+
+  getTypeahead<ResponseData extends TypeaheadTypes.ServerResponse>(
+    fetchOptions: TypeaheadTypes.RouteGetParams & AppUseFetchOptions<ResponseData>
+  ) {
+    const options = { ...defaultOptions, ...fetchOptions };
+    return useFetch<ResponseData>('/api/podcast/typeahead', {
+      ...options,
+    });
   }
 }

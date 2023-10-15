@@ -26,15 +26,12 @@ const mockTypeahead: TypeaheadTypes.ServerResponseRaw = {
       title_highlighted:
         'Rebel Force Radio: <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> Podcast',
       publisher_original: 'Star Wars',
-      publisher_highlighted:
-        '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      publisher_highlighted: '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
     },
     {
       id: '8e90b8f0c9eb4c11b13f9dc331ed747c',
-      image:
-        'https://production.listennotes.com/podcasts/inside-star-wars-wondery-F8ZBEqObITM-e8ydUYnAOJv.1400x1400.jpg',
-      thumbnail:
-        'https://production.listennotes.com/podcasts/inside-star-wars-wondery-2Ep_n06B8ad-e8ydUYnAOJv.300x300.jpg',
+      image: 'https://production.listennotes.com/podcasts/inside-star-wars-wondery-F8ZBEqObITM-e8ydUYnAOJv.1400x1400.jpg',
+      thumbnail: 'https://production.listennotes.com/podcasts/inside-star-wars-wondery-2Ep_n06B8ad-e8ydUYnAOJv.300x300.jpg',
       title_original: 'Inside Star Wars',
       explicit_content: false,
       title_highlighted:
@@ -53,8 +50,7 @@ const mockTypeahead: TypeaheadTypes.ServerResponseRaw = {
       title_highlighted:
         '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span> STUFF Podcast',
       publisher_original: 'Star Wars',
-      publisher_highlighted:
-        '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      publisher_highlighted: '<span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
     },
     {
       id: '9af8a811286b4fffa82e4c083cf5e711',

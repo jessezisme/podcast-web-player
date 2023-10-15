@@ -11,10 +11,8 @@ const mockSearch = {
       id: 'a5ae21acf75a43538b635cf6b089f0b3',
       rss: 'http://feeds.feedburner.com/FramesPerSecondPodcast',
       link: 'https://megaphone.link/STU5698215144?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/a5ae21acf75a43538b635cf6b089f0b3/',
-      image:
-        'https://production.listennotes.com/podcasts/frames-per-second-studio71-Tk47uwatlcN-J_3zM-VyFvj.1400x1400.jpg',
+      audio: 'https://www.listennotes.com/e/p/a5ae21acf75a43538b635cf6b089f0b3/',
+      image: 'https://production.listennotes.com/podcasts/frames-per-second-studio71-Tk47uwatlcN-J_3zM-VyFvj.1400x1400.jpg',
       podcast: {
         id: '88c28bd52e32422c8f3a71fab45aa77f',
         image:
@@ -24,8 +22,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/frames-per-second-studio71-nFjw84GgN7c-J_3zM-VyFvj.300x300.jpg',
         listen_score: 49,
         title_original: 'Frames Per Second',
-        listennotes_url:
-          'https://www.listennotes.com/c/88c28bd52e32422c8f3a71fab45aa77f/',
+        listennotes_url: 'https://www.listennotes.com/c/88c28bd52e32422c8f3a71fab45aa77f/',
         title_highlighted: 'Frames Per Second',
         publisher_original: 'Studio71',
         publisher_highlighted: 'Studio71',
@@ -37,8 +34,7 @@ const mockSearch = {
       pub_date_ms: 1576544400542,
       guid_from_rss: '90b15eb4-1fae-11ea-9f65-17cad885ccc2',
       title_original: 'Is Star Wars Overrated?',
-      listennotes_url:
-        'https://www.listennotes.com/e/a5ae21acf75a43538b635cf6b089f0b3/',
+      listennotes_url: 'https://www.listennotes.com/e/a5ae21acf75a43538b635cf6b089f0b3/',
       audio_length_sec: 778,
       explicit_content: true,
       title_highlighted:
@@ -53,8 +49,7 @@ const mockSearch = {
       id: '42b1898db6a84973b41879618002937b',
       rss: 'https://feeds.libsyn.com/125567/rss',
       link: 'https://www.vintagerpg.com/2019/12/star-wars-galaxy-guides/?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/42b1898db6a84973b41879618002937b/',
+      audio: 'https://www.listennotes.com/e/p/42b1898db6a84973b41879618002937b/',
       image:
         'https://production.listennotes.com/podcasts/the-vintage-rpg-podcast-vintage-rpg-aPsHYKgykCR-eq8uGUY6vXN.1400x1400.jpg',
       podcast: {
@@ -66,8 +61,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/the-vintage-rpg-podcast-vintage-rpg-03VBIC7U68Y-eq8uGUY6vXN.300x300.jpg',
         listen_score: 47,
         title_original: 'The Vintage RPG Podcast',
-        listennotes_url:
-          'https://www.listennotes.com/c/f3094a0b14684300a3d6b69a1063e708/',
+        listennotes_url: 'https://www.listennotes.com/c/f3094a0b14684300a3d6b69a1063e708/',
         title_highlighted: 'The Vintage RPG Podcast',
         publisher_original: 'Vintage RPG',
         publisher_highlighted: 'Vintage RPG',
@@ -79,8 +73,7 @@ const mockSearch = {
       pub_date_ms: 1575867600184,
       guid_from_rss: '9861105d-bf98-4684-871a-5cbe11484159',
       title_original: 'Star Wars Galaxy Guides',
-      listennotes_url:
-        'https://www.listennotes.com/e/42b1898db6a84973b41879618002937b/',
+      listennotes_url: 'https://www.listennotes.com/e/42b1898db6a84973b41879618002937b/',
       audio_length_sec: 1519,
       explicit_content: false,
       title_highlighted:
@@ -95,34 +88,28 @@ const mockSearch = {
       id: 'ea09b575d07341599d8d5b71f205517b',
       rss: 'https://theroughcut.libsyn.com/rss',
       link: 'http://theroughcutpod.com/?p=786&utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/ea09b575d07341599d8d5b71f205517b/',
-      image:
-        'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-YMha8DxnUbc-53MLh7NpAwm.1400x1400.jpg',
+      audio: 'https://www.listennotes.com/e/p/ea09b575d07341599d8d5b71f205517b/',
+      image: 'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-YMha8DxnUbc-53MLh7NpAwm.1400x1400.jpg',
       podcast: {
         id: '8758da9be6c8452884a8cab6373b007c',
-        image:
-          'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-YMha8DxnUbc-53MLh7NpAwm.1400x1400.jpg',
+        image: 'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-YMha8DxnUbc-53MLh7NpAwm.1400x1400.jpg',
         genre_ids: [264, 68],
         thumbnail:
           'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-DEkF_8ybj6A-53MLh7NpAwm.300x300.jpg',
         listen_score: 40,
         title_original: 'The Rough Cut',
-        listennotes_url:
-          'https://www.listennotes.com/c/8758da9be6c8452884a8cab6373b007c/',
+        listennotes_url: 'https://www.listennotes.com/c/8758da9be6c8452884a8cab6373b007c/',
         title_highlighted: 'The Rough Cut',
         publisher_original: 'Matt Feury',
         publisher_highlighted: 'Matt Feury',
         listen_score_global_rank: '2%',
       },
       itunes_id: 1471556007,
-      thumbnail:
-        'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-DEkF_8ybj6A-53MLh7NpAwm.300x300.jpg',
+      thumbnail: 'https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-DEkF_8ybj6A-53MLh7NpAwm.300x300.jpg',
       pub_date_ms: 1579507216188,
       guid_from_rss: '004f03c8-cdf9-4ff5-9d89-b2147f8d55cf',
       title_original: 'Star Wars - The Force Awakens',
-      listennotes_url:
-        'https://www.listennotes.com/e/ea09b575d07341599d8d5b71f205517b/',
+      listennotes_url: 'https://www.listennotes.com/e/ea09b575d07341599d8d5b71f205517b/',
       audio_length_sec: 1694,
       explicit_content: false,
       title_highlighted:
@@ -137,8 +124,7 @@ const mockSearch = {
       id: 'c877bf360bda4c74adea2ba066df6929',
       rss: 'https://feeds.megaphone.fm/ROOSTER7199250968',
       link: 'https://supercarlinbrothers.libsyn.com/star-wars-theory-the-great-star-wars-ice-cream-conspiracy?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/c877bf360bda4c74adea2ba066df6929/',
+      audio: 'https://www.listennotes.com/e/p/c877bf360bda4c74adea2ba066df6929/',
       image:
         'https://production.listennotes.com/podcasts/super-carlin-brothers-j-and-ben-carlin-biwhM2N35Rj-BodDr7iIAR3.1400x1400.jpg',
       podcast: {
@@ -150,8 +136,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/super-carlin-brothers-j-and-ben-carlin-EtH8D7G3Qyq-BodDr7iIAR3.300x300.jpg',
         listen_score: 53,
         title_original: 'Super Carlin Brothers',
-        listennotes_url:
-          'https://www.listennotes.com/c/8bdbb906eef04e5d8b391e947998e9af/',
+        listennotes_url: 'https://www.listennotes.com/c/8bdbb906eef04e5d8b391e947998e9af/',
         title_highlighted: 'Super Carlin Brothers',
         publisher_original: 'J and Ben Carlin',
         publisher_highlighted: 'J and Ben Carlin',
@@ -162,10 +147,8 @@ const mockSearch = {
         'https://production.listennotes.com/podcasts/super-carlin-brothers-j-and-ben-carlin-EtH8D7G3Qyq-BodDr7iIAR3.300x300.jpg',
       pub_date_ms: 1574355600377,
       guid_from_rss: 'd6549e8f-3718-4cbc-8fa0-6a5ce7c021b7',
-      title_original:
-        'Star Wars Theory: The Great Star Wars Ice Cream Conspiracy',
-      listennotes_url:
-        'https://www.listennotes.com/e/c877bf360bda4c74adea2ba066df6929/',
+      title_original: 'Star Wars Theory: The Great Star Wars Ice Cream Conspiracy',
+      listennotes_url: 'https://www.listennotes.com/e/c877bf360bda4c74adea2ba066df6929/',
       audio_length_sec: 638,
       explicit_content: false,
       title_highlighted:
@@ -180,8 +163,7 @@ const mockSearch = {
       id: 'a47ed9e517ed4767a679ac8499f27565',
       rss: 'https://filmthreat.libsyn.com/rss',
       link: 'https://filmthreat.libsyn.com/the-star-wars-saga-ranked?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/a47ed9e517ed4767a679ac8499f27565/',
+      audio: 'https://www.listennotes.com/e/p/a47ed9e517ed4767a679ac8499f27565/',
       image:
         'https://production.listennotes.com/podcasts/film-threat-film-threat-podcast-network-qh2IVg58zR6-cBuD3xXjTAG.1400x1400.jpg',
       podcast: {
@@ -193,8 +175,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/film-threat-film-threat-podcast-network-Awkm8hri9Sg-cBuD3xXjTAG.300x300.jpg',
         listen_score: 39,
         title_original: 'Film Threat',
-        listennotes_url:
-          'https://www.listennotes.com/c/f0a8fa8df3d04ec08fba8d317dafdeb0/',
+        listennotes_url: 'https://www.listennotes.com/c/f0a8fa8df3d04ec08fba8d317dafdeb0/',
         title_highlighted: 'Film Threat',
         publisher_original: 'Film Threat Podcast Network',
         publisher_highlighted: 'Film Threat Podcast Network',
@@ -206,8 +187,7 @@ const mockSearch = {
       pub_date_ms: 1577019600037,
       guid_from_rss: '7bbf8fdc-22cb-4e9b-b3cb-edc9cd59a71f',
       title_original: 'The Star Wars Saga Ranked',
-      listennotes_url:
-        'https://www.listennotes.com/e/a47ed9e517ed4767a679ac8499f27565/',
+      listennotes_url: 'https://www.listennotes.com/e/a47ed9e517ed4767a679ac8499f27565/',
       audio_length_sec: 1512,
       explicit_content: true,
       title_highlighted:
@@ -222,8 +202,7 @@ const mockSearch = {
       id: '6280a11466dd407e99c66130f203167a',
       rss: 'https://snlafterparty.libsyn.com/rss',
       link: 'https://snlpodcast.com/episodes/2019/12/24/sample-star-wars-tv-talk-podcast?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/6280a11466dd407e99c66130f203167a/',
+      audio: 'https://www.listennotes.com/e/p/6280a11466dd407e99c66130f203167a/',
       image:
         'https://production.listennotes.com/podcasts/saturday-night-live-snl-afterparty-john-sEoTraLnKPB-_iOE4lLZ2pD.1400x1400.jpg',
       podcast: {
@@ -235,8 +214,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/saturday-night-live-snl-afterparty-john-wm1CtQVkRfy-_iOE4lLZ2pD.300x300.jpg',
         listen_score: 43,
         title_original: 'Saturday Night Live (SNL) Afterparty',
-        listennotes_url:
-          'https://www.listennotes.com/c/09b986e503d4448ab0b625f6233bdd65/',
+        listennotes_url: 'https://www.listennotes.com/c/09b986e503d4448ab0b625f6233bdd65/',
         title_highlighted: 'Saturday Night Live (SNL) Afterparty',
         publisher_original: 'John Murray / Spry FM',
         publisher_highlighted: 'John Murray / Spry FM',
@@ -248,8 +226,7 @@ const mockSearch = {
       pub_date_ms: 1576989000072,
       guid_from_rss: '98206b6e-fc6e-45a5-85a6-e54eb4657299',
       title_original: 'Sample: Star Wars TV Talk Podcast',
-      listennotes_url:
-        'https://www.listennotes.com/e/6280a11466dd407e99c66130f203167a/',
+      listennotes_url: 'https://www.listennotes.com/e/6280a11466dd407e99c66130f203167a/',
       audio_length_sec: 1690,
       explicit_content: false,
       title_highlighted:
@@ -264,10 +241,8 @@ const mockSearch = {
       id: 'd1b5ed56fdd34e7596fe9cc7aac63c00',
       rss: 'http://feeds.feedburner.com/FramesPerSecondPodcast',
       link: 'https://megaphone.link/STU5698215144?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/d1b5ed56fdd34e7596fe9cc7aac63c00/',
-      image:
-        'https://production.listennotes.com/podcasts/frames-per-second-studio71-Tk47uwatlcN-J_3zM-VyFvj.1400x1400.jpg',
+      audio: 'https://www.listennotes.com/e/p/d1b5ed56fdd34e7596fe9cc7aac63c00/',
+      image: 'https://production.listennotes.com/podcasts/frames-per-second-studio71-Tk47uwatlcN-J_3zM-VyFvj.1400x1400.jpg',
       podcast: {
         id: '88c28bd52e32422c8f3a71fab45aa77f',
         image:
@@ -277,8 +252,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/frames-per-second-studio71-nFjw84GgN7c-J_3zM-VyFvj.300x300.jpg',
         listen_score: 49,
         title_original: 'Frames Per Second',
-        listennotes_url:
-          'https://www.listennotes.com/c/88c28bd52e32422c8f3a71fab45aa77f/',
+        listennotes_url: 'https://www.listennotes.com/c/88c28bd52e32422c8f3a71fab45aa77f/',
         title_highlighted: 'Frames Per Second',
         publisher_original: 'Studio71',
         publisher_highlighted: 'Studio71',
@@ -290,8 +264,7 @@ const mockSearch = {
       pub_date_ms: 1576645200539,
       guid_from_rss: '7606301c-1fae-11ea-8cf6-6f9a6838594d',
       title_original: 'Do Black People Watch Star Wars?',
-      listennotes_url:
-        'https://www.listennotes.com/e/d1b5ed56fdd34e7596fe9cc7aac63c00/',
+      listennotes_url: 'https://www.listennotes.com/e/d1b5ed56fdd34e7596fe9cc7aac63c00/',
       audio_length_sec: 976,
       explicit_content: true,
       title_highlighted:
@@ -306,34 +279,27 @@ const mockSearch = {
       id: '428fc8c5d1dc4ea4bfa7197f50dfcbef',
       rss: 'https://anchor.fm/s/2e7b510/podcast/rss',
       link: 'https://podcasters.spotify.com/pod/show/drzeuspodcast/episodes/Star-Wars-on-Saturday-Night-e9skm5?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/428fc8c5d1dc4ea4bfa7197f50dfcbef/',
-      image:
-        'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-ietJoCgElyS-uG3iyp0tI89.1400x1400.jpg',
+      audio: 'https://www.listennotes.com/e/p/428fc8c5d1dc4ea4bfa7197f50dfcbef/',
+      image: 'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-ietJoCgElyS-uG3iyp0tI89.1400x1400.jpg',
       podcast: {
         id: '2c48295d6e2643ee837896a03920255a',
-        image:
-          'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-ietJoCgElyS-uG3iyp0tI89.1400x1400.jpg',
+        image: 'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-ietJoCgElyS-uG3iyp0tI89.1400x1400.jpg',
         genre_ids: [133, 68, 263, 86, 82],
-        thumbnail:
-          'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-EgmZh68AS2r-uG3iyp0tI89.300x300.jpg',
+        thumbnail: 'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-EgmZh68AS2r-uG3iyp0tI89.300x300.jpg',
         listen_score: 24,
         title_original: 'Dr Zeus Podcast',
-        listennotes_url:
-          'https://www.listennotes.com/c/2c48295d6e2643ee837896a03920255a/',
+        listennotes_url: 'https://www.listennotes.com/c/2c48295d6e2643ee837896a03920255a/',
         title_highlighted: 'Dr Zeus Podcast',
         publisher_original: 'Dr Zeus',
         publisher_highlighted: 'Dr Zeus',
         listen_score_global_rank: '10%',
       },
       itunes_id: 1360921520,
-      thumbnail:
-        'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-EgmZh68AS2r-uG3iyp0tI89.300x300.jpg',
+      thumbnail: 'https://production.listennotes.com/podcasts/dr-zeus-podcast-dr-zeus-EgmZh68AS2r-uG3iyp0tI89.300x300.jpg',
       pub_date_ms: 1577587068379,
       guid_from_rss: '9298b06d-5ebe-4b87-bccb-39b6b2377962',
       title_original: 'Star Wars on Saturday Night.',
-      listennotes_url:
-        'https://www.listennotes.com/e/428fc8c5d1dc4ea4bfa7197f50dfcbef/',
+      listennotes_url: 'https://www.listennotes.com/e/428fc8c5d1dc4ea4bfa7197f50dfcbef/',
       audio_length_sec: 638,
       explicit_content: false,
       title_highlighted:
@@ -348,8 +314,7 @@ const mockSearch = {
       id: '39746ccfc0d64f62aea8e96641366109',
       rss: 'https://feeds.megaphone.fm/QCD5465390493',
       link: 'https://www.spreaker.com/user/mcucast/star-wars-is-better-than-star-trek?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/39746ccfc0d64f62aea8e96641366109/',
+      audio: 'https://www.listennotes.com/e/p/39746ccfc0d64f62aea8e96641366109/',
       image:
         'https://production.listennotes.com/podcasts/marvel-cinematic-universe-podcast-stranded-sNYFUAiyMCD-aXR7VuG2z4p.1400x1400.jpg',
       podcast: {
@@ -361,8 +326,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/marvel-cinematic-universe-podcast-stranded-0qV5D16_N2s-aXR7VuG2z4p.300x300.jpg',
         listen_score: 59,
         title_original: 'Marvel Cinematic Universe Podcast',
-        listennotes_url:
-          'https://www.listennotes.com/c/593c42e343ba44e7b6f8634a946f0b52/',
+        listennotes_url: 'https://www.listennotes.com/c/593c42e343ba44e7b6f8634a946f0b52/',
         title_highlighted: 'Marvel Cinematic Universe Podcast',
         publisher_original: 'Stranded Panda | QCODE',
         publisher_highlighted: 'Stranded Panda | QCODE',
@@ -374,8 +338,7 @@ const mockSearch = {
       pub_date_ms: 1575521386434,
       guid_from_rss: 'https://api.spreaker.com/episode/20495415',
       title_original: 'Star Wars is better than Star Trek',
-      listennotes_url:
-        'https://www.listennotes.com/e/39746ccfc0d64f62aea8e96641366109/',
+      listennotes_url: 'https://www.listennotes.com/e/39746ccfc0d64f62aea8e96641366109/',
       audio_length_sec: 733,
       explicit_content: true,
       title_highlighted:
@@ -390,8 +353,7 @@ const mockSearch = {
       id: 'abdc7a70194c4d6daaa429b7fc2ec5c6',
       rss: 'https://triviawithbudds.libsyn.com/rss',
       link: 'https://triviawithbudds.libsyn.com/11-trivia-questions-on-modern-star-wars?utm_source=listennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
-      audio:
-        'https://www.listennotes.com/e/p/abdc7a70194c4d6daaa429b7fc2ec5c6/',
+      audio: 'https://www.listennotes.com/e/p/abdc7a70194c4d6daaa429b7fc2ec5c6/',
       image:
         'https://production.listennotes.com/podcasts/trivia-with-budds-ryan-budds--K74E8aYCBr-odHDeJf8O5Y.1400x1400.jpg',
       podcast: {
@@ -403,8 +365,7 @@ const mockSearch = {
           'https://production.listennotes.com/podcasts/trivia-with-budds-ryan-budds-YlFUN1Qs_68-odHDeJf8O5Y.300x300.jpg',
         listen_score: 49,
         title_original: 'Trivia With Budds',
-        listennotes_url:
-          'https://www.listennotes.com/c/9229022e1b7e46578d8793b1601f983d/',
+        listennotes_url: 'https://www.listennotes.com/c/9229022e1b7e46578d8793b1601f983d/',
         title_highlighted: 'Trivia With Budds',
         publisher_original: 'Ryan Budds',
         publisher_highlighted: 'Ryan Budds',
@@ -416,8 +377,7 @@ const mockSearch = {
       pub_date_ms: 1577226086879,
       guid_from_rss: '6ab99079-61c0-4fa3-91f0-28cca5d918b0',
       title_original: '11 Trivia Questions on Modern Star Wars',
-      listennotes_url:
-        'https://www.listennotes.com/e/abdc7a70194c4d6daaa429b7fc2ec5c6/',
+      listennotes_url: 'https://www.listennotes.com/e/abdc7a70194c4d6daaa429b7fc2ec5c6/',
       audio_length_sec: 646,
       explicit_content: false,
       title_highlighted:

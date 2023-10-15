@@ -17,10 +17,19 @@
 <script setup lang="ts">
 import { PodClientService } from '~/shared/podcast/api/services';
 
+const route = useRoute();
+
 const isModalOpen = ref(false);
 const openModal = () => {
   isModalOpen.value = true;
 };
+
+watch(
+  () => route.path,
+  (val) => {
+    isModalOpen.value = false;
+  }
+);
 </script>
 
 <style scoped></style>

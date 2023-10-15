@@ -1,19 +1,33 @@
-import { Typeahead } from '~/shared/podcast/api/types';
+import * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
+import * as Podcast from '~/shared/podcast/api/types/podcast-get';
 
 export class PodcastDataModel {
-  formatTypeaheadData(
-    rawData: Typeahead.ServerResponseRaw
-  ): Typeahead.ServerResponse {
+  formatPodcastData(rawData: Podcast.ServerResponseRaw): Podcast.ServerResponse {
+    const data = { ...rawData };
+
+    return {
+      ...data,
+      _app: {
+        link: `/podcast/${data.id}`,
+      },
+    };
+  }
+
+  formatTypeaheadData(rawData: Typeahead.ServerResponseRaw): Typeahead.ServerResponse {
     const { genres = [], podcasts = [] } = rawData;
     const genresModified = [...genres].map((val) => ({
       ...val,
-      ...{ _app: { link: `/genres/${val.id}` } },
+      ...{ _app: { link: `/genre/${val.id}` } },
     }));
     const podcastsModified = [...podcasts].map((val) => ({
       ...val,
-      ...{ _app: { link: `/podcasts/${val.id}` } },
+      ...{ _app: { link: `/podcast/${val.id}` } },
     }));
 
-    return { ...rawData, genres: genresModified, podcasts: podcastsModified };
+    return {
+      ...rawData,
+      genres: [...genresModified],
+      podcasts: [...podcastsModified],
+    };
   }
 }

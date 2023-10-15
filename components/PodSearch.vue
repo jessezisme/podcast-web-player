@@ -20,17 +20,13 @@
 import { refDebounced } from '@vueuse/core';
 import { PodClientService } from '~/shared/podcast/api/services';
 
-type DataResponseType = Awaited<
-  ReturnType<typeof getResultsRequest>
->['data']['value'];
-type DataResultItem =
-  | (typeof resultsGenres.value)[0]
-  | (typeof resultsPodcasts.value)[0];
+type DataResponseType = Awaited<ReturnType<PodClientService['getTypeahead']>>['data']['value'];
+type DataResultItem = DataResponseType['genres'][0] | DataResponseType['podcasts'][0];
 
 const serviceTypeahead = new PodClientService();
 
+const isLoading = ref(false);
 const selected = ref([]);
-
 const query = ref('');
 const queryDebounce = refDebounced(query, 600);
 
@@ -44,8 +40,6 @@ const resultsPodcasts = computed(() => {
   return podcasts.map((val) => ({ ...val, label: `${val.title_original}` }));
 });
 
-const isLoading = ref(false);
-
 const getResultsRequest = async () => {
   isLoading.value = true;
   const response = await serviceTypeahead.getTypeahead({
@@ -55,7 +49,6 @@ const getResultsRequest = async () => {
   isLoading.value = false;
   return response;
 };
-
 const getResultsWatcher = watch(queryDebounce, async (newVal, oldVal) => {
   const isMatch = () => query.value === newVal;
 
