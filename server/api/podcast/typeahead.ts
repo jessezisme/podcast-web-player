@@ -2,7 +2,7 @@ import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
 
 export default defineEventHandler((event) => {
-  return new PodcastDataModel().formatTypeaheadData(mockTypeahead);
+  return new PodcastDataModel().formatTypeaheadData({ ...mockTypeahead });
 });
 
 const mockTypeahead: TypeaheadTypes.ServerResponseRaw = {

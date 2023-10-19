@@ -1,35 +1,40 @@
 <template>
-  <header class="" style="min-height: 100px">
-    <nav class="container flex-row justify-between">
-      <NuxtLink to="/">Pod Nexus</NuxtLink>
-      <div>
-        <button @click="openModal">Search</button>
-      </div>
-    </nav>
+  <header
+    class="placeholder-height bg-slate-50 font-semibold fixed top-0 left-0 right-0 w-full border-slate-200 border-b-[1px]"
+  >
     <div class="container">
-      <UModal v-if="isModalOpen" v-model="isModalOpen">
-        <PodSearch></PodSearch>
-      </UModal>
+      <nav class="placeholder-height flex justify-center items-center gap-[100px]">
+        <div>
+          <button class="btn btn-primary" @click="openModal">Search</button>
+        </div>
+        <NuxtLink to="/">Pod Nexus</NuxtLink>
+      </nav>
     </div>
   </header>
+  <div class="placeholder-height"></div>
+  <UModal v-if="isModalOpen" v-model="isModalOpen">
+    <PodSearch></PodSearch>
+  </UModal>
 </template>
+
+<style scoped>
+.placeholder-height {
+  height: 60px;
+}
+</style>
 
 <script setup lang="ts">
 import { PodClientService } from '~/shared/podcast/api/services';
 
 const route = useRoute();
-
 const isModalOpen = ref(false);
 const openModal = () => {
   isModalOpen.value = true;
 };
-
-watch(
+const watchRoute = watch(
   () => route.path,
   (val) => {
     isModalOpen.value = false;
   }
 );
 </script>
-
-<style scoped></style>

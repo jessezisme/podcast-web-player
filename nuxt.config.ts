@@ -3,7 +3,11 @@ import { build } from 'nuxt';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@pinia/nuxt', '@nuxt/ui', '@vueuse/nuxt'],
+  modules: ['@nuxt/ui', '@vueuse/nuxt', '@pinia/nuxt'],
+  ui: {
+    global: true,
+    icons: ['heroicons'],
+  },
   ssr: false,
   imports: {
     dirs: [
@@ -20,5 +24,8 @@ export default defineNuxtConfig({
       'postcss-import': {},
     },
   },
-  css: ['@/assets/style/index.css'],
+  tailwindcss: {
+    cssPath: '@/assets/style/main.scss',
+  },
+  // css: ['@/assets/style/main.css'],
 });

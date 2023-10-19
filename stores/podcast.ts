@@ -10,35 +10,55 @@ export const usePodcastStore = defineStore('podcast', () => {
    */
   const isLoading = ref(false);
   const podId = ref('');
-  const podDetails = ref<Omit<PodResponseData, 'episodes'> | null>(null);
-  const podEpisodes = ref<PodResponseData['episodes']>([]);
-  /**
-   * Computed
-   */
-  const nextEpisodeDate = computed(() => {
-    return podDetails?.value?.next_episode_pub_date;
+  const podcastDetails = ref<PodResponseData | null>(null);
+  const podcastEpisodes = ref<PodResponseData['episodes'] | []>([]);
+
+  const nextEpisodePubDate = computed(() => {
+    return podcastDetails?.value?.next_episode_pub_date;
   });
+
   /**
    * Actions
    */
-  const resetBeforeRequest = () => {
-    isLoading.value = true;
+  const resetData = () => {
+    isLoading.value = false;
     podId.value = '';
-    podDetails.value = null;
-    podEpisodes.value = [];
+    podcastDetails.value = null;
+    podcastEpisodes.value = [];
+  };
+
+  const setPodcastData = (data: PodResponseData) => {
+    const podcast = data;
+    podcast && (podcastDetails.value = podcast);
+  };
+
+  const setEpisodesData = (data: PodResponseData) => {
+    const episodes = data.episodes || [];
+    podcastEpisodes.value && podcastEpisodes.value.push(...episodes);
+  };
+
+  const getPodcastRequest = async (fetchOptions: PodClientGetParams[0], callbackFunction: Function) => {
+    isLoading.value = true;
+    const getId = unref(fetchOptions).query.id;
+    podId.value = getId;
+    console.log('running getpodcaststore');
+    const response = await new PodClientService().getPodcast(fetchOptions);
+
+    if (response.data.value && getId === podId.value) {
+      callbackFunction(response.data.value);
+    }
+    isLoading.value = false;
+
+    return response;
   };
 
   const getPodcastData = async (fetchOptions: PodClientGetParams[0]) => {
-    resetBeforeRequest();
-    const getId = unref(fetchOptions).query.id;
-    podId.value = getId;
-    const { data, error } = await new PodClientService().getPodcast({
-      ...fetchOptions,
-    });
-    if (data.value && podId.value === getId) {
-      podDetails.value = data.value;
-    }
+    resetData();
+    return await getPodcastRequest(fetchOptions, setPodcastData);
+  };
+  const getEpisodesData = async (fetchOptions: PodClientGetParams[0]) => {
+    return await getPodcastRequest(fetchOptions, setEpisodesData);
   };
 
-  return { podDetails, getPodcastData };
+  return { isLoading, podcastDetails, podcastEpisodes, nextEpisodePubDate, getPodcastData, getEpisodesData };
 });

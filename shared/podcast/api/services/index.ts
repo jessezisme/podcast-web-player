@@ -7,13 +7,19 @@ type AppUseFetchOptions<T> = Parameters<typeof useFetch<T>>[1];
 const defaultOptions = { lazy: true };
 
 export class PodClientService {
+  /**
+   * Podcast: get podcast details and episodes
+   */
   getPodcast<ResponseData extends PodcastTypes.ServerResponse>(
     fetchOptions: PodcastTypes.RouteParams & AppUseFetchOptions<ResponseData>
   ) {
     const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/podcast-single', { ...options });
+    console.log(options)
+    return useFetch<ResponseData>('/api/podcast/podcast-single', {query: {id: 'dsdfsdfdf'}});
   }
-
+  /**
+   * Typeahead: get results for typeahead query
+   */
   getTypeahead<ResponseData extends TypeaheadTypes.ServerResponse>(
     fetchOptions: TypeaheadTypes.RouteGetParams & AppUseFetchOptions<ResponseData>
   ) {

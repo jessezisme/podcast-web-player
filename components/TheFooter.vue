@@ -1,3 +1,3 @@
 <template>
-  <footer>Footer Test</footer>
+  <footer></footer>
 </template>

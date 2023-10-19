@@ -38,7 +38,7 @@ export interface ServerResponseRaw {
   image: string;
   title: string;
   website: string;
-  episodes: Episode[];
+  episodes: EpisodeResponseRaw[];
   genre_ids: number[];
   publisher: string;
   thumbnail: string;

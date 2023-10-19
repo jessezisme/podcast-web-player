@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 #app-cont {
   display: flex;
   flex-direction: column;

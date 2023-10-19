@@ -52,11 +52,13 @@ const getResultsRequest = async () => {
 const getResultsWatcher = watch(queryDebounce, async (newVal, oldVal) => {
   const isMatch = () => query.value === newVal;
 
-  if (isMatch() && newVal) {
+  if (isMatch() && newVal?.length) {
     let { data } = await getResultsRequest();
     if (isMatch() && data.value) {
       results.value = data.value;
     }
+  } else {
+    isLoading.value = false;
   }
 });
 
@@ -67,7 +69,7 @@ const groups = computed(() => {
       label: 'Podcasts',
       search: async (q: string) => {
         query.value = q.trim();
-        return q.trim() ? resultsPodcasts || [] : [];
+        return query.value ? resultsPodcasts || [] : [];
       },
     },
     {
@@ -75,7 +77,7 @@ const groups = computed(() => {
       label: 'Genres',
       search: async (q: string) => {
         query.value = q.trim();
-        return q.trim() ? resultsGenres || [] : [];
+        return query.value ? resultsGenres || [] : [];
       },
     },
   ];
