@@ -4,8 +4,10 @@
       <div class="flex items-center text-center lg:text-left">
         <div class="space-y-6">
           <div>
-            <h1 class="text-sm uppercase font-bold tracking-wider mb-4 text-blue-600">Podcast Demo Project</h1>
-            <h2 class="text-4xl font-black mb-4">Discover your next favorite <span class="text-blue-600">podcast</span>.</h2>
+            <h1 class="text-sm uppercase font-bold tracking-wider mb-4 text-brand1-600">Podcast Demo Project</h1>
+            <h2 class="text-4xl font-black mb-4">
+              Discover your next favorite <span class="text-brand1-600">podcast</span>.
+            </h2>
             <p class="text-xl font-medium">Lorem Ipsum....</p>
           </div>
           <button class="btn btn-primary btn--lg gap-[5px]" @click="openModal">
@@ -27,7 +29,7 @@
           </button>
         </div>
       </div>
-      <div class="flex items-center justify-center text-blue-500">
+      <div class="flex items-center justify-center text-brand1-500">
         <img
           src="https://images.unsplash.com/photo-1594703276852-68829b071330?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2744"
           alt=""

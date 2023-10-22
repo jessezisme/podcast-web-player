@@ -11,7 +11,7 @@ export const usePodcastStore = defineStore('podcast', () => {
   const isLoading = ref(false);
   const podId = ref('');
   const podcastDetails = ref<PodResponseData | null>(null);
-  const podcastEpisodes = ref<PodResponseData['episodes'] | []>([]);
+  const podcastEpisodes = ref<PodcastEpisodes>([]);
 
   const nextEpisodePubDate = computed(() => {
     return podcastDetails?.value?.next_episode_pub_date;
@@ -33,7 +33,7 @@ export const usePodcastStore = defineStore('podcast', () => {
   };
 
   const setEpisodesData = (data: PodResponseData) => {
-    const episodes = data.episodes || [];
+    const episodes = data?.episodes || [];
     podcastEpisodes.value && podcastEpisodes.value.push(...episodes);
   };
 
@@ -41,7 +41,6 @@ export const usePodcastStore = defineStore('podcast', () => {
     isLoading.value = true;
     const getId = unref(fetchOptions).query.id;
     podId.value = getId;
-    console.log('running getpodcaststore');
     const response = await new PodClientService().getPodcast(fetchOptions);
 
     if (response.data.value && getId === podId.value) {

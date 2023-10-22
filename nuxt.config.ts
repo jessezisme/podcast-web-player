@@ -2,6 +2,11 @@ import { build } from 'nuxt';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      'appName': 'Pod Nexus',
+    }
+  },
   devtools: { enabled: true },
   modules: ['@nuxt/ui', '@vueuse/nuxt', '@pinia/nuxt'],
   ui: {
@@ -19,6 +24,7 @@ export default defineNuxtConfig({
       'composables/**',
     ],
   },
+  plugins: ['~/plugins/util/remove-html-tags', '~/plugins/util/format-date.ts'],
   postcss: {
     plugins: {
       'postcss-import': {},

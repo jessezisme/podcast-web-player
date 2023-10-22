@@ -1,20 +1,10 @@
 <template>
-  <div id="app-cont">
+  <div class="flex flex-col min-h-[100vh]">
     <TheHeader />
-    <main id="app-main">
+    <main class="grow">
       <NuxtPage />
     </main>
+    <AudioPlayer />
     <TheFooter />
   </div>
 </template>
-
-<style scoped>
-#app-cont {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-#app-main {
-  flex-grow: 1;
-}
-</style>

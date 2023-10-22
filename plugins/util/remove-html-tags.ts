@@ -4,7 +4,7 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       appRemoveHtml: (str: string) => {
-        const getString = str.toString() || '';
+        const getString = typeof str === 'string' ? str : '';
         return striptags(getString);
       },
     },
