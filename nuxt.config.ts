@@ -4,11 +4,17 @@ import { build } from 'nuxt';
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      'appName': 'Pod Nexus',
-    }
+      appName: 'Pod Nexus',
+    },
   },
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', '@vueuse/nuxt', '@pinia/nuxt'],
+  modules: ['@nuxt/ui', '@vueuse/nuxt', '@pinia/nuxt', '@nuxt/image'],
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   ui: {
     global: true,
     icons: ['heroicons'],

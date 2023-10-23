@@ -1,14 +1,28 @@
 import * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
 import * as Podcast from '~/shared/podcast/api/types/podcast-get';
+import * as Genres from '~/shared/podcast/api/types/genres-get';
 
 export class PodcastDataModel {
+  formatGenresData(rawData: Genres.ServerResponseRaw): Genres.ServerResponse {
+    const data = { ...rawData };
+    const genres = [...data.genres].map((val) => ({
+      ...val,
+      _app: { link: encodeURI(`/genre/${val.id}`) },
+    }));
+
+    return {
+      ...data,
+      genres: [...genres] || [],
+    };
+  }
+
   formatPodcastData(rawData: Podcast.ServerResponseRaw): Podcast.ServerResponse {
     const data = { ...rawData };
 
     return {
       ...data,
       _app: {
-        link: `/podcast/${data.id}`,
+        link: encodeURI(`/podcast/${data.id}`),
       },
     };
   }
@@ -17,11 +31,11 @@ export class PodcastDataModel {
     const { genres = [], podcasts = [] } = rawData;
     const genresModified = [...genres].map((val) => ({
       ...val,
-      ...{ _app: { link: `/genre/${val.id}` } },
+      ...{ _app: { link: encodeURI(`/genre/${val.id}`) } },
     }));
     const podcastsModified = [...podcasts].map((val) => ({
       ...val,
-      ...{ _app: { link: `/podcast/${val.id}` } },
+      ...{ _app: { link: encodeURI(`/podcast/${val.id}`) } },
     }));
 
     return {
