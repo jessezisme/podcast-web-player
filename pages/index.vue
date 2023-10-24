@@ -17,11 +17,11 @@
     </div>
   </section>
   <!-- Browse by genres -->
-  <section class="">
+  <section class="bg-brand1-50">
     <div class="container">
-      <div class="py-16">
-        <h2 class="h2 font-bold text-center py-8">Browse by Genre</h2>
-        <BaseCarousel v-if="genresData?.genres?.length" class="bg-brand1-50 rounded-md border-brand1-50 border-2">
+      <div class="py-12">
+        <h2 class="h2 font-bold text-center pb-4">Browse by Genre</h2>
+        <BaseCarousel v-if="genresData?.genres?.length" class="rounded-md border-brand1-50 border-2">
           <a
             class="inline-flex px-[.5rem] py-[.5rem] items-center bg-white border-brand1-500 border-2 rounded min-w-min whitespace-nowrap cursor-pointer select-none text-sm btn-outline btn"
             v-for="genre in genresData.genres"
@@ -34,7 +34,7 @@
       </div>
     </div>
   </section>
-
+  <!-- Search Modal -->
   <UModal v-if="isModalOpen" v-model="isModalOpen">
     <PodSearch />
   </UModal>

@@ -109,7 +109,7 @@ export const useAudioPlayerStore = defineStore('audio', () => {
   };
 
   const audioPauseCallback = () => {
-    player.value && (player.value.isPlaying = true);
+    player.value && (player.value.isPlaying = false);
   };
 
   const audioVolumeCallback = () => {
@@ -127,7 +127,7 @@ export const useAudioPlayerStore = defineStore('audio', () => {
   const loadEpisode = (_episode: MaybeRef<EpisodeType>) => {
     const getEpisode = unref(_episode);
     const isNewEpisode = !player.value || player.value?.episode?.id !== getEpisode.id;
-    const getVolume = player.value?.volume === 0 || player.value?.volume ? player.value?.volume : 1.0;
+    const getVolume = player.value?.volume === 0 || player.value?.volume ? player.value?.volume : 0.5;
 
     if (isNewEpisode) {
       destroyAudio();

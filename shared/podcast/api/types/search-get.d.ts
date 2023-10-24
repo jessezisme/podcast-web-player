@@ -7,9 +7,9 @@ export interface RouteParams {
     type: 'episode' | 'podcast';
     sort_by_date?: 0 | 1;
     offset?: number;
-    genre_ids: string;
-    safe_mode: number;
-    page_size: number;
+    genre_ids?: string;
+    safe_mode?: number;
+    page_size?: number;
   };
 }
 
@@ -35,19 +35,17 @@ interface EpisodeResultRaw {
   thumbnail: string;
   pub_date_ms: number;
   explicit_content: boolean;
-  podcast: EpisodeResultPodcastRaw;
+  podcast: {
+    id: string;
+    image: string;
+    genre_ids: number[];
+    thumbnail: string;
+    title_original: string;
+    publisher_original: string;
+    genre_ids: number[];
+  };
   podcast_id: string;
   podcast_title_original: string;
-  publisher_original: string;
-  genre_ids: number[];
-}
-
-interface EpisodeResultPodcastRaw {
-  id: string;
-  image: string;
-  genre_ids: number[];
-  thumbnail: string;
-  title_original: string;
   publisher_original: string;
   genre_ids: number[];
 }
@@ -71,18 +69,16 @@ export interface ServerResponseRaw {
   count: number;
   total: number;
   next_offset: number;
-  results: PodcastResult[] | EpisodeResult[];
+  results: PodcastResultRaw[] | EpisodeResultRaw[];
 }
 
 /**
  * Final response after modifications
  */
-interface PodcastResult extends ExtendData, PodcastResultRaw {}
-
-interface EpisodeResult extends EpisodeResultRaw {
-  podcast: Array<ExtendData & EpisodeResultPodcastRaw>;
+export interface ServerResponseEpisode extends ServerResponseRaw {
+  results: (ExtendData & EpisodeResultRaw)[];
 }
 
-export interface ServerResponse extends ServerResponseRaw {
-  results: PodcastResult[] | EpisodeResult[];
+export interface ServerResponsePodcast extends ServerResponseRaw {
+  results: (ExtendData & PodcastResultRaw)[];
 }

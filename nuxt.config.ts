@@ -30,7 +30,7 @@ export default defineNuxtConfig({
       'composables/**',
     ],
   },
-  plugins: ['~/plugins/util/remove-html-tags', '~/plugins/util/format-date.ts'],
+  plugins: [],
   postcss: {
     plugins: {
       'postcss-import': {},

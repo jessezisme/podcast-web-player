@@ -1,6 +1,7 @@
 import * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
 import * as Podcast from '~/shared/podcast/api/types/podcast-get';
 import * as Genres from '~/shared/podcast/api/types/genres-get';
+import * as Search from '~/shared/podcast/api/types/search-get';
 
 export class PodcastDataModel {
   formatGenresData(rawData: Genres.ServerResponseRaw): Genres.ServerResponse {
