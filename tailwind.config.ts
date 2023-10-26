@@ -19,6 +19,20 @@ const themeColors = {
     '900': '#233e8a',
     '950': '#192652',
   },
+  // violet
+  brand2: {
+    '50': '#fbf5fe',
+    '100': '#f7eafd',
+    '200': '#e7c6f7',
+    '300': '#e2b4f3',
+    '400': '#d187eb',
+    '500': '#bb58dd',
+    '600': '#a038c1',
+    '700': '#862c9f',
+    '800': '#6f2682',
+    '900': '#5e246b',
+    '950': '#3b0c46',
+  },
   // error state
   error: { ...defaultColors.red },
   // success state
@@ -45,12 +59,22 @@ module.exports = {
           DEFAULT: theme('colors')['gray']['950'],
           v1: theme('colors')['gray']['800'],
           v2: theme('colors')['gray']['600'],
-          invert: {
+          inv: {
             DEFAULT: '#fff',
             v1: theme('colors')['gray']['200'],
             v2: theme('colors')['gray']['400'],
           },
         },
+        link: {
+          DEFAULT: theme('colors')['brand2']['700'],
+          v1: theme('colors')['brand2']['800'],
+          v2: theme('colors')['brand2']['900'],
+          inv: {
+            DEFAULT: theme('colors')['brand2']['300'],
+            v1: theme('colors')['brand2']['200'],
+            v2: theme('colors')['brand2']['100'],
+          }
+        }
       }),
     },
   },

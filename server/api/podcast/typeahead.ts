@@ -1,7 +1,7 @@
 import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   return new PodcastDataModel().formatTypeaheadData({ ...mockTypeahead });
 });
 

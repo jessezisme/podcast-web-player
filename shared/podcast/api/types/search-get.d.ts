@@ -17,8 +17,10 @@ export interface RouteParams {
  * Data transform modifications
  */
 interface ExtendData {
-  _app: {
-    link: string;
+  _app?: {
+    link?: string;
+    linkPodcast?: string;
+    linkEpisode?: string;
   };
 }
 
@@ -53,6 +55,7 @@ interface EpisodeResultRaw {
 interface PodcastResultRaw {
   id: string;
   description_original: string;
+  title_original: string;
   publisher_original: string;
   image: string;
   thumbnail: string;
@@ -64,21 +67,29 @@ interface PodcastResultRaw {
   website: string;
 }
 
-export interface ServerResponseRaw {
+export interface ServerResponsePodcastRaw {
   took: number;
   count: number;
   total: number;
   next_offset: number;
-  results: PodcastResultRaw[] | EpisodeResultRaw[];
+  results: PodcastResultRaw[];
+}
+
+export interface ServerResponseEpisodeRaw {
+  took: number;
+  count: number;
+  total: number;
+  next_offset: number;
+  results: EpisodeResultRaw[];
 }
 
 /**
  * Final response after modifications
  */
-export interface ServerResponseEpisode extends ServerResponseRaw {
+export interface ServerResponseEpisode extends ServerResponseEpisodeRaw {
   results: (ExtendData & EpisodeResultRaw)[];
 }
 
-export interface ServerResponsePodcast extends ServerResponseRaw {
+export interface ServerResponsePodcast extends ServerResponsePodcastRaw {
   results: (ExtendData & PodcastResultRaw)[];
 }

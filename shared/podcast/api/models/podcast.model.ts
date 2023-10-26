@@ -4,6 +4,30 @@ import * as Genres from '~/shared/podcast/api/types/genres-get';
 import * as Search from '~/shared/podcast/api/types/search-get';
 
 export class PodcastDataModel {
+  formatSearchEpisodeData(rawData: Search.ServerResponseEpisodeRaw): Search.ServerResponseEpisode {
+    const data = { ...rawData };
+    const results = [...(data.results || [])].map((val) => ({
+      ...val,
+      _app: { linkPodcast: encodeURI(`/podcast/${val.podcast.id}`) },
+    }));
+    return {
+      ...data,
+      results: [...results],
+    };
+  }
+
+  formatSearchPodcastData(rawData: Search.ServerResponsePodcastRaw): Search.ServerResponsePodcast {
+    const data = { ...rawData };
+    const results = [...(data.results || [])].map((val) => ({
+      ...val,
+      _app: { linkPodcast: encodeURI(`/podcast/${val.id}`), link: encodeURI(`/podcast/${val.id}`) },
+    }));
+    return {
+      ...data,
+      results: [...results],
+    };
+  }
+
   formatGenresData(rawData: Genres.ServerResponseRaw): Genres.ServerResponse {
     const data = { ...rawData };
     const genres = [...data.genres].map((val) => ({

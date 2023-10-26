@@ -1,8 +1,11 @@
 import { Howl, Howler } from 'howler';
 import { useIntervalFn } from '@vueuse/core';
-import { ServerResponse } from '@/shared/podcast/api/types/podcast-get';
+import type { ServerResponse } from '@/shared/podcast/api/types/podcast-get';
 
-type EpisodeType = ServerResponse['episodes'][0];
+type EpisodeType = Pick<
+  ServerResponse['episodes'][0],
+  'id' | 'title' | 'image' | 'thumbnail' | 'description' | 'pub_date_ms' | 'audio_length_sec' | 'audio'
+>;
 type PlayerType = {
   playerAudio: Howl;
   playerID: number | null;

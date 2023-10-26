@@ -1,9 +1,9 @@
 import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 import * as PodcastTypes from '~/shared/podcast/api/types/podcast-get';
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const finalData = new PodcastDataModel().formatPodcastData({ ...mockPodcastData });
-  return finalData;
+  return { ...finalData };
 });
 
 const mockPodcastData: PodcastTypes.ServerResponseRaw = {

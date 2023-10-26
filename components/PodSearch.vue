@@ -87,10 +87,7 @@ const submitSearch = async () => {
   await nextTick();
   if (!selected.value[0]) {
     navigateTo({
-      path: '/search',
-      query: {
-        q: query.value,
-      },
+      path: `/search/${encodeURIComponent(query.value)}`,
     });
   }
 };

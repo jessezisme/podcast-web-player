@@ -1,7 +1,7 @@
 import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 import * as GenresTypes from '~/shared/podcast/api/types/genres-get';
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const finalData = new PodcastDataModel().formatGenresData({ ...mockGenresData });
   return finalData;
 });

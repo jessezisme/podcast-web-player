@@ -17,7 +17,7 @@
     <div>
       <button
         @click="clickAudio"
-        class="inline-flex items-center justify-center w-[50px] aspect-[1/1] rounded-full bg-brand1-800 hover:bg-brand1-700 text-body-invert"
+        class="inline-flex items-center justify-center w-[50px] aspect-[1/1] rounded-full bg-brand1-800 hover:bg-brand1-700 text-body-inv"
       >
         <!-- pause -->
         <template v-if="isPlaying">
@@ -35,12 +35,15 @@
 </template>
 
 <script setup lang="ts">
-import { ServerResponse } from '~/shared/podcast/api/types/podcast-get';
+import type { ServerResponse } from '~/shared/podcast/api/types/podcast-get';
 import { useAudioPlayerStore } from '~/stores/audio-player';
 import * as Utils from '~/shared/utils';
 
 const props = defineProps<{
-  episode: ServerResponse['episodes'][0];
+  episode: Pick<
+    ServerResponse['episodes'][0],
+    'id' | 'title' | 'image' | 'thumbnail' | 'description' | 'pub_date_ms' | 'audio_length_sec' | 'audio'
+  >;
 }>();
 
 const playerStore = useAudioPlayerStore();

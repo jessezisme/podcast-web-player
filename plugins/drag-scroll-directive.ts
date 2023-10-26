@@ -22,7 +22,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       watch(pressed, (newVal) => {
         if (newVal === true) {
-          // console.log(x.value);
           startX = x.value - el.offsetLeft;
           scrollLeft = el.scrollLeft;
         }

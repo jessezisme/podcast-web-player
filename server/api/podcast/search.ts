@@ -1,8 +1,90 @@
-export default defineEventHandler((event) => {
-  return { ...mockSearch };
+import * as SearchTypes from '~/shared/podcast/api/types/search-get';
+import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
+
+export default defineEventHandler(async (event) => {
+  const getQuery = event.context.query?.type;
+
+  if (getQuery === 'podcast') {
+    return new PodcastDataModel().formatSearchPodcastData({ ...mockSearchPodcast });
+  } else {
+    return new PodcastDataModel().formatSearchEpisodeData({ ...mockSearchEpisode });
+  }
 });
 
-const mockSearch = {
+const mockSearchPodcast: SearchTypes.ServerResponsePodcastRaw = {
+  count: 10,
+  next_offset: 10,
+  total: 91,
+  took: 0.13,
+  results: [
+    {
+      rss: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      description_highlighted:
+        '...This Week in <span class="ln-search-highlight">Star…n class="ln-search-highlight">Wars</span> Universe....',
+      description_original:
+        "This Week in Star Wars is the web's only weekly podcast …WISW archive, and many can be found on our YouTube page.",
+      title_highlighted:
+        'This Week in <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      title_original: 'This Week in Star Wars',
+      publisher_highlighted: 'Matthew Fox',
+      publisher_original: 'Matthew Fox',
+      image: 'https://production.listennotes.com/podcasts/this-week-in-star-wars-matthew-fox-u4Xd3g78vUw.300x300.jpg',
+      thumbnail: 'https://production.listennotes.com/podcasts/this-week-in-star-wars-matthew-fox-u4Xd3g78vUw.300x300.jpg',
+      itunes_id: 356323969,
+      latest_episode_id:
+        'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      latest_pub_date_ms: 1564367972000,
+      earliest_pub_date_ms: 1416343945000,
+      id: '04a1e66862f9456b8c59f34080fe3964',
+      genre_ids: [68],
+      listennotes_url: 'https://www.listennotes.com/c/04a1e66862f9456b8c59f34080fe3964/',
+      total_episodes: 84,
+      audio_length_sec: 1132,
+      update_frequency_hours: 749,
+      email: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      explicit_content: false,
+      website:
+        'http://www.thisweekinstarwars.com/TWISW/Episodes/Episode…ennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      listen_score: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      listen_score_global_rank:
+        'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+    },
+    {
+      rss: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      description_highlighted:
+        '...This Week in <span class="ln-search-highlight">Star…n class="ln-search-highlight">Wars</span> Universe....',
+      description_original:
+        "This Week in Star Wars is the web's only weekly podcast …WISW archive, and many can be found on our YouTube page.",
+      title_highlighted:
+        'This Week in <span class="ln-search-highlight">Star</span> <span class="ln-search-highlight">Wars</span>',
+      title_original: 'This Week in Star Wars',
+      publisher_highlighted: 'Matthew Fox',
+      publisher_original: 'Matthew Fox',
+      image: 'https://production.listennotes.com/podcasts/this-week-in-star-wars-matthew-fox-u4Xd3g78vUw.300x300.jpg',
+      thumbnail: 'https://production.listennotes.com/podcasts/this-week-in-star-wars-matthew-fox-u4Xd3g78vUw.300x300.jpg',
+      itunes_id: 356323969,
+      latest_episode_id:
+        'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      latest_pub_date_ms: 1564367972000,
+      earliest_pub_date_ms: 1416343945000,
+      id: '04a1e66862f9456b8c59f34080fe3964',
+      genre_ids: [68],
+      listennotes_url: 'https://www.listennotes.com/c/04a1e66862f9456b8c59f34080fe3964/',
+      total_episodes: 84,
+      audio_length_sec: 1132,
+      update_frequency_hours: 749,
+      email: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      explicit_content: false,
+      website:
+        'http://www.thisweekinstarwars.com/TWISW/Episodes/Episode…ennotes.com&utm_campaign=Listen+Notes&utm_medium=website',
+      listen_score: 'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+      listen_score_global_rank:
+        'Please upgrade to PRO or ENTERPRISE plan to see this field. Learn more: listennotes.com/api/pricing',
+    },
+  ],
+};
+
+const mockSearchEpisode: SearchTypes.ServerResponseEpisodeRaw = {
   took: 0.415,
   count: 10,
   total: 8986,

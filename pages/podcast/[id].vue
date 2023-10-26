@@ -1,7 +1,7 @@
 <template>
   <section v-if="podStore?.podcastDetails" class="pb-20">
     <!-- Intro -->
-    <div class="min-h-[325px] bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-invert">
+    <div class="min-h-[325px] bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
       <div class="container">
         <div class="w-[1000px] max-w-full m-auto flex flex-col md:flex-row justify-center items-center md:items-start gap-8">
           <div class="w-[180px] min-w-[180px]">
@@ -51,32 +51,27 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { usePodcastStore } from '~/stores/podcast';
-import { useAudioPlayerStore } from '~/stores/audio-player';
 import * as Utils from '~/shared/utils';
 
 const route = useRoute();
-const routeId = computed(() => route.params?.id.toString() || '');
+const routeId = computed(() => route.params?.id?.toString() || '');
 const podStore = usePodcastStore();
-const playerStore = useAudioPlayerStore();
-
-onMounted(() => {
-  const watchStuff = watch(
-    routeId,
-    () => {
-      loadPodcastData();
-    },
-    { immediate: true }
-  );
-});
 
 const loadPodcastData = () => {
   podStore.getPodcastData({ query: { id: routeId.value } });
 };
 const loadMoreEpisodes = () => {
+  console.log(routeId.value);
   podStore.getEpisodesData({ query: { id: routeId.value, next_episode_pub_date: podStore.nextEpisodePubDate } });
 };
-
-const convertToMinutes = (seconds: number) => {
-  return Math.floor(seconds / 60);
-};
+const watchPageChange = watch(
+  routeId,
+  () => {
+    if (routeId) {
+      podStore.resetDataPageChange();
+      loadPodcastData();
+    }
+  },
+  { immediate: true }
+);
 </script>

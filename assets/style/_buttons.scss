@@ -14,7 +14,7 @@
   }
   .btn-primary {
     @extend .btn;
-    @apply text-body-invert bg-gradient-to-r from-brand1-600 to-brand1-700;
+    @apply text-body-inv bg-gradient-to-r from-brand1-600 to-brand1-700;
     @apply hover:bg-gradient-to-r hover:from-brand1-700 hover:to-brand1-800;
   }
   .btn-outline {

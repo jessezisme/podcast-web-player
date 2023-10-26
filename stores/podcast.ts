@@ -8,11 +8,10 @@ export const usePodcastStore = defineStore('podcast', () => {
   /**
    * Data
    */
-  const isLoading = ref(false);
+  const isLoading = ref(true);
   const podId = ref('');
   const podcastDetails = ref<PodResponseData | null>(null);
   const podcastEpisodes = ref<PodcastEpisodes>([]);
-
   const nextEpisodePubDate = computed(() => {
     return podcastDetails?.value?.next_episode_pub_date;
   });
@@ -20,8 +19,8 @@ export const usePodcastStore = defineStore('podcast', () => {
   /**
    * Actions
    */
-  const resetData = () => {
-    isLoading.value = false;
+  const resetDataPageChange = () => {
+    isLoading.value = true;
     podId.value = '';
     podcastDetails.value = null;
     podcastEpisodes.value = [];
@@ -29,35 +28,56 @@ export const usePodcastStore = defineStore('podcast', () => {
 
   const setPodcastData = (data: PodResponseData) => {
     const podcast = data;
-    podcast && (podcastDetails.value = podcast);
+    if (podcast) {
+      podcastDetails.value = podcast;
+    }
   };
 
   const setEpisodesData = (data: PodResponseData) => {
+    console.log(data); 
     const episodes = data?.episodes || [];
-    podcastEpisodes.value && podcastEpisodes.value.push(...episodes);
+    if (podcastEpisodes.value) {
+      console.log(episodes); 
+      podcastEpisodes.value.push(...episodes);
+    }
   };
 
   const getPodcastRequest = async (fetchOptions: PodClientGetParams[0], callbackFunction: Function) => {
-    isLoading.value = true;
     const getId = unref(fetchOptions).query.id;
     podId.value = getId;
+
+    isLoading.value = true;
     const response = await new PodClientService().getPodcast(fetchOptions);
 
-    if (response.data.value && getId === podId.value) {
-      callbackFunction(response.data.value);
-    }
-    isLoading.value = false;
+    watch(
+      response.pending,
+      (res) => {
+        if (!response.pending.value && response.data.value && getId === podId.value) {
+          isLoading.value = false;
+          callbackFunction(response.data.value);
+        }
+      },
+      { immediate: true }
+    );
 
     return response;
   };
 
-  const getPodcastData = async (fetchOptions: PodClientGetParams[0]) => {
-    resetData();
-    return await getPodcastRequest(fetchOptions, setPodcastData);
+  const getPodcastData = (fetchOptions: PodClientGetParams[0]) => {
+    resetDataPageChange();
+    return getPodcastRequest(fetchOptions, setPodcastData);
   };
-  const getEpisodesData = async (fetchOptions: PodClientGetParams[0]) => {
-    return await getPodcastRequest(fetchOptions, setEpisodesData);
+  const getEpisodesData = (fetchOptions: PodClientGetParams[0]) => {
+    return getPodcastRequest(fetchOptions, setEpisodesData);
   };
 
-  return { isLoading, podcastDetails, podcastEpisodes, nextEpisodePubDate, getPodcastData, getEpisodesData };
+  return {
+    resetDataPageChange,
+    isLoading,
+    podcastDetails,
+    podcastEpisodes,
+    nextEpisodePubDate,
+    getPodcastData,
+    getEpisodesData,
+  };
 });
