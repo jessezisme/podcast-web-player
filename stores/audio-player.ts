@@ -42,7 +42,6 @@ export const useAudioPlayerStore = defineStore('audio', () => {
   const updateProgressSeconds = () => {
     const getPlayer = unref(player);
     const getProgress = getPlayer?.playerAudio ? Math.floor(getPlayer.playerAudio.seek()) : 1;
-    console.log(getProgress);
     getPlayer && (getPlayer.progressSeconds = getProgress);
   };
 

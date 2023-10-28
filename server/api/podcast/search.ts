@@ -2,13 +2,50 @@ import * as SearchTypes from '~/shared/podcast/api/types/search-get';
 import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 
 export default defineEventHandler(async (event) => {
-  const getQuery = event.context.query?.type;
+  const { ApiKeyListenNotes } = useRuntimeConfig();
+  const eventQuery = getQuery(event);
+  let apiError;
+
+  const handleError = (err: any) => {
+    apiError = {
+      statusCode: err.statusCode || 500,
+      statusMessage: 'An error occurred while retrieving data.',
+      data: err.data,
+    };
+    setResponseStatus(event, apiError.statusCode);
+  };
+
+  const apiResponse = await $fetch('https://listen-api.listennotes.com/api/v2/search', {
+    headers: {
+      'X-ListenAPI-Key': ApiKeyListenNotes,
+    },
+    query: eventQuery || {},
+  }).catch(handleError);
+
+  if (apiError) {
+    return apiError;
+  }
+  if (eventQuery.type === 'podcast') {
+    return new PodcastDataModel().formatSearchPodcastData(apiResponse as SearchTypes.ServerResponsePodcastRaw);
+  }
+  if (eventQuery.type === 'episode') {
+    return new PodcastDataModel().formatSearchEpisodeData(apiResponse as SearchTypes.ServerResponseEpisodeRaw);
+  }
+  setResponseStatus(event, 400);
+  return {
+    statusCode: 400,
+    statusMessage: 'An error occurred while retrieving data.',
+  };
+
+  /*
+    const getQuery = event.context.query?.type;
 
   if (getQuery === 'podcast') {
     return new PodcastDataModel().formatSearchPodcastData({ ...mockSearchPodcast });
   } else {
     return new PodcastDataModel().formatSearchEpisodeData({ ...mockSearchEpisode });
   }
+  */
 });
 
 const mockSearchPodcast: SearchTypes.ServerResponsePodcastRaw = {

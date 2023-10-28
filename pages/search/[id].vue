@@ -1,71 +1,80 @@
 <template>
-  <!-- If: No Search Results -->
-  <template v-if="isNoResults">
-    <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
-      <div class="container">
-        <h1 class="text-center">No Search Results Found</h1>
-      </div>
-    </div>
-  </template>
-  <!-- Else: Search Results -->
-  <template v-else>
-    <!-- Intro -->
-    <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
-      <div class="container">
-        <h1 class="text-center">Search Results</h1>
-      </div>
-    </div>
-    <!-- Podcasts -->
-    <section v-if="podcasts?.length">
-      <div class="container">
-        <div
-          class="w-full grid gap-[2rem] grid-cols-[repeat(auto-fit,_minmax(160px,_200px))] justify-center justify-items-center"
-        >
-          <template v-for="pod in podcasts" :key="pod.id">
-            <NuxtLink v-if="pod._app?.linkPodcast" :href="pod._app?.linkPodcast" class="p-2 shadow-md rounded-sm max-w-full">
-              <div class="aspect-[1/1] flex items-center">
-                <img :src="pod.image" class="object-contain max-w-full" lazy alt="" />
-              </div>
-              <div v-if="pod.title_original" class="text-center text-ellipsis w-full py-2 text-sm font-semibold">
-                {{ Utils.truncateText(Utils.stripHTML(pod.title_original), 200) }}
-              </div>
-            </NuxtLink>
-          </template>
+  <section v-if="!isLoading">
+    <!-- If: Search Results -->
+    <template v-if="!isNoResults">
+      <!-- Intro -->
+      <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
+        <div class="container">
+          <h1 class="text-center">Search Results</h1>
         </div>
-        <div class="flex justify-center items-center min-h-[10rem]">
-          <button
-            v-if="podcastNextOffset"
-            @click="clickLoadMore('podcast')"
-            :disabled="isLoadingMoreResults"
-            class="btn btn-primary btn--lg my-8"
+      </div>
+      <!-- Podcasts -->
+      <section v-if="podcasts?.length">
+        <div class="container">
+          <div
+            class="w-full grid gap-[2rem] grid-cols-[repeat(auto-fit,_minmax(160px,_200px))] justify-center justify-items-center"
           >
-            Load More Podcasts
-          </button>
+            <template v-for="pod in podcasts" :key="pod.id">
+              <NuxtLink
+                v-if="pod._app?.linkPodcast"
+                :href="pod._app?.linkPodcast"
+                class="p-2 shadow-md rounded-sm max-w-full"
+              >
+                <div class="aspect-[1/1] flex items-center">
+                  <img :src="pod.image" class="object-contain max-w-full" lazy alt="" />
+                </div>
+                <div v-if="pod.title_original" class="text-center text-ellipsis w-full py-2 text-sm font-semibold">
+                  {{ Utils.truncateText(Utils.stripHTML(pod.title_original), 200) }}
+                </div>
+              </NuxtLink>
+            </template>
+          </div>
+          <div class="flex justify-center items-center min-h-[10rem]">
+            <button
+              v-if="podcastNextOffset"
+              @click="clickLoadMore('podcast')"
+              :disabled="isLoadingMoreResults"
+              class="btn btn-primary btn--lg my-8"
+            >
+              Load More Podcasts
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Episodes -->
-    <section v-if="episodes?.length">
-      <div class="container">
-        <div class="flex flex-col gap-[2rem] items-center">
-          <template v-for="ep in episodes" :key="ep.id">
-            <EpisodeCard :episode="{ ...ep, description: ep.description_original, title: ep.title_original }"></EpisodeCard>
-          </template>
+      <!-- Episodes -->
+      <section v-if="episodes?.length">
+        <div class="container">
+          <div class="flex flex-col gap-[2rem] items-center">
+            <template v-for="ep in episodes" :key="ep.id">
+              <EpisodeCard
+                :episode="{ ...ep, description: ep.description_original, title: ep.title_original }"
+              ></EpisodeCard>
+            </template>
+          </div>
+          <div class="flex justify-center items-center min-h-[10rem]">
+            <button
+              v-if="episodeNextOffset"
+              @click="clickLoadMore('episode')"
+              :disabled="isLoadingMoreResults"
+              class="btn btn-primary btn--lg my-8"
+            >
+              Load More Episodes
+            </button>
+          </div>
         </div>
-        <div class="flex justify-center items-center min-h-[10rem]">
-          <button
-            v-if="episodeNextOffset"
-            @click="clickLoadMore('episode')"
-            :disabled="isLoadingMoreResults"
-            class="btn btn-primary btn--lg my-8"
-          >
-            Load More Episodes
-          </button>
+      </section>
+    </template>
+
+    <!-- Else: No Search Results -->
+    <template v-if="isNoResults">
+      <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
+        <div class="container">
+          <h1 class="text-center">No Search Results Found</h1>
         </div>
       </div>
-    </section>
-  </template>
+    </template>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -75,7 +84,7 @@ import { PodClientService } from '~/shared/podcast/api/services';
 import * as Utils from '~/shared/utils';
 
 const route = useRoute();
-const routeId = computed(() => route.params?.id.toString() || '');
+const routeId = computed(() => route.params?.id?.toString() || '');
 const isLoading = computed(() => episodeReq.status.value === 'pending' || podcastReq.status.value === 'pending');
 const isLoadingMoreResults = computed(
   () => isLoading.value || loadMorePodcastsReq.status.value === 'pending' || loadMoreEpisodesReq.status.value === 'pending'
@@ -101,7 +110,7 @@ const resetPageChange = () => {
 };
 
 const loadMorePodcastsReq = await new PodClientService().getSearchPodcasts({
-  query: { q: routeId.value, type: 'podcast', offset: podcastNextOffset.value },
+  query: { q: routeId, type: 'podcast', offset: podcastNextOffset },
   lazy: true,
   server: false,
   immediate: false,
@@ -109,17 +118,19 @@ const loadMorePodcastsReq = await new PodClientService().getSearchPodcasts({
 });
 
 watch(loadMorePodcastsReq.status, (status) => {
+  const loadMoreData = toRaw(loadMorePodcastsReq.data.value);
+
   if (status === 'pending') {
     return;
   }
-  if (loadMorePodcastsReq.data.value) {
-    podcastResponse.value = loadMorePodcastsReq.data.value;
-    podcasts.value?.push(...(loadMorePodcastsReq.data.value?.results || []));
+  if (loadMoreData) {
+    podcastResponse.value = loadMoreData;
+    podcasts.value?.push(...(loadMoreData?.results?.length ? loadMoreData.results : []));
   }
 });
 
 const loadMoreEpisodesReq = await new PodClientService().getSearchEpisodes({
-  query: { q: routeId.value, type: 'episode', offset: episodeNextOffset.value },
+  query: { q: routeId, type: 'episode', offset: episodeNextOffset },
   lazy: true,
   server: false,
   immediate: false,
@@ -127,17 +138,19 @@ const loadMoreEpisodesReq = await new PodClientService().getSearchEpisodes({
 });
 
 watch(loadMoreEpisodesReq.status, (status) => {
+  const loadMoreData = toRaw(loadMoreEpisodesReq.data.value);
+
   if (status === 'pending') {
     return;
   }
-  if (loadMoreEpisodesReq.data.value) {
-    episodeResponse.value = loadMoreEpisodesReq.data.value;
-    episodes.value?.push(...(loadMoreEpisodesReq.data.value?.results || []));
+  if (loadMoreData) {
+    episodeResponse.value = loadMoreData;
+    episodes.value?.push(...(loadMoreData?.results || []));
   }
 });
 
 const episodeReq = await new PodClientService().getSearchEpisodes({
-  query: { q: routeId.value, type: 'episode' },
+  query: { q: routeId, type: 'episode' },
   lazy: true,
   server: false,
   immediate: false,
@@ -145,7 +158,7 @@ const episodeReq = await new PodClientService().getSearchEpisodes({
 });
 
 const podcastReq = await new PodClientService().getSearchPodcasts({
-  query: { q: routeId.value, type: 'podcast' },
+  query: { q: routeId, type: 'podcast' },
   lazy: true,
   server: false,
   immediate: false,
@@ -157,8 +170,8 @@ watch([episodeReq.status, podcastReq.status], () => {
     return;
   }
 
-  episodeReq.data.value.results && episodes.value?.push(...episodeReq.data.value.results);
-  podcastReq.data.value.results && podcasts.value?.push(...podcastReq.data.value.results);
+  episodeReq.data.value?.results && episodes.value?.push(...episodeReq.data.value.results);
+  podcastReq.data.value?.results && podcasts.value?.push(...podcastReq.data.value.results);
   episodeResponse.value = unref(episodeReq.data);
   podcastResponse.value = unref(podcastReq.data);
 });

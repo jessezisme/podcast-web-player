@@ -44,7 +44,7 @@ const getResultsRequest = async () => {
   isLoading.value = true;
   const response = await serviceTypeahead.getTypeahead({
     key: queryDebounce.value,
-    query: { q: queryDebounce.value },
+    query: { q: queryDebounce.value, show_podcasts: 1, show_genres: 1 },
   });
   isLoading.value = false;
   return response;

@@ -73,9 +73,12 @@ module.exports = {
             DEFAULT: theme('colors')['brand2']['300'],
             v1: theme('colors')['brand2']['200'],
             v2: theme('colors')['brand2']['100'],
-          }
-        }
+          },
+        },
       }),
+      fontFamily: {
+        body: ['"Inter Var"', ...defaultTheme.fontFamily.sans],
+      },
     },
   },
 } satisfies Config;

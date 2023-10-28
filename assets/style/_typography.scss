@@ -1,12 +1,12 @@
 @font-face {
   font-family: 'Inter Var';
   font-weight: 100 900;
-  src: url('/fonts/inter/variable/inter-var.ttf') format('truetype');
+  src: url('/assets/fonts/inter/variable/inter-var.ttf') format('truetype');
 }
 
 @layer utilities {
   body {
-    @apply font-normal text-body;
+    @apply font-normal text-body font-body;
   }
 
   h1,

@@ -10,6 +10,7 @@ export interface RouteParams {
     genre_ids?: string;
     safe_mode?: number;
     page_size?: number;
+    language?: 'English';
   };
 }
 

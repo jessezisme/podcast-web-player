@@ -7,7 +7,7 @@
         <div>
           <button class="btn btn-primary" @click="openModal">Search</button>
         </div>
-        <NuxtLink to="/">Pod Nexus</NuxtLink>
+        <NuxtLink to="/">{{ runtimeConfig.public.appName }}</NuxtLink>
       </nav>
     </div>
   </header>
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { PodClientService } from '~/shared/podcast/api/services';
 
+const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const isModalOpen = ref(false);
 const openModal = () => {

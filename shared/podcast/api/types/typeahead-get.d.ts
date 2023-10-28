@@ -5,6 +5,8 @@ export interface RouteGetParams {
   query: {
     q: string;
     safe_mode?: 0 | 1;
+    show_podcasts?: 0 | 1;
+    show_genres?: 0 | 1;
   };
 }
 

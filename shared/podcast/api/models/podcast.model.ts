@@ -2,8 +2,21 @@ import * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
 import * as Podcast from '~/shared/podcast/api/types/podcast-get';
 import * as Genres from '~/shared/podcast/api/types/genres-get';
 import * as Search from '~/shared/podcast/api/types/search-get';
+import * as BestTypes from '~/shared/podcast/api/types/best-podcasts-get';
 
 export class PodcastDataModel {
+  formatBestPodcastsData(rawData: BestTypes.ServerResponseRaw): BestTypes.ServerResponse {
+    const data = { ...rawData };
+    const podcasts = [...(data.podcasts || [])].map((val) => ({
+      ...val,
+      _app: { linkPodcast: encodeURI(`/podcast/${val.id}`) },
+    }));
+    return {
+      ...data,
+      podcasts: [...podcasts],
+    };
+  }
+
   formatSearchEpisodeData(rawData: Search.ServerResponseEpisodeRaw): Search.ServerResponseEpisode {
     const data = { ...rawData };
     const results = [...(data.results || [])].map((val) => ({

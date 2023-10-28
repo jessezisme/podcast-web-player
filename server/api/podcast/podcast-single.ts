@@ -2,8 +2,35 @@ import { PodcastDataModel } from '~/shared/podcast/api/models/podcast.model';
 import * as PodcastTypes from '~/shared/podcast/api/types/podcast-get';
 
 export default defineEventHandler(async (event) => {
+  const { ApiKeyListenNotes } = useRuntimeConfig();
+  const eventQuery = getQuery(event);
+  let apiError;
+
+  const handleError = (err: any) => {
+    apiError = {
+      statusCode: err.statusCode || 500,
+      statusMessage: 'An error occurred while retrieving data.',
+      data: err.data,
+    };
+    setResponseStatus(event, apiError.statusCode);
+  };
+
+  const apiResponse = await $fetch(`https://listen-api.listennotes.com/api/v2/podcasts/${eventQuery.id}`, {
+    headers: {
+      'X-ListenAPI-Key': ApiKeyListenNotes,
+    },
+    query: eventQuery || {},
+  }).catch(handleError);
+
+  if (apiError) {
+    return apiError;
+  }
+  return new PodcastDataModel().formatPodcastData(apiResponse as PodcastTypes.ServerResponseRaw);
+
+  /*
   const finalData = new PodcastDataModel().formatPodcastData({ ...mockPodcastData });
   return { ...finalData };
+  */
 });
 
 const mockPodcastData: PodcastTypes.ServerResponseRaw = {
