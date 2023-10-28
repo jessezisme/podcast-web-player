@@ -1,6 +1,6 @@
 # Pod Nexus
 
-**[Live Link](https://podcast-web-player.onrender.com)**
+**[Live Link](https://podcast-web-player.netlify.app/)**
 
 This is a demo podcast web app with search and play functionality.
 
@@ -18,7 +18,7 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ### Create an API Key on [Listen Notes](https://www.listennotes.com/)
 
-- Then create a <code>.env</code> file in the root directory, and assign your API key to a variable named <code>API_KEY_LISTEN_NOTES</code> (e.g. <code>API_KEY_LISTEN_NOTES=YourAPIKey</code>).
+- Then create a <code>.env</code> file in the root directory, and assign your API key to a variable named <code>API_KEY_LISTEN_NOTES</code> (e.g. <code>API_KEY_LISTEN_NOTES="YourAPIKey"</code>).
 
 ### Install Dependencies
 
