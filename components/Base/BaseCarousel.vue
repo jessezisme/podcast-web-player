@@ -1,5 +1,5 @@
 <template>
-  <div v-drag class="flex py-8 px-4 gap-4 overflow-x-scroll select-none cursor-grab">
+  <div v-drag class="flex py-8 px-4 gap-4 overflow-x-auto select-none cursor-grab">
     <slot></slot>
   </div>
 </template>

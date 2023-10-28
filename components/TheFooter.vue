@@ -1,14 +1,14 @@
 <template>
-  <footer class="py-8 bg-blue-950 text-body-inv">
-    <div class="text-center">
-      <div class="mb-4">{{ runtimeConfig.public.appName }}</div>
-      <div>
+  <footer class="py-12 bg-blue-950 text-body-inv">
+    <div class="flex flex-wrap justify-center gap-8 text-center text-sm">
+      <div class="font-light">{{ runtimeConfig.public.appName }}</div>
+      <div class="inline-flex items-center">
         <a
           href="https://github.com/jessezisme/podcast-web-player"
           rel="noopener"
           target="_blank"
-          class="inline-flex gap-2 underline text-link-inv"
-          ><UIcon name="i-mdi-github" class="text-[1.5em]" />Code on GitHub</a
+          class="inline-flex gap-2 underline text-link-inv font-light"
+          ><UIcon name="i-mdi-github" class="text-[1.5em]" /><span>Code on GitHub</span></a
         >
       </div>
     </div>

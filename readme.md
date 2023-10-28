@@ -1,75 +1,51 @@
-# Nuxt 3 Minimal Starter
+# Pod Nexus
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+**[Live Link](https://podcast-web-player.onrender.com)**
+
+This is a demo podcast web app with search and play functionality.
+
+## Built With
+
+- [Vue.js](https://vuejs.org/) - JavaScript framework.
+- [Nuxt](https://nuxt.com) - Framework based on Vue.js.
+- [Listen Notes](https://www.listennotes.com/) - Podcast API (finally, a good one!).
+- [Howler.js](https://howlerjs.com/) - Audio player.
+- [Tailwind CSS](https://tailwindcss.com) - CSS Framework.
 
 ## Setup
 
-Make sure to install the dependencies:
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more about general Nuxt setup.
 
-```bash
-# npm
-npm install
+### Create an API Key on [Listen Notes](https://www.listennotes.com/)
 
-# pnpm
-pnpm install
+- Then create a <code>.env</code> file in the root directory, and assign your API key to a variable named <code>API_KEY_LISTEN_NOTES</code> (e.g. <code>API_KEY_LISTEN_NOTES=YourAPIKey</code>).
 
-# yarn
+### Install Dependencies
+
+```
 yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+### Development Server
 
 Start the development server on `http://localhost:3000`:
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
+```
 yarn dev
-
-# bun
-bun run dev
 ```
 
 ## Production
 
 Build the application for production:
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
+```
 yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+### Locally preview production build:
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
+```
 yarn preview
-
-# bun
-bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
