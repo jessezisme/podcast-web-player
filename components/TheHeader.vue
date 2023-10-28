@@ -7,7 +7,7 @@
         <div>
           <button class="btn btn-primary" @click="openModal">Search</button>
         </div>
-        <NuxtLink to="/">{{ runtimeConfig.public.appName }}</NuxtLink>
+        <NuxtLink to="/" class="text-inherit no-underline">{{ runtimeConfig.public.appName }}</NuxtLink>
       </nav>
     </div>
   </header>

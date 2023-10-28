@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       title: 'Pod Nexus',
       meta: [
-        { name: 'robots', content: 'noindex' },
+        { name: 'robots', content: 'noindex, nofollow' },
         { name: 'description', content: 'Listen to all your favorite podcasts with Pod Nexus' },
       ],
     },
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
   ],
   ui: {
     global: true,
-    icons: ['heroicons'],
+    icons: ['heroicons', 'mdi'],
   },
   imports: {
     dirs: ['composables', 'composables/*/index.{ts,js,mjs,mts}', 'composables/**'],

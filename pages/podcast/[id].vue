@@ -23,6 +23,7 @@
                 :href="podcastDetails.website"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
+                class="text-link-inv text-sm"
               >
                 <UIcon name="i-heroicons-link" />
                 Website

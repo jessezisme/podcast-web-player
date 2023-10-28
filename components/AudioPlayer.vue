@@ -1,5 +1,5 @@
 <template>
-  <section v-if="AudioStore.player" class="w-full fixed bottom-0 left-0 right-0 py-4 bg-slate-950 text-body-inv">
+  <section v-if="AudioStore.player" class="w-full fixed z-10 bottom-0 left-0 right-0 py-4 bg-slate-950 text-body-inv">
     <div class="container">
       <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center text-sm">
         <span>{{ AudioStore.player.episode.title }}</span>
