@@ -1,0 +1,28 @@
+@layer base {
+  .btn {
+    @apply inline-flex
+      items-center
+      justify-center 
+      py-[.5rem]
+      px-[1.15rem]
+      font-normal
+      rounded-md;
+  }
+  .btn:disabled,
+  .btn.disabled {
+    @apply opacity-60 cursor-not-allowed pointer-events-none;
+  }
+  .btn-primary {
+    @extend .btn;
+    @apply text-body-inv bg-gradient-to-r from-brand1-600 to-brand1-700;
+    @apply hover:bg-gradient-to-r hover:from-brand1-700 hover:to-brand1-800;
+  }
+  .btn-outline {
+    @extend .btn;
+    @apply bg-white border-[1px] text-brand1-800 border-brand1-700;
+    @apply hover:bg-brand1-200 text-brand1-800;
+  }
+  .btn--lg {
+    @apply py-[.75rem] px-[1.25rem] text-lg;
+  }
+}
