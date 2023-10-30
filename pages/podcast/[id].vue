@@ -72,6 +72,12 @@ const routeId = computed(() => route.params?.id?.toString() || '');
 const podcastDetails = ref<PodcastTypes.ServerResponse | null>(null);
 const episodes = ref<PodcastTypes.ServerResponse['episodes'][0][] | null>([]);
 const nextEpisodePubDate = computed(() => {
+  // The next publish date is always included in the podcast response, even if at end of episode listing.
+  // Need to check if all episodes are already listed.
+  const getTotalEpisodes = podcastDetails.value?.total_episodes;
+  if (getTotalEpisodes && episodes?.value?.length && getTotalEpisodes <= episodes?.value?.length) {
+    return;
+  }
   return podcastDetails?.value?.next_episode_pub_date;
 });
 
@@ -100,7 +106,10 @@ watch(getPodcastData.status, (status) => {
 });
 
 const getMoreEpisodes = await new PodClientService().getPodcast({
-  query: { id: routeId.value, next_episode_pub_date: nextEpisodePubDate.value },
+  query: {
+    id: routeId,
+    next_episode_pub_date: nextEpisodePubDate,
+  },
   lazy: true,
   server: false,
   immediate: false,
@@ -108,17 +117,18 @@ const getMoreEpisodes = await new PodClientService().getPodcast({
 });
 
 watch(getMoreEpisodes.status, (status) => {
-  const episodeResults = toRaw(getMoreEpisodes.data.value?.episodes);
+  const getData = toRaw(getMoreEpisodes.data.value);
   if (status === 'pending') {
     return;
   }
-  if (episodeResults?.length) {
-    episodes.value?.push(...episodeResults);
+  if (getData) {
+    podcastDetails.value = getData;
+    episodes.value?.push(...(getData.episodes?.length ? getData.episodes : []));
   }
 });
 
 const clickLoadMore = () => {
-  !isLoadingMoreResults.value && getMoreEpisodes.execute();
+  !isLoadingMoreResults.value && nextEpisodePubDate.value && getMoreEpisodes.execute();
 };
 
 const watchPageChange = watch(
