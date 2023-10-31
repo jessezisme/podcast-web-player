@@ -1,6 +1,6 @@
 <template>
   <header
-    class="placeholder-height bg-slate-50 font-semibold fixed top-0 left-0 right-0 w-full border-slate-200 border-b-[1px]"
+    class="fixed z-10 placeholder-height bg-slate-50 font-semibold top-0 left-0 right-0 w-full border-slate-200 border-b-[1px]"
   >
     <div class="container">
       <nav class="placeholder-height flex justify-center items-center gap-[100px]">

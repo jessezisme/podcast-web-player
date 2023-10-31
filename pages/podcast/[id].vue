@@ -86,13 +86,15 @@ const resetDataPageChange = () => {
   episodes.value = null;
 };
 
-const getPodcastData = await new PodClientService().getPodcast({
-  query: { id: routeId },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const getPodcastData = await useAsyncData(
+  `get-podcast-${routeId.value}`,
+  () => new PodClientService().getPodcast({ query: { id: routeId.value } }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(getPodcastData.status, (status) => {
   const getData = toRaw(getPodcastData.data.value);
@@ -105,16 +107,21 @@ watch(getPodcastData.status, (status) => {
   }
 });
 
-const getMoreEpisodes = await new PodClientService().getPodcast({
-  query: {
-    id: routeId,
-    next_episode_pub_date: nextEpisodePubDate,
-  },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const getMoreEpisodes = await useAsyncData(
+  `get-podcast-more-episodes-${routeId.value}`,
+  () =>
+    new PodClientService().getPodcast({
+      query: {
+        id: routeId.value,
+        next_episode_pub_date: nextEpisodePubDate.value,
+      },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(getMoreEpisodes.status, (status) => {
   const getData = toRaw(getMoreEpisodes.data.value);

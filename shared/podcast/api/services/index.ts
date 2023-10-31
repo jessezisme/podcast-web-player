@@ -1,72 +1,62 @@
-import type { UseFetchOptions } from 'nuxt/app';
 import * as TypeaheadTypes from '~/shared/podcast/api/types/typeahead-get';
 import * as PodcastTypes from '~/shared/podcast/api/types/podcast-get';
 import * as GenresTypes from '~/shared/podcast/api/types/genres-get';
 import * as SearchTypes from '~/shared/podcast/api/types/search-get';
 import * as BestPodcastsTypes from '~/shared/podcast/api/types/best-podcasts-get';
-import type { DeepMaybeRef } from '@vueuse/core';
 
-type AppUseFetchOptions<T> = Parameters<typeof useFetch<T>>[1];
-
-const defaultOptions = { lazy: true };
+// type AppUseFetchOptions<T> = Parameters<typeof useFetch<T>>[1];
 
 export class PodClientService {
   /**
    * Best Podcasts: get best podcasts details
    */
   getBestPodcasts<ResponseData extends BestPodcastsTypes.ServerResponse>(
-    fetchOptions: DeepMaybeRef<BestPodcastsTypes.RouteParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions: BestPodcastsTypes.RouteParams & Parameters<typeof $fetch>[1]
   ) {
-    const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/best-podcasts', { ...options });
+    return $fetch<ResponseData>('/api/podcast/best-podcasts', fetchOptions);
   }
 
   /**
    * Search: get full search details
    */
   getSearchPodcasts<ResponseData extends SearchTypes.ServerResponsePodcast>(
-    fetchOptions: DeepMaybeRef<SearchTypes.RouteParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions: SearchTypes.RouteParams & Parameters<typeof $fetch>[1]
   ) {
     fetchOptions.query.type = 'podcast';
-    const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/search', { ...options });
+    return $fetch<ResponseData>('/api/podcast/search', fetchOptions);
   }
 
   getSearchEpisodes<ResponseData extends SearchTypes.ServerResponseEpisode>(
-    fetchOptions: DeepMaybeRef<SearchTypes.RouteParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions: SearchTypes.RouteParams & Parameters<typeof $fetch>[1]
   ) {
     fetchOptions.query.type = 'episode';
-    const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/search', { ...options });
+    return $fetch<ResponseData>('/api/podcast/search', fetchOptions);
   }
 
   /**
    * Genres: get details for genres
    */
   getGenres<ResponseData extends GenresTypes.ServerResponse>(
-    fetchOptions?: DeepMaybeRef<GenresTypes.RouteParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions?: GenresTypes.RouteParams & Parameters<typeof $fetch>[1]
   ) {
-    const options = { ...defaultOptions, ...(fetchOptions || {}) };
-    return useFetch<ResponseData>('/api/podcast/genres', { ...options });
+    return $fetch<ResponseData>('/api/podcast/genres', fetchOptions);
   }
 
   /**
    * Podcast: get podcast details and episodes
    */
   getPodcast<ResponseData extends PodcastTypes.ServerResponse>(
-    fetchOptions: DeepMaybeRef<PodcastTypes.RouteParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions: PodcastTypes.RouteParams & Parameters<typeof $fetch>[1]
   ) {
-    const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/podcast-single', { ...options });
+    return $fetch<ResponseData>('/api/podcast/podcast-single', fetchOptions);
   }
 
   /**
    * Typeahead: get results for typeahead query
    */
   getTypeahead<ResponseData extends TypeaheadTypes.ServerResponse>(
-    fetchOptions: DeepMaybeRef<TypeaheadTypes.RouteGetParams> & AppUseFetchOptions<ResponseData>
+    fetchOptions: TypeaheadTypes.RouteGetParams & Parameters<typeof $fetch>[1]
   ) {
-    const options = { ...defaultOptions, ...fetchOptions };
-    return useFetch<ResponseData>('/api/podcast/typeahead', { ...options });
+    return $fetch<ResponseData>('/api/podcast/typeahead', fetchOptions);
   }
 }

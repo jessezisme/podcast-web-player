@@ -109,13 +109,18 @@ const resetPageChange = () => {
   podcasts.value = [];
 };
 
-const loadMorePodcastsReq = await new PodClientService().getSearchPodcasts({
-  query: { q: routeId, type: 'podcast', offset: podcastNextOffset },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const loadMorePodcastsReq = await useAsyncData(
+  `get-search-podcasts-more-podcasts-${routeId.value}-${podcastNextOffset.value}`,
+  () =>
+    new PodClientService().getSearchPodcasts({
+      query: { q: routeId.value, type: 'podcast', offset: podcastNextOffset.value },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(loadMorePodcastsReq.status, (status) => {
   const loadMoreData = toRaw(loadMorePodcastsReq.data.value);
@@ -129,13 +134,18 @@ watch(loadMorePodcastsReq.status, (status) => {
   }
 });
 
-const loadMoreEpisodesReq = await new PodClientService().getSearchEpisodes({
-  query: { q: routeId, type: 'episode', offset: episodeNextOffset },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const loadMoreEpisodesReq = await useAsyncData(
+  `get-search-episodes-more-episodes-${routeId.value}-${episodeNextOffset.value}`,
+  () =>
+    new PodClientService().getSearchEpisodes({
+      query: { q: routeId.value, type: 'episode', offset: episodeNextOffset.value },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(loadMoreEpisodesReq.status, (status) => {
   const loadMoreData = toRaw(loadMoreEpisodesReq.data.value);
@@ -149,21 +159,31 @@ watch(loadMoreEpisodesReq.status, (status) => {
   }
 });
 
-const episodeReq = await new PodClientService().getSearchEpisodes({
-  query: { q: routeId, type: 'episode' },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const episodeReq = await useAsyncData(
+  `get-search-episodes-${routeId.value}`,
+  () =>
+    new PodClientService().getSearchEpisodes({
+      query: { q: routeId.value, type: 'episode' },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
-const podcastReq = await new PodClientService().getSearchPodcasts({
-  query: { q: routeId, type: 'podcast' },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const podcastReq = await useAsyncData(
+  `get-search-podcasts-${routeId.value}`,
+  () =>
+    new PodClientService().getSearchPodcasts({
+      query: { q: routeId.value, type: 'podcast' },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch([episodeReq.status, podcastReq.status], () => {
   if (episodeReq.status.value === 'pending' || podcastReq.status.value === 'pending') {

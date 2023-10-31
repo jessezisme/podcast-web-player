@@ -11,8 +11,9 @@
     }"
     :debounce="0"
     :loading="isLoading"
-    :nullable="false"
-    :autoclear="false"
+    :nullable="true"
+    :autoclear="true"
+    :autoselect="false"
   />
 </template>
 
@@ -20,7 +21,7 @@
 import { refDebounced } from '@vueuse/core';
 import { PodClientService } from '~/shared/podcast/api/services';
 
-type DataResponseType = Awaited<ReturnType<PodClientService['getTypeahead']>>['data']['value'];
+type DataResponseType = Awaited<ReturnType<PodClientService['getTypeahead']>>;
 type DataResultItem = DataResponseType['genres'][0] | DataResponseType['podcasts'][0];
 
 const serviceTypeahead = new PodClientService();
@@ -43,7 +44,6 @@ const resultsPodcasts = computed(() => {
 const getResultsRequest = async () => {
   isLoading.value = true;
   const response = await serviceTypeahead.getTypeahead({
-    key: queryDebounce.value,
     query: { q: queryDebounce.value, show_podcasts: 1, show_genres: 1 },
   });
   isLoading.value = false;
@@ -53,9 +53,9 @@ const getResultsWatcher = watch(queryDebounce, async (newVal, oldVal) => {
   const isMatch = () => query.value === newVal;
 
   if (isMatch() && newVal?.length) {
-    let { data } = await getResultsRequest();
-    if (isMatch() && data.value) {
-      results.value = data.value;
+    const data = await getResultsRequest();
+    if (isMatch() && data) {
+      results.value = data;
     }
   } else {
     isLoading.value = false;
@@ -68,16 +68,16 @@ const groups = computed(() => {
       key: 'Podcasts',
       label: 'Podcasts',
       search: async (q: string) => {
-        query.value = q.trim();
-        return query.value ? resultsPodcasts || [] : [];
+        query.value = q?.trim() || '';
+        return query.value ? resultsPodcasts : [];
       },
     },
     {
       key: 'Genres',
       label: 'Genres',
       search: async (q: string) => {
-        query.value = q.trim();
-        return query.value ? resultsGenres || [] : [];
+        query.value = q?.trim() || '';
+        return query.value ? resultsGenres : [];
       },
     },
   ];

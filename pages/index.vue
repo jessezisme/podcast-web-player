@@ -89,7 +89,7 @@
 import { PodClientService } from '~/shared/podcast/api/services';
 
 const podClientService = new PodClientService();
-const { data: genresData } = await podClientService.getGenres();
+const genresData = await podClientService.getGenres().catch();
 const techStack: { text: string; link: string }[] = [
   { text: 'TypeScript', link: 'https://www.typescriptlang.org' },
   { text: 'Nuxt', link: 'https://nuxt.com' },

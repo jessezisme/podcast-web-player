@@ -85,13 +85,18 @@ const resetDataPageChange = () => {
   podcasts.value = [];
 };
 
-const getGenreData = await new PodClientService().getBestPodcasts({
-  query: { genre_id: routeId },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const getGenreData = await useAsyncData(
+  `get-best-podcasts-${routeId.value}`,
+  () =>
+    new PodClientService().getBestPodcasts({
+      query: { genre_id: routeId.value },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(getGenreData.status, (status) => {
   const getData = toRaw(getGenreData.data.value);
@@ -105,16 +110,21 @@ watch(getGenreData.status, (status) => {
   }
 });
 
-const loadMorePodcastsReq = await new PodClientService().getBestPodcasts({
-  query: {
-    genre_id: routeId,
-    page: NextPageNumber,
-  },
-  lazy: true,
-  server: false,
-  immediate: false,
-  watch: false,
-});
+const loadMorePodcastsReq = await useAsyncData(
+  `get-best-podcasts-load-more-${routeId.value}-${NextPageNumber.value}`,
+  () =>
+    new PodClientService().getBestPodcasts({
+      query: {
+        genre_id: routeId.value,
+        page: NextPageNumber.value,
+      },
+    }),
+  {
+    lazy: true,
+    server: false,
+    immediate: false,
+  }
+);
 
 watch(loadMorePodcastsReq.status, (status) => {
   const getData = toRaw(loadMorePodcastsReq.data.value);
