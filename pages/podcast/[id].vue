@@ -18,16 +18,19 @@
               <p v-if="podcastDetails.description" class="mb-4">
                 {{ Utils.stripHTML(podcastDetails.description) }}
               </p>
-              <a
-                v-if="podcastDetails.website"
-                :href="podcastDetails.website"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                class="text-link-inv text-sm"
-              >
-                <UIcon name="i-heroicons-link" />
-                Website
-              </a>
+              <div>
+                <a
+                  v-if="podcastDetails.website"
+                  :href="podcastDetails.website"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  class="text-link-inv text-sm"
+                >
+                  <UIcon name="i-heroicons-link" />
+                  Website
+                </a>
+              </div>
+              <SubscribeButton :id="podcastDetails.id" />
             </div>
           </div>
         </div>
@@ -62,7 +65,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { PodClientService } from '~/shared/podcast/api/services';
-import * as PodcastTypes from '~/shared/podcast/api/types/podcast-get.d';
+import type * as PodcastTypes from '~/shared/podcast/api/types/podcast-get.d';
 import * as Utils from '~/shared/utils';
 
 const isLoading = computed(() => getPodcastData.status.value === 'pending');

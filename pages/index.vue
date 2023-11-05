@@ -9,7 +9,7 @@
         </div>
         <div class="mb-4">
           <button class="btn btn-primary btn--lg gap-[5px]" @click="openModal">
-            <UIcon name="i-heroicons-play" class="text-[1.25em]" />
+            <UIcon name="i-heroicons-magnifying-glass" class="text-[1.25em]" />
             <span>Search Podcasts</span>
           </button>
         </div>
