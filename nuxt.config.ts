@@ -10,8 +10,9 @@ export default defineNuxtConfig({
       title: 'Pod Nexus',
       meta: [
         { name: 'robots', content: 'noindex, nofollow' },
-        { name: 'description', content: 'Listen to all your favorite podcasts with Pod Nexus' },
+        { name: 'description', content: 'Listen to all your favorite podcasts with Pod Nexus.' },
       ],
+      link: [{ rel: 'icon', type: 'ico', href: '/favicon.ico' }],
     },
   },
   runtimeConfig: {
