@@ -1,14 +1,14 @@
 <template>
   <section v-if="!isLoading">
-    <!-- If: Search Results -->
+    <!-- if: search results -->
     <template v-if="!isNoResults">
-      <!-- Intro -->
+      <!-- intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
           <h1 class="text-center">Search Results</h1>
         </div>
       </div>
-      <!-- Podcasts -->
+      <!-- podcasts -->
       <section v-if="podcasts?.length">
         <div class="container">
           <div
@@ -39,7 +39,7 @@
         </div>
       </section>
 
-      <!-- Episodes -->
+      <!-- episodes -->
       <section v-if="episodes?.length">
         <div class="container">
           <div class="flex flex-col gap-[2rem] items-center">
@@ -63,7 +63,7 @@
       </section>
     </template>
 
-    <!-- Else: No Search Results -->
+    <!-- else: no search results -->
     <template v-if="isNoResults">
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">

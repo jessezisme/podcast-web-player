@@ -1,8 +1,8 @@
 <template>
   <section v-if="!isLoading">
-    <!-- If: Details -->
+    <!-- if: details -->
     <template v-if="genreDetails">
-      <!-- Intro -->
+      <!-- intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
           <h1 class="text-center">
@@ -11,7 +11,7 @@
           </h1>
         </div>
       </div>
-      <!-- Podcasts Results -->
+      <!-- if: results -->
       <div v-if="podcasts?.length">
         <div class="container">
           <div
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <!-- No Podcast Results -->
+      <!-- else: no results -->
       <div v-else>
         <div class="container">
           <h2>No Results Found</h2>
@@ -43,7 +43,7 @@
       </div>
     </template>
 
-    <!-- Else: No Details Found -->
+    <!-- else: no details found -->
     <template v-else>
       <!-- Intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">

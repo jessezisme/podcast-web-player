@@ -1,5 +1,5 @@
 <template>
-  <!-- Intro -->
+  <!-- intro -->
   <section class="bg-slate-50 py-[8rem]">
     <div class="container">
       <div class="flex flex-col gap-4 items-center text-center">
@@ -25,7 +25,7 @@
       </div>
     </div>
   </section>
-  <!-- Browse by genres -->
+  <!-- browse by genres -->
   <section class="bg-brand1-50">
     <div class="container">
       <div class="py-12">
@@ -43,7 +43,7 @@
       </div>
     </div>
   </section>
-  <!-- About -->
+  <!-- about -->
   <section class="bg-brand2-50">
     <div class="container">
       <div class="py-12">
@@ -79,7 +79,7 @@
       </div>
     </div>
   </section>
-  <!-- Search Modal -->
+  <!-- search modal -->
   <UModal v-if="isModalOpen" v-model="isModalOpen">
     <PodSearch />
   </UModal>

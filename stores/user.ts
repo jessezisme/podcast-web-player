@@ -2,6 +2,8 @@ import type * as PodcastTypes from '~/shared/podcast/api/types/podcast-get.d';
 import { UserClientService } from '~/shared/user/services';
 import { useToastStore } from '~/stores/toast';
 
+type SubscriptionsType = Awaited<ReturnType<UserClientService['getSubscriptions']>>;
+
 export const useUserStore = defineStore('user', () => {
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
@@ -10,7 +12,7 @@ export const useUserStore = defineStore('user', () => {
   const isLoggedIn = computed(() => {
     return !!(user && user?.value);
   });
-  const podcasts = ref<Pick<PodcastTypes.ServerResponse, 'id' | 'title' | 'image'>[]>([]);
+  const podcasts = ref<SubscriptionsType>([]);
   const podcastIds = computed(() => {
     return podcasts.value?.map((val) => val.id) || [];
   });
@@ -28,6 +30,7 @@ export const useUserStore = defineStore('user', () => {
     } catch (error) {
       toastStore.addToast({ id: 'logout', title: 'Error occurred while logging out. Please try again.' }, 'error');
     }
+    navigateTo('/');
   };
 
   const login = async (loginData: { email: string; password: string }) => {
@@ -71,6 +74,28 @@ export const useUserStore = defineStore('user', () => {
     isLoading.value = false;
 
     return { error };
+  };
+
+  const loginDemoUser = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: 'podnexus@mailinator.com',
+      password: 'password',
+    });
+    return { error };
+  };
+
+  const deleteUser = async () => {
+    try {
+      const response = await new UserClientService().deleteUser();
+      if (!response.error) {
+        toastStore.addToast({ id: 'delete-account', title: 'An error occurred while deleting your account.' }, 'error');
+        isLoggedIn && logout();
+      } else {
+        toastStore.addToast({ id: 'delete-account', title: 'Account deleted.' }, 'success');
+      }
+    } catch (error) {
+      toastStore.addToast({ id: 'delete-account', title: 'An error occurred while deleting your account.' }, 'error');
+    }
   };
 
   const getSubscriptions = async () => {
@@ -176,7 +201,6 @@ export const useUserStore = defineStore('user', () => {
       // logged out
       if (!newVal) {
         clearUserData();
-        return navigateTo('/');
       }
       // logged in
       setTimeout(() => {
@@ -191,10 +215,12 @@ export const useUserStore = defineStore('user', () => {
   return {
     isLoading,
     user,
+    deleteUser,
     isLoggedIn,
     login,
     logout,
     loginGithub,
+    loginDemoUser,
     podcasts,
     podcastIds,
     deleteSubscription,

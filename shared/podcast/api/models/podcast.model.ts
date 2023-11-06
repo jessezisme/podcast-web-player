@@ -1,15 +1,16 @@
-import * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
-import * as Podcast from '~/shared/podcast/api/types/podcast-get';
-import * as Genres from '~/shared/podcast/api/types/genres-get';
-import * as Search from '~/shared/podcast/api/types/search-get';
-import * as BestTypes from '~/shared/podcast/api/types/best-podcasts-get';
+import type * as Typeahead from '~/shared/podcast/api/types/typeahead-get';
+import type * as Podcast from '~/shared/podcast/api/types/podcast-get';
+import type * as Genres from '~/shared/podcast/api/types/genres-get';
+import type * as Search from '~/shared/podcast/api/types/search-get';
+import type * as BestTypes from '~/shared/podcast/api/types/best-podcasts-get';
+import { RoutingModel } from '~/shared/routing';
 
 export class PodcastDataModel {
   formatBestPodcastsData(rawData: BestTypes.ServerResponseRaw): BestTypes.ServerResponse {
     const data = { ...rawData };
     const podcasts = [...(data.podcasts || [])].map((val) => ({
       ...val,
-      _app: { linkPodcast: encodeURI(`/podcast/${val.id}`) },
+      _app: { linkPodcast: new RoutingModel().getPodcastLink(val.id) },
     }));
     return {
       ...data,
@@ -21,7 +22,7 @@ export class PodcastDataModel {
     const data = { ...rawData };
     const results = [...(data.results || [])].map((val) => ({
       ...val,
-      _app: { linkPodcast: encodeURI(`/podcast/${val.podcast.id}`) },
+      _app: { linkPodcast: new RoutingModel().getPodcastLink(val.podcast.id) },
     }));
     return {
       ...data,
@@ -33,7 +34,7 @@ export class PodcastDataModel {
     const data = { ...rawData };
     const results = [...(data.results || [])].map((val) => ({
       ...val,
-      _app: { linkPodcast: encodeURI(`/podcast/${val.id}`), link: encodeURI(`/podcast/${val.id}`) },
+      _app: { linkPodcast: new RoutingModel().getPodcastLink(val.id), link: new RoutingModel().getPodcastLink(val.id) },
     }));
     return {
       ...data,
@@ -45,7 +46,7 @@ export class PodcastDataModel {
     const data = { ...rawData };
     const genres = [...data.genres].map((val) => ({
       ...val,
-      _app: { link: encodeURI(`/genre/${val.id}`) },
+      _app: { link: new RoutingModel().getGenreLink(val.id.toString()) },
     }));
 
     return {
@@ -60,7 +61,7 @@ export class PodcastDataModel {
     return {
       ...data,
       _app: {
-        link: encodeURI(`/podcast/${data.id}`),
+        link: new RoutingModel().getPodcastLink(data.id),
       },
     };
   }
@@ -69,11 +70,11 @@ export class PodcastDataModel {
     const { genres = [], podcasts = [] } = rawData;
     const genresModified = [...genres].map((val) => ({
       ...val,
-      ...{ _app: { link: encodeURI(`/genre/${val.id}`) } },
+      ...{ _app: { link: new RoutingModel().getGenreLink(val.id.toString()) } },
     }));
     const podcastsModified = [...podcasts].map((val) => ({
       ...val,
-      ...{ _app: { link: encodeURI(`/podcast/${val.id}`) } },
+      ...{ _app: { link: new RoutingModel().getPodcastLink(val.id) } },
     }));
 
     return {

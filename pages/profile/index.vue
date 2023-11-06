@@ -1,15 +1,15 @@
 <template>
-  Podcasts
-  {{ userStore.podcasts }}
-  <br />
-
-  {{ data }}
-
-  <div v-if="userStore.podcasts?.length">
-    <button @click="deleteSub(userStore.podcasts[0].id)">Delete Podcast</button>
-  </div>
-
-  <button @click="getData">Get Data</button>
+  <section>
+    <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
+      <div class="container">
+        <h1 class="text-center">Account</h1>
+      </div>
+    </div>
+    <div class="pt-8 pb-16 text-center">
+      <h2 class="text-error-800">Delete Account Information</h2>
+      <button @click="userStore.deleteUser" class="my-4 btn bg-error-900 text-white">Delete Account</button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -22,14 +22,4 @@ definePageMeta({
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const userStore = useUserStore();
-const data = ref<any>();
-
-const deleteSub = (id: string) => {
-  userStore.deleteSubscription(id);
-};
-
-const getData = async () => {
-  const { data: subData, error } = await supabase.from('subscriptions').select('podcast_id, podcast_image, podcast_title');
-  data.value = subData;
-};
 </script>

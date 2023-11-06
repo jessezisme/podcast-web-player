@@ -3,6 +3,7 @@ import type * as PodcastTypes from '~/shared/podcast/api/types/podcast-get';
 import { serverSupabaseServiceRole, serverSupabaseUser, serverSupabaseClient } from '#supabase/server';
 import authConfirm from '~/server/auth/auth-confirm';
 import { appErrorHandler } from '~/server/utils/error-handler';
+import { RoutingModel } from '~/shared/routing';
 
 export default defineEventHandler(async (event) => {
   const superUser = serverSupabaseServiceRole<Database>(event);
@@ -67,5 +68,10 @@ export default defineEventHandler(async (event) => {
     return appErrorHandler(event, { statusCode: 424, message: 'An error occurred while loading podcasts.' });
   }
 
-  return (data || []).map((val) => ({ id: val.podcast_id, title: val.podcast_title, image: val.podcast_image }));
+  return (data || []).map((val) => ({
+    id: val.podcast_id,
+    title: val.podcast_title,
+    image: val.podcast_image,
+    link: new RoutingModel().getPodcastLink(val.podcast_id),
+  }));
 });

@@ -1,59 +1,50 @@
 <template>
   <section class="py-12">
     <div class="container">
-      <h1 class="text-center">Login</h1>
-
-      <button @click="loginGithub">Github Signin</button>
-
-      <div class="max-w-full w-[600px] m-auto p-8 bg-slate-50">
-        <UForm :validate="validate" :state="state" @submit="onSubmit" class="flex flex-col gap-8">
-          <UFormGroup label="Email" name="email"> <UInput v-model="state.email" /> </UFormGroup>
-          <UFormGroup label="Password" name="password"> <UInput v-model="state.password" type="password" /> </UFormGroup>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary btn--lg">Submit</button>
+      <!-- sign in  -->
+      <template v-if="!userStore.isLoggedIn">
+        <h1 class="pt-2 pb-6 text-center">Sign In</h1>
+        <div class="flex flex-col items-center max-w-full w-[600px] m-auto px-2 py-6 bg-slate-50 text-center rounded-xl">
+          <div class="py-4">
+            <button @click="login" class="w-[150px] max-w-full btn btn-primary">Demo User</button>
+            <p class="my-2 font-bold">AUTO SIGN IN DEMO <br />(SHARED ACCOUNT)</p>
           </div>
-        </UForm>
-      </div>
+          <div class="py-4">
+            <button @click="loginGithub" class="w-[150px] max-w-full flex gap-[5px] btn bg-black text-white">
+              <UIcon name="i-mdi-github" class="text-[1.5em] pr-[10px]" />
+              <span>GitHub </span>
+            </button>
+            <p class="my-2">Sign in with GitHub</p>
+          </div>
+        </div>
+      </template>
+      <!-- currently signed in -->
+      <template v-else>
+        <h1 class="pt-2 pb-6 text-center">Currently Signed In</h1>
+        <div class="text-center">
+          <button @click="login" class="w-[150px] max-w-full btn btn-outline">Logout</button>
+        </div>
+      </template>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '#ui/types';
+import { useUserStore } from '~/stores/user';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-
-const state = reactive({
-  email: '',
-  password: '',
-});
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.email) errors.push({ path: 'email', message: 'Email is required.' });
-  if (!state.password) errors.push({ path: 'password', message: 'Password is required.' });
-  return errors;
-};
-
-async function onSubmit(event: FormSubmitEvent<any>) {
-  login();
-}
+const userStore = useUserStore();
 
 const login = async () => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: 'demo-user',
-    password: 'password',
-  });
-};
-
-const logout = async () => {
-  const { error } = await supabase.auth.signOut();
+  await userStore.loginDemoUser();
 };
 
 const loginGithub = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
-  });
+  await userStore.loginGithub();
+};
+
+const logout = async () => {
+  await userStore.logout();
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
   <section v-if="!isLoading" class="pb-20">
-    <!-- If: Details -->
+    <!-- if: details -->
     <template v-if="podcastDetails">
-      <!-- Intro -->
+      <!-- intro -->
       <div class="min-h-[325px] bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
           <div
@@ -30,7 +30,7 @@
                   Website
                 </a>
               </div>
-              <SubscribeButton :id="podcastDetails.id" />
+              <SubscribeButton :id="podcastDetails.id" class="my-4" />
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
       </div>
     </template>
 
-    <!-- Else: No Details Found -->
+    <!-- else: no details found -->
     <template>
       <div class="min-h-[325px] bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink v-if="podcast" :href="podcast.link" class="p-2 shadow-md rounded-sm max-w-full">
+  <NuxtLink v-if="podcast" :href="podcast.link" class="flex flex-col p-2 shadow-md rounded-sm max-w-full">
     <div class="aspect-[1/1] flex items-center">
       <img :src="podcast.image" class="object-contain max-w-full" lazy alt="" />
     </div>
