@@ -5,6 +5,7 @@
       <NuxtPage />
     </main>
     <AudioPlayer />
+    <UNotifications />
     <TheFooter />
   </div>
 </template>

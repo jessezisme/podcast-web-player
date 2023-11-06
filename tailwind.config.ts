@@ -2,9 +2,9 @@ import type { Config } from 'tailwindcss';
 import { _fontFamily } from '#tailwind-config/theme';
 
 const defaultTheme = require('tailwindcss/defaultTheme');
-const defaultColors = { ...defaultTheme.colors };
+const defaultColors = require('tailwindcss/colors');
 
-const themeColors = {
+const themeColors = () => ({
   // blue
   brand1: {
     '50': '#f0f6fe',
@@ -33,13 +33,10 @@ const themeColors = {
     '900': '#5e246b',
     '950': '#3b0c46',
   },
-  // error state
   error: { ...defaultColors.red },
-  // success state
-  success: { ...defaultColors.emerald },
-  // warn state
   warn: { ...defaultColors.yellow },
-};
+  success: { ...defaultColors.emerald },
+});
 
 module.exports = {
   content: ['./pages/**/*.{vue,html,js}', './components/**/*.{vue,html,js}'],
@@ -53,7 +50,9 @@ module.exports = {
       padding: '1rem',
     },
     extend: {
-      colors: { ...themeColors },
+      colors: {
+        ...themeColors(),
+      },
       textColor: ({ theme }) => ({
         body: {
           DEFAULT: theme('colors')['gray']['950'],

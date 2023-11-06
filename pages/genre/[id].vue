@@ -1,8 +1,8 @@
 <template>
   <section v-if="!isLoading">
-    <!-- If: Details -->
+    <!-- if: details -->
     <template v-if="genreDetails">
-      <!-- Intro -->
+      <!-- intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
           <h1 class="text-center">
@@ -11,25 +11,16 @@
           </h1>
         </div>
       </div>
-      <!-- Podcasts Results -->
+      <!-- if: results -->
       <div v-if="podcasts?.length">
         <div class="container">
           <div
             class="w-full grid gap-[2rem] grid-cols-[repeat(auto-fit,_minmax(160px,_200px))] justify-center justify-items-center"
           >
             <template v-for="pod in podcasts" :key="pod.id">
-              <NuxtLink
-                v-if="pod._app?.linkPodcast"
-                :href="pod._app?.linkPodcast"
-                class="p-2 shadow-md rounded-sm max-w-full"
-              >
-                <div class="aspect-[1/1] flex items-center">
-                  <img :src="pod.image" class="object-contain max-w-full" lazy alt="" />
-                </div>
-                <div v-if="pod.title" class="text-center text-ellipsis w-full py-2 text-sm font-semibold">
-                  {{ Utils.truncateText(Utils.stripHTML(pod.title), 200) }}
-                </div>
-              </NuxtLink>
+              <PodcastCard
+                :podcast="{ id: pod.id, title: pod.title, link: pod._app.linkPodcast, image: pod.image || pod.thumbnail }"
+              />
             </template>
           </div>
           <div class="flex justify-center items-center min-h-[10rem]">
@@ -44,7 +35,7 @@
           </div>
         </div>
       </div>
-      <!-- No Podcast Results -->
+      <!-- else: no results -->
       <div v-else>
         <div class="container">
           <h2>No Results Found</h2>
@@ -52,7 +43,7 @@
       </div>
     </template>
 
-    <!-- Else: No Details Found -->
+    <!-- else: no details found -->
     <template v-else>
       <!-- Intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
