@@ -90,11 +90,11 @@ export const useUserStore = defineStore('user', () => {
   const deleteUser = async () => {
     try {
       const response = await new UserClientService().deleteUser();
-      if (!response.error) {
+      if (response.error) {
         toastStore.addToast({ id: 'delete-account', title: 'An error occurred while deleting your account.' }, 'error');
-        isLoggedIn && logout();
       } else {
         toastStore.addToast({ id: 'delete-account', title: 'Account deleted.' }, 'success');
+        isLoggedIn && logout();
       }
     } catch (error) {
       toastStore.addToast({ id: 'delete-account', title: 'An error occurred while deleting your account.' }, 'error');
