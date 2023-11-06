@@ -51,7 +51,7 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
-    redirectOptions: { login: '/login', callback: '/profile', exclude: [] },
+    redirectOptions: { login: '/', callback: '/', exclude: [] },
     cookieName: 'supabase',
     cookieOptions: {
       maxAge: 60 * 60 * 8,

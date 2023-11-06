@@ -62,6 +62,9 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await supabase.auth.signInWithOAuth({
         provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}`,
+        },
       });
 
       if (response.error) {
