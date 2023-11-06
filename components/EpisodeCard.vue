@@ -4,7 +4,13 @@
     class="w-[900px] max-w-full p-4 text-sm border-[1px] border-blue-100 rounded-lg shadow hover:shadow-md transition-fast-out bg-y-gradient-white-grey-200 flex gap-6"
   >
     <div class="w-[110px] min-w-[110px] hidden sm:inline-block">
-      <img :src="episode.thumbnail" alt="" lazy aria-hidden="true" class="max-w-full" />
+      <img
+        v-if="episode.thumbnail || episode.image"
+        :src="episode.thumbnail || episode.image"
+        alt="episode.title"
+        lazy
+        class="max-w-full"
+      />
     </div>
     <div class="grow">
       <p class="font-semibold text-md">{{ episode.title }}</p>

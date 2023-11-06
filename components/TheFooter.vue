@@ -1,6 +1,6 @@
 <template>
-  <footer class="py-12 bg-blue-950 text-body-inv">
-    <div class="flex flex-wrap justify-center gap-8 text-center text-sm">
+  <footer class="pt-[4rem] pb-[10rem] bg-blue-950 text-body-inv">
+    <div class="flex flex-wrap justify-center gap-8 text-center text-lg">
       <div class="font-light">{{ runtimeConfig.public.appName }}</div>
       <div class="inline-flex items-center">
         <a

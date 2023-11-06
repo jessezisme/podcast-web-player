@@ -1,32 +1,29 @@
 <template>
   <section v-if="!isLoading">
-    <!-- If: Search Results -->
+    <!-- if: search results -->
     <template v-if="!isNoResults">
-      <!-- Intro -->
+      <!-- intro -->
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
           <h1 class="text-center">Search Results</h1>
         </div>
       </div>
-      <!-- Podcasts -->
+      <!-- podcasts -->
       <section v-if="podcasts?.length">
         <div class="container">
           <div
             class="w-full grid gap-[2rem] grid-cols-[repeat(auto-fit,_minmax(160px,_200px))] justify-center justify-items-center"
           >
             <template v-for="pod in podcasts" :key="pod.id">
-              <NuxtLink
+              <PodcastCard
                 v-if="pod._app?.linkPodcast"
-                :href="pod._app?.linkPodcast"
-                class="p-2 shadow-md rounded-sm max-w-full"
-              >
-                <div class="aspect-[1/1] flex items-center">
-                  <img :src="pod.image" class="object-contain max-w-full" lazy alt="" />
-                </div>
-                <div v-if="pod.title_original" class="text-center text-ellipsis w-full py-2 text-sm font-semibold">
-                  {{ Utils.truncateText(Utils.stripHTML(pod.title_original), 200) }}
-                </div>
-              </NuxtLink>
+                :podcast="{
+                  id: pod.id,
+                  title: pod.title_original,
+                  link: pod._app.linkPodcast,
+                  image: pod.image || pod.thumbnail,
+                }"
+              />
             </template>
           </div>
           <div class="flex justify-center items-center min-h-[10rem]">
@@ -42,7 +39,7 @@
         </div>
       </section>
 
-      <!-- Episodes -->
+      <!-- episodes -->
       <section v-if="episodes?.length">
         <div class="container">
           <div class="flex flex-col gap-[2rem] items-center">
@@ -66,7 +63,7 @@
       </section>
     </template>
 
-    <!-- Else: No Search Results -->
+    <!-- else: no search results -->
     <template v-if="isNoResults">
       <div class="min-h-[150px] mb-8 bg-gradient-to-b from-slate-900 to-slate-800 py-16 text-body-inv">
         <div class="container">
