@@ -31,14 +31,14 @@
       <div class="py-12">
         <h2 class="h2 font-bold text-center pb-4">Browse Podcasts by Genre</h2>
         <BaseCarousel v-if="genresData?.genres?.length" class="rounded-md border-brand1-50 border-2">
-          <a
+          <NuxtLink
             class="inline-flex px-[.5rem] py-[.5rem] text-link items-center bg-white border-brand1-500 border-2 rounded min-w-min whitespace-nowrap cursor-pointer select-none text-sm btn-outline btn"
             v-for="genre in genresData.genres"
             :key="genre.id"
-            :href="genre._app.link"
+            :to="genre._app.link"
           >
             {{ genre.name }}
-          </a>
+          </NuxtLink>
         </BaseCarousel>
       </div>
     </div>
